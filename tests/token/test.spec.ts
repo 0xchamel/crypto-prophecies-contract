@@ -2,10 +2,10 @@ import checkToken from './checkToken';
 
 import BN from 'bn.js';
 import { toWei } from 'web3-utils';
-import { CPTContract } from '../../types/contracts';
+import { TCPContract } from '../../types/contracts';
 import { TOKEN_CAP } from "../helpers/constants";
 
-const CPT: CPTContract = artifacts.require('CPT');
+const tcp: TCPContract = artifacts.require('TCP');
 
 describe('Token', function () {
   before(async function () {
@@ -15,9 +15,9 @@ describe('Token', function () {
     this.random = accounts[1];
 
     // Deploy contracts.
-    this.cptToken = await CPT.new(TOKEN_CAP);
+    this.tcpToken = await tcp.new(TOKEN_CAP);
 
   });
 
-  describe('When checking cpt erc20 token', checkToken.bind(this));
+  describe('When checking tcp erc20 token', checkToken.bind(this));
 });

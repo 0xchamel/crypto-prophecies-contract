@@ -5,11 +5,11 @@
 import BN from "bn.js";
 import { EventData, PastEventOptions } from "web3-eth-contract";
 
-export interface tcpContract extends Truffle.Contract<tcpInstance> {
+export interface TCPContract extends Truffle.Contract<TCPInstance> {
   "new"(
     cap_: number | BN | string,
     meta?: Truffle.TransactionDetails
-  ): Promise<tcpInstance>;
+  ): Promise<TCPInstance>;
 }
 
 export interface Approval {
@@ -38,7 +38,7 @@ export interface Transfer {
 
 type AllEvents = Approval | Transfer;
 
-export interface tcpInstance extends Truffle.ContractInstance {
+export interface TCPInstance extends Truffle.ContractInstance {
   allowance(
     owner: string,
     spender: string,
