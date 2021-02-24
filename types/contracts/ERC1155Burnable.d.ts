@@ -5,8 +5,9 @@
 import BN from "bn.js";
 import { EventData, PastEventOptions } from "web3-eth-contract";
 
-export interface ProphetContract extends Truffle.Contract<ProphetInstance> {
-  "new"(meta?: Truffle.TransactionDetails): Promise<ProphetInstance>;
+export interface ERC1155BurnableContract
+  extends Truffle.Contract<ERC1155BurnableInstance> {
+  "new"(meta?: Truffle.TransactionDetails): Promise<ERC1155BurnableInstance>;
 }
 
 export interface ApprovalForAll {
@@ -65,7 +66,7 @@ export interface URI {
 
 type AllEvents = ApprovalForAll | TransferBatch | TransferSingle | URI;
 
-export interface ProphetInstance extends Truffle.ContractInstance {
+export interface ERC1155BurnableInstance extends Truffle.ContractInstance {
   balanceOf(
     account: string,
     id: number | BN | string,
@@ -77,6 +78,60 @@ export interface ProphetInstance extends Truffle.ContractInstance {
     ids: (number | BN | string)[],
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
+
+  burn: {
+    (
+      account: string,
+      id: number | BN | string,
+      value: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      account: string,
+      id: number | BN | string,
+      value: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      account: string,
+      id: number | BN | string,
+      value: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      account: string,
+      id: number | BN | string,
+      value: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  burnBatch: {
+    (
+      account: string,
+      ids: (number | BN | string)[],
+      values: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      account: string,
+      ids: (number | BN | string)[],
+      values: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      account: string,
+      ids: (number | BN | string)[],
+      values: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      account: string,
+      ids: (number | BN | string)[],
+      values: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
 
   isApprovedForAll(
     account: string,
@@ -199,6 +254,60 @@ export interface ProphetInstance extends Truffle.ContractInstance {
       ids: (number | BN | string)[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
+
+    burn: {
+      (
+        account: string,
+        id: number | BN | string,
+        value: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        account: string,
+        id: number | BN | string,
+        value: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        account: string,
+        id: number | BN | string,
+        value: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        account: string,
+        id: number | BN | string,
+        value: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    burnBatch: {
+      (
+        account: string,
+        ids: (number | BN | string)[],
+        values: (number | BN | string)[],
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        account: string,
+        ids: (number | BN | string)[],
+        values: (number | BN | string)[],
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        account: string,
+        ids: (number | BN | string)[],
+        values: (number | BN | string)[],
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        account: string,
+        ids: (number | BN | string)[],
+        values: (number | BN | string)[],
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
 
     isApprovedForAll(
       account: string,

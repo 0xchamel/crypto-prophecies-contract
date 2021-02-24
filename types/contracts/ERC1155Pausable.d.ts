@@ -5,8 +5,9 @@
 import BN from "bn.js";
 import { EventData, PastEventOptions } from "web3-eth-contract";
 
-export interface ProphetContract extends Truffle.Contract<ProphetInstance> {
-  "new"(meta?: Truffle.TransactionDetails): Promise<ProphetInstance>;
+export interface ERC1155PausableContract
+  extends Truffle.Contract<ERC1155PausableInstance> {
+  "new"(meta?: Truffle.TransactionDetails): Promise<ERC1155PausableInstance>;
 }
 
 export interface ApprovalForAll {
@@ -18,6 +19,14 @@ export interface ApprovalForAll {
     0: string;
     1: string;
     2: boolean;
+  };
+}
+
+export interface Paused {
+  name: "Paused";
+  args: {
+    account: string;
+    0: string;
   };
 }
 
@@ -63,9 +72,23 @@ export interface URI {
   };
 }
 
-type AllEvents = ApprovalForAll | TransferBatch | TransferSingle | URI;
+export interface Unpaused {
+  name: "Unpaused";
+  args: {
+    account: string;
+    0: string;
+  };
+}
 
-export interface ProphetInstance extends Truffle.ContractInstance {
+type AllEvents =
+  | ApprovalForAll
+  | Paused
+  | TransferBatch
+  | TransferSingle
+  | URI
+  | Unpaused;
+
+export interface ERC1155PausableInstance extends Truffle.ContractInstance {
   balanceOf(
     account: string,
     id: number | BN | string,
@@ -83,6 +106,8 @@ export interface ProphetInstance extends Truffle.ContractInstance {
     operator: string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
+
+  paused(txDetails?: Truffle.TransactionDetails): Promise<boolean>;
 
   safeBatchTransferFrom: {
     (
@@ -205,6 +230,8 @@ export interface ProphetInstance extends Truffle.ContractInstance {
       operator: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
+
+    paused(txDetails?: Truffle.TransactionDetails): Promise<boolean>;
 
     safeBatchTransferFrom: {
       (

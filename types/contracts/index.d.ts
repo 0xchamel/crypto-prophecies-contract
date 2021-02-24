@@ -6,13 +6,17 @@ import { AccessControlContract } from "./AccessControl";
 import { OwnableContract } from "./Ownable";
 import { ERC165Contract } from "./ERC165";
 import { IERC165Contract } from "./IERC165";
+import { ERC1155PresetMinterPauserContract } from "./ERC1155PresetMinterPauser";
 import { ERC1155Contract } from "./ERC1155";
+import { ERC1155BurnableContract } from "./ERC1155Burnable";
+import { ERC1155PausableContract } from "./ERC1155Pausable";
 import { IERC1155Contract } from "./IERC1155";
 import { IERC1155MetadataURIContract } from "./IERC1155MetadataURI";
 import { IERC1155ReceiverContract } from "./IERC1155Receiver";
 import { ERC20Contract } from "./ERC20";
 import { ERC20CappedContract } from "./ERC20Capped";
 import { IERC20Contract } from "./IERC20";
+import { PausableContract } from "./Pausable";
 import { NFTControllerContract } from "./NFTController";
 import { ProphetContract } from "./Prophet";
 import { TCPContract } from "./TCP";
@@ -24,13 +28,19 @@ declare global {
       require(name: "Ownable"): OwnableContract;
       require(name: "ERC165"): ERC165Contract;
       require(name: "IERC165"): IERC165Contract;
+      require(
+        name: "ERC1155PresetMinterPauser"
+      ): ERC1155PresetMinterPauserContract;
       require(name: "ERC1155"): ERC1155Contract;
+      require(name: "ERC1155Burnable"): ERC1155BurnableContract;
+      require(name: "ERC1155Pausable"): ERC1155PausableContract;
       require(name: "IERC1155"): IERC1155Contract;
       require(name: "IERC1155MetadataURI"): IERC1155MetadataURIContract;
       require(name: "IERC1155Receiver"): IERC1155ReceiverContract;
       require(name: "ERC20"): ERC20Contract;
       require(name: "ERC20Capped"): ERC20CappedContract;
       require(name: "IERC20"): IERC20Contract;
+      require(name: "Pausable"): PausableContract;
       require(name: "NFTController"): NFTControllerContract;
       require(name: "Prophet"): ProphetContract;
       require(name: "TCP"): TCPContract;
@@ -42,7 +52,19 @@ export { AccessControlContract, AccessControlInstance } from "./AccessControl";
 export { OwnableContract, OwnableInstance } from "./Ownable";
 export { ERC165Contract, ERC165Instance } from "./ERC165";
 export { IERC165Contract, IERC165Instance } from "./IERC165";
+export {
+  ERC1155PresetMinterPauserContract,
+  ERC1155PresetMinterPauserInstance,
+} from "./ERC1155PresetMinterPauser";
 export { ERC1155Contract, ERC1155Instance } from "./ERC1155";
+export {
+  ERC1155BurnableContract,
+  ERC1155BurnableInstance,
+} from "./ERC1155Burnable";
+export {
+  ERC1155PausableContract,
+  ERC1155PausableInstance,
+} from "./ERC1155Pausable";
 export { IERC1155Contract, IERC1155Instance } from "./IERC1155";
 export {
   IERC1155MetadataURIContract,
@@ -55,6 +77,7 @@ export {
 export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
 export { IERC20Contract, IERC20Instance } from "./IERC20";
+export { PausableContract, PausableInstance } from "./Pausable";
 export { NFTControllerContract, NFTControllerInstance } from "./NFTController";
 export { ProphetContract, ProphetInstance } from "./Prophet";
 export { TCPContract, TCPInstance } from "./TCP";

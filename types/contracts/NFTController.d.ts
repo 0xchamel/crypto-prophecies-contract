@@ -22,42 +22,6 @@ export interface ApprovalForAll {
   };
 }
 
-export interface RoleAdminChanged {
-  name: "RoleAdminChanged";
-  args: {
-    role: string;
-    previousAdminRole: string;
-    newAdminRole: string;
-    0: string;
-    1: string;
-    2: string;
-  };
-}
-
-export interface RoleGranted {
-  name: "RoleGranted";
-  args: {
-    role: string;
-    account: string;
-    sender: string;
-    0: string;
-    1: string;
-    2: string;
-  };
-}
-
-export interface RoleRevoked {
-  name: "RoleRevoked";
-  args: {
-    role: string;
-    account: string;
-    sender: string;
-    0: string;
-    1: string;
-    2: string;
-  };
-}
-
 export interface TransferBatch {
   name: "TransferBatch";
   args: {
@@ -100,18 +64,9 @@ export interface URI {
   };
 }
 
-type AllEvents =
-  | ApprovalForAll
-  | RoleAdminChanged
-  | RoleGranted
-  | RoleRevoked
-  | TransferBatch
-  | TransferSingle
-  | URI;
+type AllEvents = ApprovalForAll | TransferBatch | TransferSingle | URI;
 
 export interface NFTControllerInstance extends Truffle.ContractInstance {
-  DEFAULT_ADMIN_ROLE(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
   balanceOf(
     account: string,
     id: number | BN | string,
@@ -124,112 +79,11 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
 
-  getRoleAdmin(
-    role: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<string>;
-
-  getRoleMember(
-    role: string,
-    index: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<string>;
-
-  getRoleMemberCount(
-    role: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  grantRole: {
-    (
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
-  hasRole(
-    role: string,
-    account: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<boolean>;
-
   isApprovedForAll(
     account: string,
     operator: string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
-
-  prophetRace(
-    arg0: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  prophetRaceCounter(
-    arg0: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  renounceRole: {
-    (
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
-  revokeRole: {
-    (
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
 
   safeBatchTransferFrom: {
     (
@@ -335,8 +189,6 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
   ): Promise<string>;
 
   methods: {
-    DEFAULT_ADMIN_ROLE(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
     balanceOf(
       account: string,
       id: number | BN | string,
@@ -349,112 +201,11 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
 
-    getRoleAdmin(
-      role: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-
-    getRoleMember(
-      role: string,
-      index: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-
-    getRoleMemberCount(
-      role: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    grantRole: {
-      (
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    hasRole(
-      role: string,
-      account: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<boolean>;
-
     isApprovedForAll(
       account: string,
       operator: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
-
-    prophetRace(
-      arg0: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    prophetRaceCounter(
-      arg0: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    renounceRole: {
-      (
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    revokeRole: {
-      (
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        role: string,
-        account: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
 
     safeBatchTransferFrom: {
       (

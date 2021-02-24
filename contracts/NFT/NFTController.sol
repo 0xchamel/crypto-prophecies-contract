@@ -10,7 +10,7 @@ import "./Prophet.sol";
  */
 contract NFTController is Prophet {
 
-    constructor() public {
+    constructor() {
         
     }
 

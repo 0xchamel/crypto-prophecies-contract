@@ -3,16 +3,15 @@ pragma solidity 0.7.0;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/presets/ERC1155PresetMinterPauser.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/GSN/Context.sol";
 
 /**
  * @title Crypto prophecies Prophet NFTs
  * @notice NFTs that will be held by users
  */
-contract Prophet is Context, AccessControl, ERC1155 {
+contract Prophet is ERC1155 {
     
     //Keep track of prophet per race
     mapping(string => Counters.Counter) private _prophetRaceCounter;
@@ -20,7 +19,7 @@ contract Prophet is Context, AccessControl, ERC1155 {
     //Keep track of races
     mapping(string => uint256) private _prophetRace;
     
-    constructor() public ERC1155("https://app.cryptoprophecies.com/api/prophet/{id}.json") {
+    constructor() ERC1155("https://app.cryptoprophecies.com/api/prophet/{id}.json") {
         _createInitialProphetTypes();
     }
 
@@ -37,7 +36,7 @@ contract Prophet is Context, AccessControl, ERC1155 {
     }
 
     function _increaseRaceCounter(string memory race) internal {
-        _prophetRaceCounter[race].increment();
+        Counters.increment(_prophetRaceCounter[race]);
     }
 
 }
