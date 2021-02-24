@@ -2,23 +2,59 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import { AccessControlContract } from "./AccessControl";
+import { OwnableContract } from "./Ownable";
+import { ERC165Contract } from "./ERC165";
+import { IERC165Contract } from "./IERC165";
+import { ERC1155Contract } from "./ERC1155";
+import { IERC1155Contract } from "./IERC1155";
+import { IERC1155MetadataURIContract } from "./IERC1155MetadataURI";
+import { IERC1155ReceiverContract } from "./IERC1155Receiver";
 import { ERC20Contract } from "./ERC20";
 import { ERC20CappedContract } from "./ERC20Capped";
 import { IERC20Contract } from "./IERC20";
+import { NFTControllerContract } from "./NFTController";
+import { ProphetContract } from "./Prophet";
 import { TCPContract } from "./TCP";
 
 declare global {
   namespace Truffle {
     interface Artifacts {
+      require(name: "AccessControl"): AccessControlContract;
+      require(name: "Ownable"): OwnableContract;
+      require(name: "ERC165"): ERC165Contract;
+      require(name: "IERC165"): IERC165Contract;
+      require(name: "ERC1155"): ERC1155Contract;
+      require(name: "IERC1155"): IERC1155Contract;
+      require(name: "IERC1155MetadataURI"): IERC1155MetadataURIContract;
+      require(name: "IERC1155Receiver"): IERC1155ReceiverContract;
       require(name: "ERC20"): ERC20Contract;
       require(name: "ERC20Capped"): ERC20CappedContract;
       require(name: "IERC20"): IERC20Contract;
+      require(name: "NFTController"): NFTControllerContract;
+      require(name: "Prophet"): ProphetContract;
       require(name: "TCP"): TCPContract;
     }
   }
 }
 
+export { AccessControlContract, AccessControlInstance } from "./AccessControl";
+export { OwnableContract, OwnableInstance } from "./Ownable";
+export { ERC165Contract, ERC165Instance } from "./ERC165";
+export { IERC165Contract, IERC165Instance } from "./IERC165";
+export { ERC1155Contract, ERC1155Instance } from "./ERC1155";
+export { IERC1155Contract, IERC1155Instance } from "./IERC1155";
+export {
+  IERC1155MetadataURIContract,
+  IERC1155MetadataURIInstance,
+} from "./IERC1155MetadataURI";
+export {
+  IERC1155ReceiverContract,
+  IERC1155ReceiverInstance,
+} from "./IERC1155Receiver";
 export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
 export { IERC20Contract, IERC20Instance } from "./IERC20";
+export { NFTControllerContract, NFTControllerInstance } from "./NFTController";
+export { ProphetContract, ProphetInstance } from "./Prophet";
 export { TCPContract, TCPInstance } from "./TCP";
