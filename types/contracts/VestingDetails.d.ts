@@ -41,7 +41,51 @@ export interface Revoked {
 type AllEvents = OwnershipTransferred | Released | Revoked;
 
 export interface VestingDetailsInstance extends Truffle.ContractInstance {
+  getBeneficiary(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<string>;
+
   getCliff(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getInitialUnlock(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getInvestor(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<{
+    beneficiary: string;
+    cliff: BN;
+    start: BN;
+    totalAmount: BN;
+    totalClaimed: BN;
+    initialUnlock: BN;
+    numberOfMonths: BN;
+    paused: boolean;
+  }>;
+
+  getNumberOfMonths(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getStart(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getTotalAmount(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getTotalClaimed(
     id: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN>;
@@ -49,7 +93,16 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
   investors(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
-  ): Promise<{ 0: string; 1: BN; 2: BN; 3: BN; 4: boolean }>;
+  ): Promise<{
+    0: string;
+    1: BN;
+    2: BN;
+    3: BN;
+    4: BN;
+    5: BN;
+    6: BN;
+    7: boolean;
+  }>;
 
   isPaused(
     id: number | BN | string,
@@ -89,8 +142,57 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  vestedAmount(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
   methods: {
+    getBeneficiary(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+
     getCliff(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getInitialUnlock(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getInvestor(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<{
+      beneficiary: string;
+      cliff: BN;
+      start: BN;
+      totalAmount: BN;
+      totalClaimed: BN;
+      initialUnlock: BN;
+      numberOfMonths: BN;
+      paused: boolean;
+    }>;
+
+    getNumberOfMonths(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getStart(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getTotalAmount(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getTotalClaimed(
       id: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
@@ -98,7 +200,16 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
     investors(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails
-    ): Promise<{ 0: string; 1: BN; 2: BN; 3: BN; 4: boolean }>;
+    ): Promise<{
+      0: string;
+      1: BN;
+      2: BN;
+      3: BN;
+      4: BN;
+      5: BN;
+      6: BN;
+      7: boolean;
+    }>;
 
     isPaused(
       id: number | BN | string,
@@ -137,6 +248,11 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
+
+    vestedAmount(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
   };
 
   getPastEvents(event: string): Promise<EventData[]>;

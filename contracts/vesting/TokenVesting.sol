@@ -22,4 +22,13 @@ contract TokenVesting is VestingDetails {
   function pauseVesting(uint256 id) public {
     investors[id].paused = true;
   }
+
+  function claim(uint256 id) public onlyBeneficiary(id) {
+    uint256 vested = vestedAmount(id);
+    if (vested > token.balanceOf(address(this))) {
+      vested = token.balanceOf(address(this));
+    }
+    token.transfer(getBeneficiary(id), vested);
+    claimAmount(id, vested);
+  }
 }

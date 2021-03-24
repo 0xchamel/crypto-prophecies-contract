@@ -34,7 +34,16 @@ export interface VestingStorageInstance extends Truffle.ContractInstance {
   investors(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
-  ): Promise<{ 0: string; 1: BN; 2: BN; 3: BN; 4: boolean }>;
+  ): Promise<{
+    0: string;
+    1: BN;
+    2: BN;
+    3: BN;
+    4: BN;
+    5: BN;
+    6: BN;
+    7: boolean;
+  }>;
 
   released(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
@@ -44,7 +53,16 @@ export interface VestingStorageInstance extends Truffle.ContractInstance {
     investors(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails
-    ): Promise<{ 0: string; 1: BN; 2: BN; 3: BN; 4: boolean }>;
+    ): Promise<{
+      0: string;
+      1: BN;
+      2: BN;
+      3: BN;
+      4: BN;
+      5: BN;
+      6: BN;
+      7: boolean;
+    }>;
 
     released(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 

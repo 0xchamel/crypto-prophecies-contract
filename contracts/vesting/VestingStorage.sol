@@ -15,7 +15,10 @@ contract VestingStorage {
       address beneficiary;
       uint256 cliff;
       uint256 start;
-      uint256 duration;
+      uint256 totalAmount; //after initial unlock
+      uint256 totalClaimed;
+      uint256 initialUnlock;
+      uint256 numberOfMonths;
       bool paused;
   }
   
@@ -24,5 +27,7 @@ contract VestingStorage {
   uint256 public released;
 
   ERC20 public token;
+
+  uint256 month = 30*24*60*60; // 30 days in seconds
 
 }
