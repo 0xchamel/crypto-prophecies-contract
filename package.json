@@ -53,6 +53,7 @@
     "@openzeppelin/contracts-upgradeable": "^3.3.0",
     "ganache-cli": "^6.12.2",
     "hardhat-typechain": "^0.3.4",
+    "multi-token-standard": "^2.0.1",
     "truffle": "^5.1.65",
     "truffle-hdwallet-provider": "^1.0.17",
     "ts-node": "^9.1.1"

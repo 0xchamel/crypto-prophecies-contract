@@ -20,6 +20,9 @@ import { PausableContract } from "./Pausable";
 import { NFTControllerContract } from "./NFTController";
 import { ProphetContract } from "./Prophet";
 import { TCPContract } from "./TCP";
+import { TokenVestingContract } from "./TokenVesting";
+import { VestingDetailsContract } from "./VestingDetails";
+import { VestingStorageContract } from "./VestingStorage";
 
 declare global {
   namespace Truffle {
@@ -44,6 +47,9 @@ declare global {
       require(name: "NFTController"): NFTControllerContract;
       require(name: "Prophet"): ProphetContract;
       require(name: "TCP"): TCPContract;
+      require(name: "TokenVesting"): TokenVestingContract;
+      require(name: "VestingDetails"): VestingDetailsContract;
+      require(name: "VestingStorage"): VestingStorageContract;
     }
   }
 }
@@ -81,3 +87,12 @@ export { PausableContract, PausableInstance } from "./Pausable";
 export { NFTControllerContract, NFTControllerInstance } from "./NFTController";
 export { ProphetContract, ProphetInstance } from "./Prophet";
 export { TCPContract, TCPInstance } from "./TCP";
+export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
+export {
+  VestingDetailsContract,
+  VestingDetailsInstance,
+} from "./VestingDetails";
+export {
+  VestingStorageContract,
+  VestingStorageInstance,
+} from "./VestingStorage";

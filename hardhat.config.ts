@@ -42,7 +42,15 @@ const config = {
     tests: "./tests",
   },
   solidity: {
-    version: "0.7.0",
+    compilers: [
+      {
+        version: "0.6.0"
+      },
+      {
+        version: "0.7.4",
+        settings: { } 
+      }
+    ],
     settings: {
       optimizer: {
         enabled: true,
