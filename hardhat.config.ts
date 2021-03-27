@@ -7,6 +7,7 @@ import { NetworkUserConfig } from "hardhat/types";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-truffle5";
 import "hardhat-typechain";
+import "solidity-coverage"
 
 //if (!process.env.MNEMONICS) throw new Error("MNEMONICS missing from .env file");
 if (!process.env.RINKEBY_PRIVKEY) throw new Error("RINKEBY_PRIVKEY missing from .env file");

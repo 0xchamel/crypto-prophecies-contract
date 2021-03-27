@@ -54,6 +54,21 @@ export interface Revoked {
 type AllEvents = OwnershipTransferred | Released | Revoked;
 
 export interface TokenVestingInstance extends Truffle.ContractInstance {
+  c_0x0757c065(
+    c__0x0757c065: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
+  c_0xc7601866(
+    c__0xc7601866: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
+  c_0xcb6ee998(
+    c__0xcb6ee998: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   claim: {
     (txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
@@ -158,24 +173,6 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
 
   owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-  pauseVesting: {
-    (id: number | BN | string, txDetails?: Truffle.TransactionDetails): Promise<
-      Truffle.TransactionResponse<AllEvents>
-    >;
-    call(
-      id: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      id: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      id: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
   released(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
   renounceOwnership: {
@@ -185,6 +182,29 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
     call(txDetails?: Truffle.TransactionDetails): Promise<void>;
     sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
     estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+  };
+
+  setVestingPause: {
+    (
+      id: number | BN | string,
+      flag: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      id: number | BN | string,
+      flag: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      id: number | BN | string,
+      flag: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      id: number | BN | string,
+      flag: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
   };
 
   token(txDetails?: Truffle.TransactionDetails): Promise<string>;
@@ -213,6 +233,21 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
   ): Promise<BN>;
 
   methods: {
+    c_0x0757c065(
+      c__0x0757c065: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
+    c_0xc7601866(
+      c__0xc7601866: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
+    c_0xcb6ee998(
+      c__0xcb6ee998: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
     claim: {
       (txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
@@ -317,25 +352,6 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
 
     owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-    pauseVesting: {
-      (
-        id: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        id: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        id: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        id: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
     released(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
     renounceOwnership: {
@@ -345,6 +361,29 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
       call(txDetails?: Truffle.TransactionDetails): Promise<void>;
       sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
       estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+    };
+
+    setVestingPause: {
+      (
+        id: number | BN | string,
+        flag: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        id: number | BN | string,
+        flag: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        id: number | BN | string,
+        flag: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        id: number | BN | string,
+        flag: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
     };
 
     token(txDetails?: Truffle.TransactionDetails): Promise<string>;

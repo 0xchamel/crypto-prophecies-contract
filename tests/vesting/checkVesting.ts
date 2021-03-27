@@ -108,9 +108,30 @@ export default async function suite() {
       expect(balanceOfInvestor).to.be.equal((totalAmount/numberOfMonths) + initialUnlock); //TGE + 1 month
     });
 
+    it('Paused cannot claim', async function () {
+      let investorID = await this.vestingContract.getInvestorID(this.investor2);
+      const totalAmount = parseInt(fromWei(await this.vestingContract.getTotalAmount(investorID)));
+      const numberOfMonths = parseInt(await this.vestingContract.getNumberOfMonths(investorID));
+      let initialUnlock = await parseInt(fromWei(await this.vestingContract.getInitialUnlock(investorID)));
+      await this.advanceTime(3*30*24*60*60); //3 months
+      await this.vestingContract.setVestingPause(investorID, true);
+
+      let vested =  parseInt(fromWei(await this.vestingContract.vestedAmount(investorID)));
+      // @ts-ignore
+      expect(vested).to.be.equal((totalAmount/numberOfMonths)*3);
+
+      let revert = null;
+      try {
+        await this.vestingContract.claim({from: this.investor2});
+      } catch (error) { revert = error; }
+      expect(revert).to.be.a("Error"); //Should revert
+      
+      await this.vestingContract.setVestingPause(investorID, false); //Unpause for later tests
+    });
+
     it('Can claim 3 months at one time', async function () {
       let investorID = await this.vestingContract.getInvestorID(this.investor2);
-      await this.advanceTime(3*30*24*60*60); //3 months
+      //advanced time in the pausing test above ^^^
       const totalAmount = parseInt(fromWei(await this.vestingContract.getTotalAmount(investorID)));
       const monthsPassed = parseInt(await this.vestingContract.getMonthsPassed(investorID));
       const numberOfMonths = parseInt(await this.vestingContract.getNumberOfMonths(investorID));

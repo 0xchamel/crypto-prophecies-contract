@@ -79,6 +79,16 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
 
+  c_0x97f94bf0(
+    c__0x97f94bf0: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
+  c_0xb1ff174d(
+    c__0xb1ff174d: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   isApprovedForAll(
     account: string,
     operator: string,
@@ -200,6 +210,16 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
       ids: (number | BN | string)[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
+
+    c_0x97f94bf0(
+      c__0x97f94bf0: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
+    c_0xb1ff174d(
+      c__0xb1ff174d: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
 
     isApprovedForAll(
       account: string,

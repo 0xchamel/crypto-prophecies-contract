@@ -6,7 +6,7 @@
   "scripts": {
     "test": "hardhat test",
     "compile": "hardhat compile",
-    "coverage": "yarn hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./tests/**/*.ts\"",
+    "coverage": "npx hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./tests/**/*.ts\"",
     "deploy-dev": "truffle migrate --network development",
     "deploy-test": "truffle migrate --network rinkeby",
     "deploy-live": "truffle migrate --network live",
@@ -44,6 +44,7 @@
     "hardhat": "^2.0.6",
     "solhint": "^3.2.1",
     "solhint-plugin-prettier": "^0.0.5",
+    "solidity-coverage": "^0.7.16",
     "ts-generator": "^0.1.1",
     "typechain": "^4.0.1",
     "typescript": "^3.9.7"

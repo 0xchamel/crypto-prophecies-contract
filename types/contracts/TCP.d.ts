@@ -73,6 +73,11 @@ export interface TCPInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN>;
 
+  c_0xb046c961(
+    c__0xb046c961: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   cap(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
   decimals(txDetails?: Truffle.TransactionDetails): Promise<BN>;
@@ -213,6 +218,11 @@ export interface TCPInstance extends Truffle.ContractInstance {
       account: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
+
+    c_0xb046c961(
+      c__0xb046c961: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
 
     cap(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 

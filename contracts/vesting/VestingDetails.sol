@@ -6,11 +6,6 @@ import "./VestingStorage.sol";
 
 contract VestingDetails is VestingStorage, Ownable {
 
-  modifier onlyBeneficiary(uint256 id) {
-    require(msg.sender == getBeneficiary(id), "Only the beneficiary can interact with this function");
-    _;
-  }
-
   function getInvestorID(address _address) public view returns (uint256) {
     return investorIds[_address];
   }

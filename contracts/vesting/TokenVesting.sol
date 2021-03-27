@@ -20,12 +20,13 @@ contract TokenVesting is VestingDetails {
     token = ERC20(_token);
   }
 
-  function pauseVesting(uint256 id) public {
-    investors[id].paused = true;
+  function setVestingPause(uint256 id, bool flag) public {
+    investors[id].paused = flag;
   }
 
   function claim() public {
     uint256 id = getInvestorID(msg.sender);
+    require(!isPaused(id), "Vesting is paused");
     require(msg.sender == getBeneficiary(id), "Only the beneficiary can interact with this function");
     uint256 vested = vestedAmount(id);
     if (vested > token.balanceOf(address(this))) {

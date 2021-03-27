@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for NFT/Prophet.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">NFT/</a> Prophet.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/19</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity 0.7.4;
+&nbsp;
+import "hardhat/console.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/presets/ERC1155PresetMinterPauser.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+&nbsp;
+/**
+ * @title Crypto prophecies Prophet NFTs
+ * @notice NFTs that will be held by users
+ */
+contract Prophet is ERC1155 {
+    
+    //Keep track of prophet per race
+    mapping(string =&gt; Counters.Counter) private _prophetRaceCounter;
+    //Keep track of prophet per name per race
+    mapping(string =&gt; mapping(string =&gt; Counters.Counter)) private _prophetNameCounter;
+&nbsp;
+    //Keep track of races
+    mapping(string =&gt; uint256) private _prophetRace;
+    //Keep track of names
+    mapping(string =&gt; mapping(string =&gt; uint256)) private _prophetName;
+    
+<span class="fstat-no" title="function not covered" >    constructor() ERC1155("https://api.cryptoprophecies.com/prophet/{id}.json") {</span>
+<span class="cstat-no" title="statement not covered" >        _createInitialProphetTypes()</span>;
+<span class="cstat-no" title="statement not covered" >        _createInitialProphetNames()</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _createInitialProphetTypes() internal {</span>
+<span class="cstat-no" title="statement not covered" >        _createInitialProphetRaces()</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _createInitialProphetRaces() internal { //generation</span>
+<span class="cstat-no" title="statement not covered" >        _prophetRace["Satoshian"] = 0</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetRace["Linkie"] = 1</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetRace["Liteconian"] = 2</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _createInitialProphetNames() internal { //TODO import on generation creation not on contract creation</span>
+<span class="cstat-no" title="statement not covered" >        _prophetName["Satoshian"]["Satoshian Name 1"] = 0</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetName["Satoshian"]["Satoshian Name 2"] = 1</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetName["Satoshian"]["Satoshian Name 3"] = 2</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetName["Linkie"]["Linkie Name 1"] = 0</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetName["Linkie"]["Linkie Name 2"] = 1</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetName["Linkie"]["Linkie Name 3"] = 2</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetName["Liteconian"]["Liteconian Name 1"] = 0</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetName["Liteconian"]["Liteconian Name 2"] = 1</span>;
+<span class="cstat-no" title="statement not covered" >        _prophetName["Liteconian"]["Liteconian Name 3"] = 2</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _createProphets(string memory race, string memory name, uint256 amount) internal {</span>
+        //_mint(msg.sender, prophetRace["Linkie"], 10**18, "");
+        //_mint(msg.sender, _prophetRace["Satoshian"], 1, "");
+<span class="cstat-no" title="statement not covered" >        _mint(msg.sender, _prophetRace[race], amount, "")</span>;
+<span class="cstat-no" title="statement not covered" >        _increaseProphetCounter(race, name)</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _increaseProphetCounter(string memory race, string memory name) internal {</span>
+<span class="cstat-no" title="statement not covered" >        Counters.increment(_prophetRaceCounter[race])</span>;
+<span class="cstat-no" title="statement not covered" >        Counters.increment(_prophetNameCounter[race][name])</span>;
+    }
+&nbsp;
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Mar 27 2021 02:15:33 GMT+0000 (Greenwich Mean Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
