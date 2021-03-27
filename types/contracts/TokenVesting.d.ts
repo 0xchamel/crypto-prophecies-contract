@@ -8,6 +8,7 @@ import { EventData, PastEventOptions } from "web3-eth-contract";
 export interface TokenVestingContract
   extends Truffle.Contract<TokenVestingInstance> {
   "new"(
+    _token: string,
     _investors: {
       beneficiary: string;
       cliff: number | BN | string;
@@ -18,7 +19,6 @@ export interface TokenVestingContract
       numberOfMonths: number | BN | string;
       paused: boolean;
     }[],
-    _token: string,
     meta?: Truffle.TransactionDetails
   ): Promise<TokenVestingInstance>;
 }
@@ -55,21 +55,12 @@ type AllEvents = OwnershipTransferred | Released | Revoked;
 
 export interface TokenVestingInstance extends Truffle.ContractInstance {
   claim: {
-    (id: number | BN | string, txDetails?: Truffle.TransactionDetails): Promise<
+    (txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
     >;
-    call(
-      id: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      id: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      id: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
+    call(txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
+    estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
   };
 
   getBeneficiary(
@@ -101,6 +92,21 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
     paused: boolean;
   }>;
 
+  getInvestorID(
+    _address: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getMonthlyVesting(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getMonthsPassed(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
   getNumberOfMonths(
     id: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -121,6 +127,11 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN>;
 
+  investorIds(
+    arg0: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
   investors(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -134,6 +145,11 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
     6: BN;
     7: boolean;
   }>;
+
+  isFinishedVesting(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<boolean>;
 
   isPaused(
     id: number | BN | string,
@@ -198,22 +214,12 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
 
   methods: {
     claim: {
-      (
-        id: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        id: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        id: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        id: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
+      (txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(txDetails?: Truffle.TransactionDetails): Promise<void>;
+      sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
+      estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
     };
 
     getBeneficiary(
@@ -245,6 +251,21 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
       paused: boolean;
     }>;
 
+    getInvestorID(
+      _address: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getMonthlyVesting(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getMonthsPassed(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
     getNumberOfMonths(
       id: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -265,6 +286,11 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
 
+    investorIds(
+      arg0: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
     investors(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -278,6 +304,11 @@ export interface TokenVestingInstance extends Truffle.ContractInstance {
       6: BN;
       7: boolean;
     }>;
+
+    isFinishedVesting(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<boolean>;
 
     isPaused(
       id: number | BN | string,

@@ -11,6 +11,10 @@ contract VestingDetails is VestingStorage, Ownable {
     _;
   }
 
+  function getInvestorID(address _address) public view returns (uint256) {
+    return investorIds[_address];
+  }
+
   function getInvestor(uint256 id) public view returns (VestingInfo memory) {
     return investors[id];
   }
@@ -47,17 +51,30 @@ contract VestingDetails is VestingStorage, Ownable {
     return getInvestor(id).paused;
   }
 
+  function getMonthsPassed(uint256 id) public view returns (uint256) {
+    return ((block.timestamp - (getStart(id)+getCliff(id))) / month);
+  }
+
+  function getMonthlyVesting(uint256 id) public view returns (uint256) {
+    return getTotalAmount(id) / getNumberOfMonths(id);
+  }
+
+  function isFinishedVesting(uint256 id) public view returns (bool) {
+    return (getTotalClaimed(id) - getInitialUnlock(id)) >= getTotalClaimed(id);
+  }
+
   function vestedAmount(uint256 id) public view returns (uint256) {
     uint256 amount;
-    amount = amount + getInitialUnlock(id);
-    if (block.timestamp < getInvestor(id).cliff) { //vesting has not started
+    if (block.timestamp < getStart(id) + getCliff(id)) { //vesting has not started
       amount = 0;
     } else {
-      uint256 monthsPassed = ((block.timestamp - getInvestor(id).start) / month) - ((block.timestamp - getInvestor(id).start) % month); // get a flat month
-      uint256 monthlyVesting = getTotalAmount(id) / getNumberOfMonths(id);
-      amount = monthsPassed * monthlyVesting;
+      amount += getInitialUnlock(id);
+      amount += getMonthsPassed(id) * getMonthlyVesting(id);
+      amount = amount - getTotalClaimed(id); //adjust by how much has already been claimed
+      if (amount + getTotalClaimed(id) - getInitialUnlock(id) > getTotalAmount(id)) { //cannot claim more than total
+        amount = getTotalAmount(id) - (getTotalClaimed(id) - getInitialUnlock(id));
+      }
     }
-    amount = amount - getTotalClaimed(id); //adjust by how much has already been claimed
     return amount;
   }
 

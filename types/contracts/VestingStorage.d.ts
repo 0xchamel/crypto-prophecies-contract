@@ -31,6 +31,11 @@ export interface Revoked {
 type AllEvents = Released | Revoked;
 
 export interface VestingStorageInstance extends Truffle.ContractInstance {
+  investorIds(
+    arg0: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
   investors(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -50,6 +55,11 @@ export interface VestingStorageInstance extends Truffle.ContractInstance {
   token(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   methods: {
+    investorIds(
+      arg0: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
     investors(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails

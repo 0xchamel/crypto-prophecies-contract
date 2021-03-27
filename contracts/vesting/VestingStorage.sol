@@ -23,6 +23,7 @@ contract VestingStorage {
   }
   
   VestingInfo[] public investors;
+  mapping(address => uint256) public investorIds;
 
   uint256 public released;
 

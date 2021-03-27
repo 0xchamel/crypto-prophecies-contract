@@ -70,6 +70,21 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
     paused: boolean;
   }>;
 
+  getInvestorID(
+    _address: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getMonthlyVesting(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  getMonthsPassed(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
   getNumberOfMonths(
     id: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -90,6 +105,11 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN>;
 
+  investorIds(
+    arg0: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
   investors(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -103,6 +123,11 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
     6: BN;
     7: boolean;
   }>;
+
+  isFinishedVesting(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<boolean>;
 
   isPaused(
     id: number | BN | string,
@@ -177,6 +202,21 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
       paused: boolean;
     }>;
 
+    getInvestorID(
+      _address: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getMonthlyVesting(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    getMonthsPassed(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
     getNumberOfMonths(
       id: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -197,6 +237,11 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
 
+    investorIds(
+      arg0: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
     investors(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -210,6 +255,11 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
       6: BN;
       7: boolean;
     }>;
+
+    isFinishedVesting(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<boolean>;
 
     isPaused(
       id: number | BN | string,

@@ -6,7 +6,7 @@ import { TOKEN_CAP, TOKEN_NAME, TOKEN_SYMBOL } from "../helpers/constants";
 export default async function suite() {
   describe('tcp token details', async () => {
 
-    let tokenCapRequirement = new BN(TOKEN_CAP);
+    let tokenCapRequirement = new BN(toWei(TOKEN_CAP));
 
     beforeEach(async function () {
       
