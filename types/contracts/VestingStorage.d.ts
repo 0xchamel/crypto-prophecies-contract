@@ -31,11 +31,6 @@ export interface Revoked {
 type AllEvents = Released | Revoked;
 
 export interface VestingStorageInstance extends Truffle.ContractInstance {
-  c_0x0757c065(
-    c__0x0757c065: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<void>;
-
   investorIds(
     arg0: string,
     txDetails?: Truffle.TransactionDetails
@@ -60,11 +55,6 @@ export interface VestingStorageInstance extends Truffle.ContractInstance {
   token(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   methods: {
-    c_0x0757c065(
-      c__0x0757c065: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-
     investorIds(
       arg0: string,
       txDetails?: Truffle.TransactionDetails

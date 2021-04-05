@@ -22,6 +22,16 @@ export interface ApprovalForAll {
   };
 }
 
+export interface OwnershipTransferred {
+  name: "OwnershipTransferred";
+  args: {
+    previousOwner: string;
+    newOwner: string;
+    0: string;
+    1: string;
+  };
+}
+
 export interface TransferBatch {
   name: "TransferBatch";
   args: {
@@ -64,9 +74,45 @@ export interface URI {
   };
 }
 
-type AllEvents = ApprovalForAll | TransferBatch | TransferSingle | URI;
+type AllEvents =
+  | ApprovalForAll
+  | OwnershipTransferred
+  | TransferBatch
+  | TransferSingle
+  | URI;
 
 export interface NFTControllerInstance extends Truffle.ContractInstance {
+  _createProphet: {
+    (
+      generation: number | BN | string,
+      rarity: number | BN | string,
+      race: number | BN | string,
+      character: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      generation: number | BN | string,
+      rarity: number | BN | string,
+      race: number | BN | string,
+      character: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      generation: number | BN | string,
+      rarity: number | BN | string,
+      race: number | BN | string,
+      character: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      generation: number | BN | string,
+      rarity: number | BN | string,
+      race: number | BN | string,
+      character: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   balanceOf(
     account: string,
     id: number | BN | string,
@@ -79,21 +125,44 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
 
-  c_0x97f94bf0(
-    c__0x97f94bf0: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<void>;
-
-  c_0xb1ff174d(
-    c__0xb1ff174d: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<void>;
-
   isApprovedForAll(
     account: string,
     operator: string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
+
+  owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  prophetCharacterCounter(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  prophetCounter(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+  prophetGenerationCounter(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  prophetRaceCounter(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  prophetRarityCounter(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  renounceOwnership: {
+    (txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
+    estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+  };
 
   safeBatchTransferFrom: {
     (
@@ -193,12 +262,61 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
 
+  transferOwnership: {
+    (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(
+      newOwner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      newOwner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      newOwner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   uri(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
 
   methods: {
+    _createProphet: {
+      (
+        generation: number | BN | string,
+        rarity: number | BN | string,
+        race: number | BN | string,
+        character: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        generation: number | BN | string,
+        rarity: number | BN | string,
+        race: number | BN | string,
+        character: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        generation: number | BN | string,
+        rarity: number | BN | string,
+        race: number | BN | string,
+        character: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        generation: number | BN | string,
+        rarity: number | BN | string,
+        race: number | BN | string,
+        character: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     balanceOf(
       account: string,
       id: number | BN | string,
@@ -211,21 +329,44 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
 
-    c_0x97f94bf0(
-      c__0x97f94bf0: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-
-    c_0xb1ff174d(
-      c__0xb1ff174d: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-
     isApprovedForAll(
       account: string,
       operator: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
+
+    owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    prophetCharacterCounter(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    prophetCounter(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+    prophetGenerationCounter(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    prophetRaceCounter(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    prophetRarityCounter(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    renounceOwnership: {
+      (txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(txDetails?: Truffle.TransactionDetails): Promise<void>;
+      sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
+      estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+    };
 
     safeBatchTransferFrom: {
       (
@@ -324,6 +465,24 @@ export interface NFTControllerInstance extends Truffle.ContractInstance {
       interfaceId: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
+
+    transferOwnership: {
+      (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        newOwner: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        newOwner: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        newOwner: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
 
     uri(
       arg0: number | BN | string,

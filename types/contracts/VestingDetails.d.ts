@@ -41,16 +41,6 @@ export interface Revoked {
 type AllEvents = OwnershipTransferred | Released | Revoked;
 
 export interface VestingDetailsInstance extends Truffle.ContractInstance {
-  c_0x0757c065(
-    c__0x0757c065: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<void>;
-
-  c_0xcb6ee998(
-    c__0xcb6ee998: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<void>;
-
   getBeneficiary(
     id: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -183,16 +173,6 @@ export interface VestingDetailsInstance extends Truffle.ContractInstance {
   ): Promise<BN>;
 
   methods: {
-    c_0x0757c065(
-      c__0x0757c065: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-
-    c_0xcb6ee998(
-      c__0xcb6ee998: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-
     getBeneficiary(
       id: number | BN | string,
       txDetails?: Truffle.TransactionDetails
