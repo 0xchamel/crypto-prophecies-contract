@@ -5,11 +5,12 @@
 import BN from "bn.js";
 import { EventData, PastEventOptions } from "web3-eth-contract";
 
-export interface ProphetContract extends Truffle.Contract<ProphetInstance> {
+export interface ERC721Contract extends Truffle.Contract<ERC721Instance> {
   "new"(
-    uri: string,
+    name_: string,
+    symbol_: string,
     meta?: Truffle.TransactionDetails
-  ): Promise<ProphetInstance>;
+  ): Promise<ERC721Instance>;
 }
 
 export interface Approval {
@@ -36,16 +37,6 @@ export interface ApprovalForAll {
   };
 }
 
-export interface OwnershipTransferred {
-  name: "OwnershipTransferred";
-  args: {
-    previousOwner: string;
-    newOwner: string;
-    0: string;
-    1: string;
-  };
-}
-
 export interface Transfer {
   name: "Transfer";
   args: {
@@ -58,40 +49,9 @@ export interface Transfer {
   };
 }
 
-type AllEvents = Approval | ApprovalForAll | OwnershipTransferred | Transfer;
+type AllEvents = Approval | ApprovalForAll | Transfer;
 
-export interface ProphetInstance extends Truffle.ContractInstance {
-  _createProphet: {
-    (
-      generation: number | BN | string,
-      rarity: number | BN | string,
-      race: number | BN | string,
-      character: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      generation: number | BN | string,
-      rarity: number | BN | string,
-      race: number | BN | string,
-      character: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      generation: number | BN | string,
-      rarity: number | BN | string,
-      race: number | BN | string,
-      character: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      generation: number | BN | string,
-      rarity: number | BN | string,
-      race: number | BN | string,
-      character: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
+export interface ERC721Instance extends Truffle.ContractInstance {
   approve: {
     (
       to: string,
@@ -132,43 +92,10 @@ export interface ProphetInstance extends Truffle.ContractInstance {
 
   name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-  owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
   ownerOf(
     tokenId: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
-
-  prophetCharacterCounter(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  prophetCounter(txDetails?: Truffle.TransactionDetails): Promise<BN>;
-
-  prophetGenerationCounter(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  prophetRaceCounter(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  prophetRarityCounter(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  renounceOwnership: {
-    (txDetails?: Truffle.TransactionDetails): Promise<
-      Truffle.TransactionResponse<AllEvents>
-    >;
-    call(txDetails?: Truffle.TransactionDetails): Promise<void>;
-    sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
-    estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
-  };
 
   setApprovalForAll: {
     (
@@ -245,56 +172,7 @@ export interface ProphetInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  transferOwnership: {
-    (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
-      Truffle.TransactionResponse<AllEvents>
-    >;
-    call(
-      newOwner: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      newOwner: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      newOwner: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
   methods: {
-    _createProphet: {
-      (
-        generation: number | BN | string,
-        rarity: number | BN | string,
-        race: number | BN | string,
-        character: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        generation: number | BN | string,
-        rarity: number | BN | string,
-        race: number | BN | string,
-        character: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        generation: number | BN | string,
-        rarity: number | BN | string,
-        race: number | BN | string,
-        character: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        generation: number | BN | string,
-        rarity: number | BN | string,
-        race: number | BN | string,
-        character: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
     approve: {
       (
         to: string,
@@ -338,43 +216,10 @@ export interface ProphetInstance extends Truffle.ContractInstance {
 
     name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-    owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
     ownerOf(
       tokenId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
-
-    prophetCharacterCounter(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    prophetCounter(txDetails?: Truffle.TransactionDetails): Promise<BN>;
-
-    prophetGenerationCounter(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    prophetRaceCounter(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    prophetRarityCounter(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    renounceOwnership: {
-      (txDetails?: Truffle.TransactionDetails): Promise<
-        Truffle.TransactionResponse<AllEvents>
-      >;
-      call(txDetails?: Truffle.TransactionDetails): Promise<void>;
-      sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
-      estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
-    };
 
     setApprovalForAll: {
       (
@@ -447,24 +292,6 @@ export interface ProphetInstance extends Truffle.ContractInstance {
         from: string,
         to: string,
         tokenId: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    transferOwnership: {
-      (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
-        Truffle.TransactionResponse<AllEvents>
-      >;
-      call(
-        newOwner: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        newOwner: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        newOwner: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

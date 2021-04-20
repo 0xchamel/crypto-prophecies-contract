@@ -2,7 +2,7 @@
 pragma solidity 0.7.4;
 
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/presets/ERC1155PresetMinterPauser.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @title Crypto prophecies Prophet NFTs
  * @notice NFTs that will be held by users
  */
-contract Prophet is ERC1155, Ownable {
+contract ProphetV1 is ERC721, Ownable {
 
     //Keep track of prophetrs
     Counters.Counter public prophetCounter;
@@ -33,8 +33,11 @@ contract Prophet is ERC1155, Ownable {
     //Keep track of rarities
     mapping(uint8 => string) private _prophetRarities;
     
-    constructor() ERC1155("https://api.cryptoprophecies.com/prophet/{id}.json") {
+    //constructor() ERC1155("https://api.cryptoprophecies.com/v1/prophet/{id}") {
+    //constructor() ERC1155("http://149.12.12.216:3003/v1/prophet/{id}") {
+    constructor(string memory uri) ERC721("Crypto Prophecies Prophets", "Prophet") {
         //gen > rarity > race > character
+        _setBaseURI(uri);
         _createInitialProphetTypes();
     }
 
@@ -71,7 +74,7 @@ contract Prophet is ERC1155, Ownable {
         _prophetRarities[5] = "Founder";
     }
 
-    function _createProphet(uint8 generation, uint8 rarity, uint8 race, uint8 character) public onlyOwner { //todo maybe only from THIS contract from the orb
+    function _createProphet(uint8 generation, uint8 rarity, uint8 race, uint8 character) public onlyOwner { //TODO only from THIS contract or from the orb
         uint256 maxNumberOfIDs = 29; //2^29
         uint256 base = (maxNumberOfIDs*5) + (8*4);
         uint256 id = 1;
@@ -82,11 +85,12 @@ contract Prophet is ERC1155, Ownable {
         id = (id << 8) + character;
         id = (id << maxNumberOfIDs) + Counters.current(prophetCounter) + 1;
         id = (id << maxNumberOfIDs) + Counters.current(prophetGenerationCounter[generation]) + 1;
-        id = (id << maxNumberOfIDs) + Counters.current(prophetRarityCounter[rarity]) + 1;
-        id = (id << maxNumberOfIDs) + Counters.current(prophetRaceCounter[race]) + 1;
-        id = (id << maxNumberOfIDs) + Counters.current(prophetCharacterCounter[character]) + 1;
+        id = (id << maxNumberOfIDs) + Counters.current(prophetRarityCounter[rarity]) + 1; // can reduce to 27 bits as 4x less total per rarity than total
+        id = (id << maxNumberOfIDs) + Counters.current(prophetRaceCounter[race]) + 1; // can reduce to 27 bits as 4x less total per race than total
+        id = (id << maxNumberOfIDs) + Counters.current(prophetCharacterCounter[character]) + 1; // can reduce to 23 bits as a lot less total per character than total
         
-        _mint(msg.sender, id, 1, "");
+        //_mint(msg.sender, id, 1, "");
+        _mint(msg.sender, id); //TODO add address to mint to
         _increaseProphetCounter(uint8(generation), uint8(rarity), uint8(race), uint8(character));
     }
 

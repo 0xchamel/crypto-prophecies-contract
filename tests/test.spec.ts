@@ -1,15 +1,15 @@
 import checkToken from './token/checkToken';
 import checkVesting from './vesting/checkVesting';
-import checkNFT from './nft/checkNFT';
+import checkNFTold from './nft/checkNFTold';
 
 import BN from 'bn.js';
 import { toWei } from 'web3-utils';
-import { ProphetContract, TCPContract, TokenVestingContract } from '../types/contracts';
+import { ProphetV1Contract, TCPContract, TokenVestingContract } from '../types/contracts';
 import { TOKEN_CAP } from "./helpers/constants";
 
 const tcp: TCPContract = artifacts.require('TCP');
 const vesting: TokenVestingContract = artifacts.require('TokenVesting');
-const nft: ProphetContract = artifacts.require('Prophet');
+const nft: ProphetV1Contract = artifacts.require('ProphetV1');
 
 describe('Prophecies Contracts', function () {
   before(async function () {
@@ -55,7 +55,7 @@ describe('Prophecies Contracts', function () {
     this.vestingContract = await vesting.new(this.tcpToken.address, investors);
 
     //NFTs
-    this.nft = await nft.new();
+    this.nft = await nft.new("http://149.12.12.216:3003/v1/prophet/");
 
     //SETUP - VESTING
     this.tcpToken.transfer(this.vestingContract.address, toWei("100000000"));
@@ -67,6 +67,6 @@ describe('Prophecies Contracts', function () {
 
   describe('When checking tcp erc20 token', checkToken.bind(this));
   describe('When checking the vesting contract', checkVesting.bind(this));
-  describe('When checking the NFT contract', checkNFT.bind(this));
+  //describe('When checking the NFT contract', checkNFTold.bind(this));
 
 });

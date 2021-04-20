@@ -16,9 +16,16 @@ import { IERC1155ReceiverContract } from "./IERC1155Receiver";
 import { ERC20Contract } from "./ERC20";
 import { ERC20CappedContract } from "./ERC20Capped";
 import { IERC20Contract } from "./IERC20";
+import { ERC721Contract } from "./ERC721";
+import { ERC721BurnableContract } from "./ERC721Burnable";
+import { IERC721Contract } from "./IERC721";
+import { IERC721EnumerableContract } from "./IERC721Enumerable";
+import { IERC721MetadataContract } from "./IERC721Metadata";
+import { IERC721ReceiverContract } from "./IERC721Receiver";
 import { PausableContract } from "./Pausable";
-import { NFTControllerContract } from "./NFTController";
-import { ProphetContract } from "./Prophet";
+import { ProphetV1Contract } from "./ProphetV1";
+import { ProphetV2Contract } from "./ProphetV2";
+import { ProphetV2StorageContract } from "./ProphetV2Storage";
 import { TCPContract } from "./TCP";
 import { TokenVestingContract } from "./TokenVesting";
 import { VestingDetailsContract } from "./VestingDetails";
@@ -43,9 +50,16 @@ declare global {
       require(name: "ERC20"): ERC20Contract;
       require(name: "ERC20Capped"): ERC20CappedContract;
       require(name: "IERC20"): IERC20Contract;
+      require(name: "ERC721"): ERC721Contract;
+      require(name: "ERC721Burnable"): ERC721BurnableContract;
+      require(name: "IERC721"): IERC721Contract;
+      require(name: "IERC721Enumerable"): IERC721EnumerableContract;
+      require(name: "IERC721Metadata"): IERC721MetadataContract;
+      require(name: "IERC721Receiver"): IERC721ReceiverContract;
       require(name: "Pausable"): PausableContract;
-      require(name: "NFTController"): NFTControllerContract;
-      require(name: "Prophet"): ProphetContract;
+      require(name: "ProphetV1"): ProphetV1Contract;
+      require(name: "ProphetV2"): ProphetV2Contract;
+      require(name: "ProphetV2Storage"): ProphetV2StorageContract;
       require(name: "TCP"): TCPContract;
       require(name: "TokenVesting"): TokenVestingContract;
       require(name: "VestingDetails"): VestingDetailsContract;
@@ -83,9 +97,31 @@ export {
 export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
 export { IERC20Contract, IERC20Instance } from "./IERC20";
+export { ERC721Contract, ERC721Instance } from "./ERC721";
+export {
+  ERC721BurnableContract,
+  ERC721BurnableInstance,
+} from "./ERC721Burnable";
+export { IERC721Contract, IERC721Instance } from "./IERC721";
+export {
+  IERC721EnumerableContract,
+  IERC721EnumerableInstance,
+} from "./IERC721Enumerable";
+export {
+  IERC721MetadataContract,
+  IERC721MetadataInstance,
+} from "./IERC721Metadata";
+export {
+  IERC721ReceiverContract,
+  IERC721ReceiverInstance,
+} from "./IERC721Receiver";
 export { PausableContract, PausableInstance } from "./Pausable";
-export { NFTControllerContract, NFTControllerInstance } from "./NFTController";
-export { ProphetContract, ProphetInstance } from "./Prophet";
+export { ProphetV1Contract, ProphetV1Instance } from "./ProphetV1";
+export { ProphetV2Contract, ProphetV2Instance } from "./ProphetV2";
+export {
+  ProphetV2StorageContract,
+  ProphetV2StorageInstance,
+} from "./ProphetV2Storage";
 export { TCPContract, TCPInstance } from "./TCP";
 export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
 export {

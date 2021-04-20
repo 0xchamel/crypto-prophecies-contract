@@ -29,18 +29,26 @@ module.exports = {
       network_id: 3,
       gas: 4000000
     },
-    live: {
-      host: "127.0.0.1",
-      port: 8545,
-      network_id: "*",
-      gasPrice: 100e9,
+    mumbai: {
+      provider: () => new HDWalletProvider(MNEMONIC, `https://rpc-mumbai.matic.today`),
+      network_id: 80001,
+      confirmations: 0,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    matic: {
+      provider: () => new HDWalletProvider(MNEMONIC, `https://rpc-mainnet.matic.network`),
+      network_id: 137,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
     },
   },
 
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.7.0",
+      version: "0.7.4",
       settings: {
         optimizer: {
           enabled: true,
