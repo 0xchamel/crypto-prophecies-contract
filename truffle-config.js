@@ -15,16 +15,24 @@ module.exports = {
       network_id: "*",
       gasPrice: 100e9,
     },
+    eth: {
+      provider: function() {
+        return new HDWalletProvider(MNEMONIC, "https://mainnet.infura.io/v3/" + API_KEY, 8)
+      },
+      network_id: 1,
+      gas: 4000000,      //make sure this gas allocation isn't over 4M, which is the max,
+      gasPrice: 65000000000
+    },
     rinkeby: {
       provider: function() {
-        return new HDWalletProvider(MNEMONIC, "https://rinkeby.infura.io/v3/" + API_KEY)
+        return new HDWalletProvider(MNEMONIC, "https://rinkeby.infura.io/v3/" + API_KEY, 8)
       },
       network_id: 4,
       gas: 4000000      //make sure this gas allocation isn't over 4M, which is the max
     },
     ropsten: {
       provider: function() {
-        return new HDWalletProvider(MNEMONIC, "https://ropsten.infura.io/v3/" + API_KEY)
+        return new HDWalletProvider(MNEMONIC, "https://ropsten.infura.io/v3/" + API_KEY, 8)
       },
       network_id: 3,
       gas: 4000000

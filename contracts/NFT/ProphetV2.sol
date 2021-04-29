@@ -14,6 +14,11 @@ import "./ProphetV2Storage.sol";
  */
 contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
 
+    modifier prophetOwner(uint256 tokenId) {
+        require(ERC721.ownerOf(tokenId) == msg.sender, "ERC721: burn of token that is not own");
+        _;
+    }
+
     constructor(string memory uri) ERC721("Crypto Prophecies Prophets", "Prophet") {
         //gen > rarity > race > character
         _setBaseURI(uri);
@@ -68,7 +73,19 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
     function _createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) public onlyOwner { //TODO only from THIS contract or from the orb
         uint256 id = Counters.current(prophetCounter) + 1;
         _mint(destination, id);
-        _increaseProphetCounter(uint16(generation), uint16(rarity), uint16(race), uint16(character));
+        _increaseProphetCounter(id, uint16(generation), uint16(rarity), uint16(race), uint16(character));
+        _storeProphetData(uint16(generation), uint16(rarity), uint16(race), uint16(character));
+    }
+
+    function _storeProphetData(uint256 id, uint16 generation, uint16 rarity, uint16 race, uint16 character) internal {
+        prophetData[id] = Prophet(generation, rarity, race, character);
+        
+        // Counters.current(prophetCounter);
+        // Counters.current(prophetGenerationCounter[generation]);
+        // Counters.current(prophetRaceCounter[race]);
+        // Counters.current(prophetCharacterCounter[character]);
+        // Counters.current(prophetRarityCounter[rarity]);
+        // Counters.current(prophetRarityPerRaceCounter[race][rarity]);
     }
 
     function _increaseProphetCounter(uint16 generation, uint16 rarity, uint16 race, uint16 character) internal {
@@ -78,7 +95,16 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
         Counters.increment(prophetCharacterCounter[character]);
         Counters.increment(prophetRarityCounter[rarity]);
         Counters.increment(prophetRarityPerRaceCounter[race][rarity]);
-        // todo add more
     }
 
+    function burnProphet(uint256 tokenId) prophetOwner(tokenId) public {
+        _burn(tokenId);
+    }
+
+    function burnProphets(uint256[] memory tokenIds) public {
+        for (uint i = 0; i < tokenIds.length; i++) {
+            burnProphet(tokenIds[i]);
+        }
+    }
+    
 }
