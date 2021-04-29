@@ -1,4 +1,4 @@
-# Not Usd Yield Contracts
+# Prophecies Contracts
 
 ## Install
 
