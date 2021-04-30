@@ -26,6 +26,11 @@ export interface ProphetV2StorageInstance extends Truffle.ContractInstance {
 
   prophetCounter(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
+  prophetData(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN }>;
+
   prophetGenerationCounter(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -70,6 +75,11 @@ export interface ProphetV2StorageInstance extends Truffle.ContractInstance {
     ): Promise<BN>;
 
     prophetCounter(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+    prophetData(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN }>;
 
     prophetGenerationCounter(
       arg0: number | BN | string,

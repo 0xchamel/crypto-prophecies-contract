@@ -198,6 +198,44 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  burnProphet: {
+    (
+      tokenId: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      tokenId: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      tokenId: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      tokenId: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  burnProphets: {
+    (
+      tokenIds: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      tokenIds: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      tokenIds: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      tokenIds: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   getApproved(
     tokenId: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -230,6 +268,11 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
   ): Promise<BN>;
 
   prophetCounter(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+  prophetData(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN }>;
 
   prophetGenerationCounter(
     arg0: number | BN | string,
@@ -508,6 +551,44 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
+    burnProphet: {
+      (
+        tokenId: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        tokenId: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        tokenId: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        tokenId: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    burnProphets: {
+      (
+        tokenIds: (number | BN | string)[],
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        tokenIds: (number | BN | string)[],
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        tokenIds: (number | BN | string)[],
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        tokenIds: (number | BN | string)[],
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     getApproved(
       tokenId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -540,6 +621,11 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
     ): Promise<BN>;
 
     prophetCounter(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+    prophetData(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN }>;
 
     prophetGenerationCounter(
       arg0: number | BN | string,

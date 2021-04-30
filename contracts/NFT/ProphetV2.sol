@@ -73,11 +73,12 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
     function _createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) public onlyOwner { //TODO only from THIS contract or from the orb
         uint256 id = Counters.current(prophetCounter) + 1;
         _mint(destination, id);
-        _increaseProphetCounter(id, uint16(generation), uint16(rarity), uint16(race), uint16(character));
-        _storeProphetData(uint16(generation), uint16(rarity), uint16(race), uint16(character));
+        _increaseProphetCounter(uint16(generation), uint16(rarity), uint16(race), uint16(character));
+        _storeProphetData(id, uint16(generation), uint16(rarity), uint16(race), uint16(character));
     }
 
     function _storeProphetData(uint256 id, uint16 generation, uint16 rarity, uint16 race, uint16 character) internal {
+        // Prophet[] storage temp = prophetData[id];
         prophetData[id] = Prophet(generation, rarity, race, character);
         
         // Counters.current(prophetCounter);

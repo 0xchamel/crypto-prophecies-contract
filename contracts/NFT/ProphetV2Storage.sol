@@ -40,6 +40,6 @@ contract ProphetV2Storage {
 
     
     //Prophet storage
-    mapping(uint256 => Prophet[]) public prophetData;
+    mapping(uint256 => Prophet) public prophetData;
 
 }
