@@ -1,15 +1,17 @@
 import checkToken from './token/checkToken';
 import checkVesting from './vesting/checkVesting';
 import checkNFTold from './nft/checkNFTold';
+import checkNFT from './nft/checkNFT';
 
 import BN from 'bn.js';
 import { toWei } from 'web3-utils';
-import { ProphetV1Contract, TCPContract, TokenVestingContract } from '../types/contracts';
+import { ProphetV1Contract, ProphetV2Contract, TCPContract, TokenVestingContract } from '../types/contracts';
 import { TOKEN_CAP } from "./helpers/constants";
 
 const tcp: TCPContract = artifacts.require('TCP');
 const vesting: TokenVestingContract = artifacts.require('TokenVesting');
 const nft: ProphetV1Contract = artifacts.require('ProphetV1');
+// const nft: ProphetV2Contract = artifacts.require('ProphetV2');
 
 describe('Prophecies Contracts', function () {
   before(async function () {
@@ -67,6 +69,7 @@ describe('Prophecies Contracts', function () {
 
   describe('When checking tcp erc20 token', checkToken.bind(this));
   describe('When checking the vesting contract', checkVesting.bind(this));
-  //describe('When checking the NFT contract', checkNFTold.bind(this));
+  // describe('When checking the NFT contract', checkNFTold.bind(this));
+  // describe('When checking the NFT contract', checkNFT.bind(this));
 
 });

@@ -29,7 +29,18 @@ export interface ProphetV2StorageInstance extends Truffle.ContractInstance {
   prophetData(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
-  ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN }>;
+  ): Promise<{
+    0: BN;
+    1: BN;
+    2: BN;
+    3: BN;
+    4: BN;
+    5: BN;
+    6: BN;
+    7: BN;
+    8: BN;
+    9: BN;
+  }>;
 
   prophetGenerationCounter(
     arg0: number | BN | string,
@@ -79,7 +90,18 @@ export interface ProphetV2StorageInstance extends Truffle.ContractInstance {
     prophetData(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails
-    ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN }>;
+    ): Promise<{
+      0: BN;
+      1: BN;
+      2: BN;
+      3: BN;
+      4: BN;
+      5: BN;
+      6: BN;
+      7: BN;
+      8: BN;
+      9: BN;
+    }>;
 
     prophetGenerationCounter(
       arg0: number | BN | string,

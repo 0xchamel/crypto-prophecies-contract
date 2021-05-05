@@ -6,16 +6,16 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract ProphetV2Storage {
     
     struct Prophet {
-         uint16 generation;
-         uint16 rarity;
-         uint16 race;
-         uint16 character;
-        // Counters.current(prophetCounter);
-        // Counters.current(prophetGenerationCounter[generation]);
-        // Counters.current(prophetRaceCounter[race]);
-        // Counters.current(prophetCharacterCounter[character]);
-        // Counters.current(prophetRarityCounter[rarity]);
-        // Counters.current(prophetRarityPerRaceCounter[race][rarity]);
+        uint16 generation;
+        uint16 rarity;
+        uint16 race;
+        uint16 character;
+        uint256 prophetCounter;
+        uint256 generationCounter;
+        uint256 raceCounter;
+        uint256 characterCounter;
+        uint256 rarityCounter;
+        uint256 rarityPerRaceCounter;
     }
 
     //Keep track of prophetrs

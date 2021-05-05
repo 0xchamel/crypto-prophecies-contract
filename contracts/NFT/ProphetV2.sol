@@ -32,30 +32,30 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
     }
 
     function _createInitialProphetRaces() internal {
-        prophetRace[0] = "Satoshian";
-        prophetRace[1] = "Linkie";
-        prophetRace[2] = "Liteconian";
+        addRace("Satoshian");
+        addRace("Linkie");
+        addRace("Liteconian");
     }
 
     function _createInitialProphetNames() internal { //TODO import on generation creation not on contract creation
-        prophetCharacter[0][0] = "Satoshian Name 1";
-        prophetCharacter[0][1] = "Satoshian Name 2";
-        prophetCharacter[0][2] = "Satoshian Name 3";
-        prophetCharacter[1][0] = "Linkie Name 1";
-        prophetCharacter[1][1] = "Linkie Name 1";
-        prophetCharacter[1][2] = "Linkie Name 2";
-        prophetCharacter[2][0] = "Liteconian Name 1";
-        prophetCharacter[2][2] = "Liteconian Name 2";
-        prophetCharacter[2][3] = "Liteconian Name 3";
+        addName(0, "Satoshian Name 1");
+        addName(0, "Satoshian Name 2");
+        addName(0, "Satoshian Name 3");
+        addName(1, "Linkie Name 1");
+        addName(1, "Linkie Name 2");
+        addName(1, "Linkie Name 3");
+        addName(2, "Liteconian Name 1");
+        addName(2, "Liteconian Name 2");
+        addName(2, "Liteconian Name 3");
     }
 
     function _createInitialProphetRarities() internal {
-        prophetRarities[0] = "Common";
-        prophetRarities[1] = "Uncommon";
-        prophetRarities[2] = "Rare";
-        prophetRarities[3] = "Epic";
-        prophetRarities[4] = "Legendary";
-        prophetRarities[5] = "Founder";
+        addRarity("Common");
+        addRarity("Uncommon");
+        addRarity("Rare");
+        addRarity("Epic");
+        addRarity("Legendary");
+        addRarity("Founder");
     }
 
     function addRace(string memory _race) public {
@@ -78,15 +78,13 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
     }
 
     function _storeProphetData(uint256 id, uint16 generation, uint16 rarity, uint16 race, uint16 character) internal {
-        // Prophet[] storage temp = prophetData[id];
-        prophetData[id] = Prophet(generation, rarity, race, character);
-        
-        // Counters.current(prophetCounter);
-        // Counters.current(prophetGenerationCounter[generation]);
-        // Counters.current(prophetRaceCounter[race]);
-        // Counters.current(prophetCharacterCounter[character]);
-        // Counters.current(prophetRarityCounter[rarity]);
-        // Counters.current(prophetRarityPerRaceCounter[race][rarity]);
+        prophetData[id] = Prophet(generation, rarity, race, character,
+            Counters.current(prophetCounter),
+            Counters.current(prophetGenerationCounter[generation]),
+            Counters.current(prophetRaceCounter[race]),
+            Counters.current(prophetCharacterCounter[character]),
+            Counters.current(prophetRarityCounter[rarity]),
+            Counters.current(prophetRarityPerRaceCounter[race][rarity]));
     }
 
     function _increaseProphetCounter(uint16 generation, uint16 rarity, uint16 race, uint16 character) internal {

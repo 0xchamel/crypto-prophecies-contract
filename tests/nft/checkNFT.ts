@@ -14,10 +14,7 @@ export default async function suite() {
 
     it('Can mint correctly', async function () {
       //(uint8 generation, uint8 rarity, uint8 race, uint8 character
-      let id = await this.nft._createProphet(1, 3, 2, 5);
-      id = new BN(id.logs[0].args.tokenId);
-      id = id.toString(2);
-      
+      let id = await this.nft._createProphet(1, 3, 2, 5, this.owner);
     });
 
   });
