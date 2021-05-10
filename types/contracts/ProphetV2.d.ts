@@ -241,6 +241,22 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
 
+  getProphet(
+    id: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<{
+    0: BN;
+    1: BN;
+    2: BN;
+    3: BN;
+    4: BN;
+    5: BN;
+    6: BN;
+    7: BN;
+    8: BN;
+    9: BN;
+  }>;
+
   isApprovedForAll(
     owner: string,
     operator: string,
@@ -604,6 +620,22 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
       tokenId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
+
+    getProphet(
+      id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<{
+      0: BN;
+      1: BN;
+      2: BN;
+      3: BN;
+      4: BN;
+      5: BN;
+      6: BN;
+      7: BN;
+      8: BN;
+      9: BN;
+    }>;
 
     isApprovedForAll(
       owner: string,

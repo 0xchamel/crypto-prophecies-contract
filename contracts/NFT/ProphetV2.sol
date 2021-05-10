@@ -105,5 +105,20 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
             burnProphet(tokenIds[i]);
         }
     }
+
+    function getProphet(uint256 id) external view returns(uint16 generation, uint16 rarity, uint16 race, uint16 character,
+        uint256 prophetCounter, uint256 generationCounter, uint256 raceCounter, uint256 characterCounter, uint256 rarityCounter,
+        uint256 rarityPerRaceCounter) {
+        generation = prophetData[id].generation;
+        rarity = prophetData[id].rarity;
+        race = prophetData[id].race;
+        character = prophetData[id].character;
+        prophetCounter = prophetData[id].prophetCounter;
+        generationCounter = prophetData[id].generationCounter;
+        raceCounter = prophetData[id].raceCounter;
+        characterCounter = prophetData[id].characterCounter;
+        rarityCounter = prophetData[id].rarityCounter;
+        rarityPerRaceCounter = prophetData[id].rarityPerRaceCounter;
+    }
     
 }
