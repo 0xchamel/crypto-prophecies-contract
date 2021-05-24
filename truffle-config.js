@@ -3,9 +3,10 @@ require('ts-node').register({
 });
 require("dotenv").config();
 
-const HDWalletProvider = require("truffle-hdwallet-provider");
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 const API_KEY = process.env.INFURA_KEY;
 const MNEMONIC = process.env.MNEMONIC;
+const ETHERSCAN_API = process.env.ETHERSCAN_API;
 
 module.exports = {
   networks: {
@@ -51,6 +52,12 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
+  },
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+  api_keys: {
+    etherscan: ETHERSCAN_API
   },
 
   // Configure your compilers

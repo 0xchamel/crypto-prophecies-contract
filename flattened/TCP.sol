@@ -27,7 +27,7 @@ abstract contract Context {
 
 // File: @openzeppelin/contracts/token/ERC20/IERC20.sol
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity >=0.6.0 <0.8.0;
 
@@ -107,7 +107,7 @@ interface IERC20 {
 
 // File: @openzeppelin/contracts/math/SafeMath.sol
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity >=0.6.0 <0.8.0;
 
@@ -324,7 +324,7 @@ library SafeMath {
 
 // File: @openzeppelin/contracts/token/ERC20/ERC20.sol
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity >=0.6.0 <0.8.0;
 
@@ -632,7 +632,7 @@ contract ERC20 is Context, IERC20 {
 
 // File: @openzeppelin/contracts/token/ERC20/ERC20Capped.sol
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity >=0.6.0 <0.8.0;
 
@@ -679,8 +679,10 @@ abstract contract ERC20Capped is ERC20 {
 
 // File: contracts/token/TCP.sol
 
-// SPDX-License-Identifier: MIT
-pragma solidity 0.7.4;
+
+pragma solidity 0.7.4;
+
+
 
 contract TCP is ERC20Capped {
 
