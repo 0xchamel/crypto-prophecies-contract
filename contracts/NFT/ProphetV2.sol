@@ -38,15 +38,24 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
     }
 
     function _createInitialProphetNames() internal { //TODO import on generation creation not on contract creation
-        addName(0, "Satoshian Name 1");
-        addName(0, "Satoshian Name 2");
-        addName(0, "Satoshian Name 3");
-        addName(1, "Linkie Name 1");
-        addName(1, "Linkie Name 2");
-        addName(1, "Linkie Name 3");
-        addName(2, "Liteconian Name 1");
-        addName(2, "Liteconian Name 2");
-        addName(2, "Liteconian Name 3");
+        addName(0, "Satoshian 1");
+        addName(0, "Satoshian 2");
+        addName(0, "Satoshian 3");
+        addName(0, "Satoshian 4");
+        addName(0, "Satoshian 5");
+        addName(0, "Satoshian 6");
+        addName(1, "Linkie 1");
+        addName(1, "Linkie 2");
+        addName(1, "Linkie 3");
+        addName(1, "Linkie 4");
+        addName(1, "Linkie 5");
+        addName(1, "Linkie 6");
+        addName(2, "Liteconian 1");
+        addName(2, "Liteconian 2");
+        addName(2, "Liteconian 3");
+        addName(2, "Liteconian 4");
+        addName(2, "Liteconian 5");
+        addName(2, "Liteconian 6");
     }
 
     function _createInitialProphetRarities() internal {
@@ -84,7 +93,8 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
             Counters.current(prophetRaceCounter[race]),
             Counters.current(prophetCharacterCounter[character]),
             Counters.current(prophetRarityCounter[rarity]),
-            Counters.current(prophetRarityPerRaceCounter[race][rarity]));
+            Counters.current(prophetRarityPerRaceCounter[race][rarity])
+        );
     }
 
     function _increaseProphetCounter(uint16 generation, uint16 rarity, uint16 race, uint16 character) internal {
