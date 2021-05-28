@@ -42,7 +42,7 @@ contract Battle is Ownable {
     }
 
     function endGame(uint256 _id, address winner) public onlyOwner {
-        tcp.safeTransfer(address(this), address(msg.sender), gameDeposits[_id]); //Subtract fee and send somewhere else
+        tcp.safeTransfer(address(msg.sender), gameDeposits[_id]); //Subtract fee and send somewhere else
         gameDeposits[_id] = 0;
     }
 }

@@ -46,6 +46,29 @@ export interface BattleInstance extends Truffle.ContractInstance {
 
   deposits(arg0: string, txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
+  endGame: {
+    (
+      _id: number | BN | string,
+      winner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _id: number | BN | string,
+      winner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _id: number | BN | string,
+      winner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _id: number | BN | string,
+      winner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   gameDeposits(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
@@ -128,6 +151,29 @@ export interface BattleInstance extends Truffle.ContractInstance {
     };
 
     deposits(arg0: string, txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+    endGame: {
+      (
+        _id: number | BN | string,
+        winner: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _id: number | BN | string,
+        winner: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _id: number | BN | string,
+        winner: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _id: number | BN | string,
+        winner: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
 
     gameDeposits(
       arg0: number | BN | string,
