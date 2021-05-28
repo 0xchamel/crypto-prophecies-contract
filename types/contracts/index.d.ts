@@ -23,6 +23,7 @@ import { IERC721EnumerableContract } from "./IERC721Enumerable";
 import { IERC721MetadataContract } from "./IERC721Metadata";
 import { IERC721ReceiverContract } from "./IERC721Receiver";
 import { PausableContract } from "./Pausable";
+import { BattleContract } from "./Battle";
 import { ProphetV1Contract } from "./ProphetV1";
 import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
@@ -57,6 +58,7 @@ declare global {
       require(name: "IERC721Metadata"): IERC721MetadataContract;
       require(name: "IERC721Receiver"): IERC721ReceiverContract;
       require(name: "Pausable"): PausableContract;
+      require(name: "Battle"): BattleContract;
       require(name: "ProphetV1"): ProphetV1Contract;
       require(name: "ProphetV2"): ProphetV2Contract;
       require(name: "ProphetV2Storage"): ProphetV2StorageContract;
@@ -116,6 +118,7 @@ export {
   IERC721ReceiverInstance,
 } from "./IERC721Receiver";
 export { PausableContract, PausableInstance } from "./Pausable";
+export { BattleContract, BattleInstance } from "./Battle";
 export { ProphetV1Contract, ProphetV1Instance } from "./ProphetV1";
 export { ProphetV2Contract, ProphetV2Instance } from "./ProphetV2";
 export {
