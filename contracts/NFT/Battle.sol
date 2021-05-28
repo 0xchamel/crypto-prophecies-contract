@@ -34,15 +34,22 @@ contract Battle is Ownable {
         deposits[address(msg.sender)] = deposits[address(msg.sender)].add(_amount);
     }
     
-    function startGame(uint256 _id, address[] memory players, uint256 _amount) public onlyOwner {
+    function withdraw(address player) public onlyOwner  {
+        require(deposits[player] > 0, "No deposits made");
+        tcp.safeTransfer(address(player), deposits[player]); //Subtract fee and send somewhere else
+        deposits[player] = 0;
+    }
+    
+    function startGame(uint256 _id, address[] memory players, uint256 _amount) public onlyOwner { //Check if user has enough deposited
         for (uint256 playerID = 0; playerID < players.length; ++playerID) {
+            require(deposits[players[playerID]] >= _amount, "Some player(s) do not have enough funds");
             deposits[players[playerID]] = deposits[players[playerID]].sub(_amount);
             gameDeposits[_id] = gameDeposits[_id].add(_amount);
         }
     }
 
     function endGame(uint256 _id, address winner) public onlyOwner {
-        tcp.safeTransfer(address(msg.sender), gameDeposits[_id]); //Subtract fee and send somewhere else
+        tcp.safeTransfer(address(winner), gameDeposits[_id]); //Subtract fee and send somewhere else
         gameDeposits[_id] = 0;
     }
 }

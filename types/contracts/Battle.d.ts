@@ -130,6 +130,21 @@ export interface BattleInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  withdraw: {
+    (player: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(player: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(
+      player: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      player: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   methods: {
     deposit: {
       (
@@ -232,6 +247,24 @@ export interface BattleInstance extends Truffle.ContractInstance {
       ): Promise<string>;
       estimateGas(
         newOwner: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    withdraw: {
+      (player: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        player: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        player: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        player: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

@@ -32,30 +32,37 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
     }
 
     function _createInitialProphetRaces() internal {
+        addRace("Etherian");
         addRace("Satoshian");
-        addRace("Linkie");
-        addRace("Liteconian");
+        addRace("Tezmanian");
+        addRace("Reptilian");
     }
 
     function _createInitialProphetNames() internal { //TODO import on generation creation not on contract creation
-        addName(0, "Satoshian 1");
-        addName(0, "Satoshian 2");
-        addName(0, "Satoshian 3");
-        addName(0, "Satoshian 4");
-        addName(0, "Satoshian 5");
-        addName(0, "Satoshian 6");
-        addName(1, "Linkie 1");
-        addName(1, "Linkie 2");
-        addName(1, "Linkie 3");
-        addName(1, "Linkie 4");
-        addName(1, "Linkie 5");
-        addName(1, "Linkie 6");
-        addName(2, "Liteconian 1");
-        addName(2, "Liteconian 2");
-        addName(2, "Liteconian 3");
-        addName(2, "Liteconian 4");
-        addName(2, "Liteconian 5");
-        addName(2, "Liteconian 6");
+        addName(0, "Etherian 1");
+        addName(0, "Etherian 2");
+        addName(0, "Etherian 3");
+        addName(0, "Etherian 4");
+        addName(0, "Etherian 5");
+        addName(0, "Etherian 6");
+        addName(1, "Satoshian 1");
+        addName(1, "Satoshian 2");
+        addName(1, "Satoshian 3");
+        addName(1, "Satoshian 4");
+        addName(1, "Satoshian 5");
+        addName(1, "Satoshian 6");
+        addName(2, "Tezmanian 1");
+        addName(2, "Tezmanian 2");
+        addName(2, "Tezmanian 3");
+        addName(2, "Tezmanian 4");
+        addName(2, "Tezmanian 5");
+        addName(2, "Tezmanian 6");
+        addName(3, "Reptilian 1");
+        addName(3, "Reptilian 2");
+        addName(3, "Reptilian 3");
+        addName(3, "Reptilian 4");
+        addName(3, "Reptilian 5");
+        addName(3, "Reptilian 6");
     }
 
     function _createInitialProphetRarities() internal {
@@ -67,15 +74,15 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
         addRarity("Founder");
     }
 
-    function addRace(string memory _race) public {
+    function addRace(string memory _race) public onlyOwner {
         prophetRace.push(_race);
     }
 
-    function addName(uint16 race, string memory _name) public {
+    function addName(uint16 race, string memory _name) public onlyOwner {
         prophetCharacter[race].push(_name);
     }
 
-    function addRarity(string memory _rarity) public {
+    function addRarity(string memory _rarity) public onlyOwner {
         prophetRarities.push(_rarity);
     }
 
