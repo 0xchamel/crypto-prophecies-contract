@@ -5,11 +5,9 @@
 import BN from "bn.js";
 import { EventData, PastEventOptions } from "web3-eth-contract";
 
-export interface TCPContract extends Truffle.Contract<TCPInstance> {
-  "new"(
-    cap_: number | BN | string,
-    meta?: Truffle.TransactionDetails
-  ): Promise<TCPInstance>;
+export interface IERC20MetadataContract
+  extends Truffle.Contract<IERC20MetadataInstance> {
+  "new"(meta?: Truffle.TransactionDetails): Promise<IERC20MetadataInstance>;
 }
 
 export interface Approval {
@@ -21,16 +19,6 @@ export interface Approval {
     0: string;
     1: string;
     2: BN;
-  };
-}
-
-export interface OwnershipTransferred {
-  name: "OwnershipTransferred";
-  args: {
-    previousOwner: string;
-    newOwner: string;
-    0: string;
-    1: string;
   };
 }
 
@@ -46,9 +34,9 @@ export interface Transfer {
   };
 }
 
-type AllEvents = Approval | OwnershipTransferred | Transfer;
+type AllEvents = Approval | Transfer;
 
-export interface TCPInstance extends Truffle.ContractInstance {
+export interface IERC20MetadataInstance extends Truffle.ContractInstance {
   allowance(
     owner: string,
     spender: string,
@@ -83,77 +71,9 @@ export interface TCPInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN>;
 
-  cap(txDetails?: Truffle.TransactionDetails): Promise<BN>;
-
   decimals(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
-  decreaseAllowance: {
-    (
-      spender: string,
-      subtractedValue: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      spender: string,
-      subtractedValue: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<boolean>;
-    sendTransaction(
-      spender: string,
-      subtractedValue: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      spender: string,
-      subtractedValue: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
-  increaseAllowance: {
-    (
-      spender: string,
-      addedValue: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      spender: string,
-      addedValue: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<boolean>;
-    sendTransaction(
-      spender: string,
-      addedValue: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      spender: string,
-      addedValue: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
-  mint: {
-    (txDetails?: Truffle.TransactionDetails): Promise<
-      Truffle.TransactionResponse<AllEvents>
-    >;
-    call(txDetails?: Truffle.TransactionDetails): Promise<void>;
-    sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
-    estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
-  };
-
   name(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
-  owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
-  renounceOwnership: {
-    (txDetails?: Truffle.TransactionDetails): Promise<
-      Truffle.TransactionResponse<AllEvents>
-    >;
-    call(txDetails?: Truffle.TransactionDetails): Promise<void>;
-    sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
-    estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
-  };
 
   symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
@@ -209,24 +129,6 @@ export interface TCPInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  transferOwnership: {
-    (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
-      Truffle.TransactionResponse<AllEvents>
-    >;
-    call(
-      newOwner: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      newOwner: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      newOwner: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
   methods: {
     allowance(
       owner: string,
@@ -262,77 +164,9 @@ export interface TCPInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
 
-    cap(txDetails?: Truffle.TransactionDetails): Promise<BN>;
-
     decimals(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
-    decreaseAllowance: {
-      (
-        spender: string,
-        subtractedValue: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        spender: string,
-        subtractedValue: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<boolean>;
-      sendTransaction(
-        spender: string,
-        subtractedValue: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        spender: string,
-        subtractedValue: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    increaseAllowance: {
-      (
-        spender: string,
-        addedValue: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        spender: string,
-        addedValue: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<boolean>;
-      sendTransaction(
-        spender: string,
-        addedValue: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        spender: string,
-        addedValue: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    mint: {
-      (txDetails?: Truffle.TransactionDetails): Promise<
-        Truffle.TransactionResponse<AllEvents>
-      >;
-      call(txDetails?: Truffle.TransactionDetails): Promise<void>;
-      sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
-      estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
-    };
-
     name(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
-    owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
-    renounceOwnership: {
-      (txDetails?: Truffle.TransactionDetails): Promise<
-        Truffle.TransactionResponse<AllEvents>
-      >;
-      call(txDetails?: Truffle.TransactionDetails): Promise<void>;
-      sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
-      estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
-    };
 
     symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
@@ -384,24 +218,6 @@ export interface TCPInstance extends Truffle.ContractInstance {
         sender: string,
         recipient: string,
         amount: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    transferOwnership: {
-      (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
-        Truffle.TransactionResponse<AllEvents>
-      >;
-      call(
-        newOwner: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        newOwner: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        newOwner: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

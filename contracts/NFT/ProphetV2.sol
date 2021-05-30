@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.7.4;
+pragma solidity 0.8.0;
 
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
-import "@openzeppelin/contracts/presets/ERC1155PresetMinterPauser.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ProphetV2Storage.sol";
 
@@ -12,7 +10,7 @@ import "./ProphetV2Storage.sol";
  * @title Crypto prophecies Prophet NFTs
  * @notice NFTs that will be held by users
  */
-contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
+contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
 
     modifier prophetOwner(uint256 tokenId) {
         require(ERC721.ownerOf(tokenId) == msg.sender, "ERC721: burn of token that is not own");
@@ -21,7 +19,6 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
 
     constructor(string memory uri) ERC721("Crypto Prophecies Prophets", "Prophet") {
         //gen > rarity > race > character
-        _setBaseURI(uri);
         _createInitialProphetTypes();
     }
 
@@ -136,6 +133,10 @@ contract ProphetV2 is ProphetV2Storage, ERC721, ERC721Burnable, Ownable {
         characterCounter = prophetData[id].characterCounter;
         rarityCounter = prophetData[id].rarityCounter;
         rarityPerRaceCounter = prophetData[id].rarityPerRaceCounter;
+    }
+    
+    function _baseURI() internal view override returns (string memory) {
+        return "https://api.cryptoprophecies.com/v1/prophet/{id}";
     }
     
 }

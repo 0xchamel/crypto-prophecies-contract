@@ -4,27 +4,22 @@
 
 import { AccessControlContract } from "./AccessControl";
 import { OwnableContract } from "./Ownable";
-import { ERC165Contract } from "./ERC165";
-import { IERC165Contract } from "./IERC165";
-import { ERC1155PresetMinterPauserContract } from "./ERC1155PresetMinterPauser";
 import { ERC1155Contract } from "./ERC1155";
-import { ERC1155BurnableContract } from "./ERC1155Burnable";
-import { ERC1155PausableContract } from "./ERC1155Pausable";
 import { IERC1155Contract } from "./IERC1155";
-import { IERC1155MetadataURIContract } from "./IERC1155MetadataURI";
 import { IERC1155ReceiverContract } from "./IERC1155Receiver";
 import { ERC20Contract } from "./ERC20";
 import { ERC20CappedContract } from "./ERC20Capped";
+import { IERC20MetadataContract } from "./IERC20Metadata";
 import { IERC20Contract } from "./IERC20";
 import { ERC721Contract } from "./ERC721";
-import { ERC721BurnableContract } from "./ERC721Burnable";
-import { IERC721Contract } from "./IERC721";
+import { ERC721EnumerableContract } from "./ERC721Enumerable";
 import { IERC721EnumerableContract } from "./IERC721Enumerable";
 import { IERC721MetadataContract } from "./IERC721Metadata";
+import { IERC721Contract } from "./IERC721";
 import { IERC721ReceiverContract } from "./IERC721Receiver";
-import { PausableContract } from "./Pausable";
+import { ERC165Contract } from "./ERC165";
+import { IERC165Contract } from "./IERC165";
 import { BattleContract } from "./Battle";
-import { ProphetV1Contract } from "./ProphetV1";
 import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
 import { TCPContract } from "./TCP";
@@ -37,29 +32,22 @@ declare global {
     interface Artifacts {
       require(name: "AccessControl"): AccessControlContract;
       require(name: "Ownable"): OwnableContract;
-      require(name: "ERC165"): ERC165Contract;
-      require(name: "IERC165"): IERC165Contract;
-      require(
-        name: "ERC1155PresetMinterPauser"
-      ): ERC1155PresetMinterPauserContract;
       require(name: "ERC1155"): ERC1155Contract;
-      require(name: "ERC1155Burnable"): ERC1155BurnableContract;
-      require(name: "ERC1155Pausable"): ERC1155PausableContract;
       require(name: "IERC1155"): IERC1155Contract;
-      require(name: "IERC1155MetadataURI"): IERC1155MetadataURIContract;
       require(name: "IERC1155Receiver"): IERC1155ReceiverContract;
       require(name: "ERC20"): ERC20Contract;
       require(name: "ERC20Capped"): ERC20CappedContract;
+      require(name: "IERC20Metadata"): IERC20MetadataContract;
       require(name: "IERC20"): IERC20Contract;
       require(name: "ERC721"): ERC721Contract;
-      require(name: "ERC721Burnable"): ERC721BurnableContract;
-      require(name: "IERC721"): IERC721Contract;
+      require(name: "ERC721Enumerable"): ERC721EnumerableContract;
       require(name: "IERC721Enumerable"): IERC721EnumerableContract;
       require(name: "IERC721Metadata"): IERC721MetadataContract;
+      require(name: "IERC721"): IERC721Contract;
       require(name: "IERC721Receiver"): IERC721ReceiverContract;
-      require(name: "Pausable"): PausableContract;
+      require(name: "ERC165"): ERC165Contract;
+      require(name: "IERC165"): IERC165Contract;
       require(name: "Battle"): BattleContract;
-      require(name: "ProphetV1"): ProphetV1Contract;
       require(name: "ProphetV2"): ProphetV2Contract;
       require(name: "ProphetV2Storage"): ProphetV2StorageContract;
       require(name: "TCP"): TCPContract;
@@ -72,39 +60,24 @@ declare global {
 
 export { AccessControlContract, AccessControlInstance } from "./AccessControl";
 export { OwnableContract, OwnableInstance } from "./Ownable";
-export { ERC165Contract, ERC165Instance } from "./ERC165";
-export { IERC165Contract, IERC165Instance } from "./IERC165";
-export {
-  ERC1155PresetMinterPauserContract,
-  ERC1155PresetMinterPauserInstance,
-} from "./ERC1155PresetMinterPauser";
 export { ERC1155Contract, ERC1155Instance } from "./ERC1155";
-export {
-  ERC1155BurnableContract,
-  ERC1155BurnableInstance,
-} from "./ERC1155Burnable";
-export {
-  ERC1155PausableContract,
-  ERC1155PausableInstance,
-} from "./ERC1155Pausable";
 export { IERC1155Contract, IERC1155Instance } from "./IERC1155";
-export {
-  IERC1155MetadataURIContract,
-  IERC1155MetadataURIInstance,
-} from "./IERC1155MetadataURI";
 export {
   IERC1155ReceiverContract,
   IERC1155ReceiverInstance,
 } from "./IERC1155Receiver";
 export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
+export {
+  IERC20MetadataContract,
+  IERC20MetadataInstance,
+} from "./IERC20Metadata";
 export { IERC20Contract, IERC20Instance } from "./IERC20";
 export { ERC721Contract, ERC721Instance } from "./ERC721";
 export {
-  ERC721BurnableContract,
-  ERC721BurnableInstance,
-} from "./ERC721Burnable";
-export { IERC721Contract, IERC721Instance } from "./IERC721";
+  ERC721EnumerableContract,
+  ERC721EnumerableInstance,
+} from "./ERC721Enumerable";
 export {
   IERC721EnumerableContract,
   IERC721EnumerableInstance,
@@ -113,13 +86,14 @@ export {
   IERC721MetadataContract,
   IERC721MetadataInstance,
 } from "./IERC721Metadata";
+export { IERC721Contract, IERC721Instance } from "./IERC721";
 export {
   IERC721ReceiverContract,
   IERC721ReceiverInstance,
 } from "./IERC721Receiver";
-export { PausableContract, PausableInstance } from "./Pausable";
+export { ERC165Contract, ERC165Instance } from "./ERC165";
+export { IERC165Contract, IERC165Instance } from "./IERC165";
 export { BattleContract, BattleInstance } from "./Battle";
-export { ProphetV1Contract, ProphetV1Instance } from "./ProphetV1";
 export { ProphetV2Contract, ProphetV2Instance } from "./ProphetV2";
 export {
   ProphetV2StorageContract,

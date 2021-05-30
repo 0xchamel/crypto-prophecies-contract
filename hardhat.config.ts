@@ -50,6 +50,10 @@ const config = {
       {
         version: "0.7.4",
         settings: { } 
+      },
+      {
+        version: "0.8.0",
+        settings: { } 
       }
     ],
     settings: {

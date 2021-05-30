@@ -5,12 +5,9 @@
 import BN from "bn.js";
 import { EventData, PastEventOptions } from "web3-eth-contract";
 
-export interface ERC721Contract extends Truffle.Contract<ERC721Instance> {
-  "new"(
-    name_: string,
-    symbol_: string,
-    meta?: Truffle.TransactionDetails
-  ): Promise<ERC721Instance>;
+export interface ERC721EnumerableContract
+  extends Truffle.Contract<ERC721EnumerableInstance> {
+  "new"(meta?: Truffle.TransactionDetails): Promise<ERC721EnumerableInstance>;
 }
 
 export interface Approval {
@@ -51,7 +48,7 @@ export interface Transfer {
 
 type AllEvents = Approval | ApprovalForAll | Transfer;
 
-export interface ERC721Instance extends Truffle.ContractInstance {
+export interface ERC721EnumerableInstance extends Truffle.ContractInstance {
   approve: {
     (
       to: string,
@@ -125,10 +122,23 @@ export interface ERC721Instance extends Truffle.ContractInstance {
 
   symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
+  tokenByIndex(
+    index: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  tokenOfOwnerByIndex(
+    owner: string,
+    index: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
   tokenURI(
     tokenId: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
+
+  totalSupply(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
   transferFrom: {
     (
@@ -234,10 +244,23 @@ export interface ERC721Instance extends Truffle.ContractInstance {
 
     symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
+    tokenByIndex(
+      index: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    tokenOfOwnerByIndex(
+      owner: string,
+      index: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
     tokenURI(
       tokenId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
+
+    totalSupply(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
     transferFrom: {
       (

@@ -680,7 +680,7 @@ abstract contract ERC20Capped is ERC20 {
 // File: contracts/token/TCP.sol
 
 
-pragma solidity 0.7.4;
+pragma solidity 0.8.0;
 
 
 

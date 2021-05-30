@@ -177,27 +177,6 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
 
   balanceOf(owner: string, txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
-  baseURI(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
-  burn: {
-    (
-      tokenId: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      tokenId: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      tokenId: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      tokenId: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
   burnProphet: {
     (
       tokenId: number | BN | string,
@@ -556,27 +535,6 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
       owner: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
-
-    baseURI(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
-    burn: {
-      (
-        tokenId: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        tokenId: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        tokenId: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        tokenId: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
 
     burnProphet: {
       (
