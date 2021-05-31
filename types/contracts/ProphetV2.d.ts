@@ -223,18 +223,12 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
   getProphet(
     id: number | BN | string,
     txDetails?: Truffle.TransactionDetails
-  ): Promise<{
-    0: BN;
-    1: BN;
-    2: BN;
-    3: BN;
-    4: BN;
-    5: BN;
-    6: BN;
-    7: BN;
-    8: BN;
-    9: BN;
-  }>;
+  ): Promise<BN[]>;
+
+  getProphetIDsByOwner(
+    _owner: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN[]>;
 
   isApprovedForAll(
     owner: string,
@@ -582,18 +576,12 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
     getProphet(
       id: number | BN | string,
       txDetails?: Truffle.TransactionDetails
-    ): Promise<{
-      0: BN;
-      1: BN;
-      2: BN;
-      3: BN;
-      4: BN;
-      5: BN;
-      6: BN;
-      7: BN;
-      8: BN;
-      9: BN;
-    }>;
+    ): Promise<BN[]>;
+
+    getProphetIDsByOwner(
+      _owner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN[]>;
 
     isApprovedForAll(
       owner: string,

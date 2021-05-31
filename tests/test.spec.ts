@@ -69,6 +69,6 @@ describe('Prophecies Contracts', function () {
   describe('When checking tcp erc20 token', checkToken.bind(this));
   //describe('When checking the vesting contract', checkVesting.bind(this));
   // describe('When checking the NFT contract', checkNFTold.bind(this));
-  // describe('When checking the NFT contract', checkNFT.bind(this));
+  describe('When checking the NFT contract', checkNFT.bind(this));
 
 });

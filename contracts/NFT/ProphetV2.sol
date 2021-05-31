@@ -120,19 +120,28 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         }
     }
 
-    function getProphet(uint256 id) external view returns(uint16 generation, uint16 rarity, uint16 race, uint16 character,
-        uint256 prophetCounter, uint256 generationCounter, uint256 raceCounter, uint256 characterCounter, uint256 rarityCounter,
-        uint256 rarityPerRaceCounter) {
-        generation = prophetData[id].generation;
-        rarity = prophetData[id].rarity;
-        race = prophetData[id].race;
-        character = prophetData[id].character;
-        prophetCounter = prophetData[id].prophetCounter;
-        generationCounter = prophetData[id].generationCounter;
-        raceCounter = prophetData[id].raceCounter;
-        characterCounter = prophetData[id].characterCounter;
-        rarityCounter = prophetData[id].rarityCounter;
-        rarityPerRaceCounter = prophetData[id].rarityPerRaceCounter;
+    function getProphet(uint256 id) external view returns(uint256[] memory) {
+        uint256[] memory values = new uint256[](10);
+        values[0] = prophetData[id].generation;
+        values[1] = prophetData[id].rarity;
+        values[2] = prophetData[id].race;
+        values[3] = prophetData[id].character;
+        values[4] = prophetData[id].prophetCounter;
+        values[5] = prophetData[id].generationCounter;
+        values[6] = prophetData[id].raceCounter;
+        values[7] = prophetData[id].characterCounter;
+        values[8] = prophetData[id].rarityCounter;
+        values[9] = prophetData[id].rarityPerRaceCounter;
+        return values;
+    }
+
+    function getProphetIDsByOwner(address _owner) external view returns(uint256[] memory) {
+        uint256 nfts = balanceOf(_owner);
+        uint256[] memory ids = new uint256[](nfts);
+        for (uint256 i = 0; i < nfts; i++) {
+            ids[i] = tokenOfOwnerByIndex(_owner, i);
+        }
+        return ids;
     }
     
     function _baseURI() internal view override returns (string memory) {

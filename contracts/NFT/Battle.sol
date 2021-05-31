@@ -34,13 +34,15 @@ contract Battle is Ownable {
         deposits[address(msg.sender)] = deposits[address(msg.sender)].add(_amount);
     }
     
-    function withdraw(address player) public onlyOwner  {
+    //function withdraw(address player) public onlyOwner  {
+    function withdraw(address player) public { //for testing ONLY
         require(deposits[player] > 0, "No deposits made");
         tcp.safeTransfer(address(player), deposits[player]); //Subtract fee and send somewhere else
         deposits[player] = 0;
     }
     
-    function startGame(uint256 _id, address[] memory players, uint256 _amount) public onlyOwner { //Check if user has enough deposited
+    //function startGame(uint256 _id, address[] memory players, uint256 _amount) public onlyOwner { //Check if user has enough deposited
+    function startGame(uint256 _id, address[] memory players, uint256 _amount) public {  //for testing ONLY
         for (uint256 playerID = 0; playerID < players.length; ++playerID) {
             require(deposits[players[playerID]] >= _amount, "Some player(s) do not have enough funds");
             deposits[players[playerID]] = deposits[players[playerID]].sub(_amount);
@@ -48,7 +50,8 @@ contract Battle is Ownable {
         }
     }
 
-    function endGame(uint256 _id, address winner) public onlyOwner {
+    //function endGame(uint256 _id, address winner) public onlyOwner {
+    function endGame(uint256 _id, address winner) public { //for testing ONLY
         tcp.safeTransfer(address(winner), gameDeposits[_id]); //Subtract fee and send somewhere else
         gameDeposits[_id] = 0;
     }
