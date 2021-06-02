@@ -17,7 +17,7 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         _;
     }
 
-    constructor(string memory uri) ERC721("Crypto Prophecies Prophets", "Prophet") {
+    constructor() ERC721("Crypto Prophecies Prophets", "Prophet") {
         //gen > rarity > race > character
         _createInitialProphetTypes();
     }
@@ -120,7 +120,7 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         }
     }
 
-    function getProphet(uint256 id) external view returns(uint256[] memory) {
+    function getProphet(uint256 id) public view returns(uint256[] memory) {
         uint256[] memory values = new uint256[](10);
         values[0] = prophetData[id].generation;
         values[1] = prophetData[id].rarity;
@@ -135,13 +135,23 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         return values;
     }
 
-    function getProphetIDsByOwner(address _owner) external view returns(uint256[] memory) {
+    function getProphetIDsByOwner(address _owner) public view returns(uint256[] memory) {
         uint256 nfts = balanceOf(_owner);
         uint256[] memory ids = new uint256[](nfts);
         for (uint256 i = 0; i < nfts; i++) {
             ids[i] = tokenOfOwnerByIndex(_owner, i);
         }
         return ids;
+    }
+
+    function getProphetInfoByOwner(address _owner) public view returns(uint256[][] memory) {
+        uint256 nfts = balanceOf(_owner);
+        uint256[][] memory info = new uint256[][](nfts);
+        for (uint256 i = 0; i < nfts; i++) {
+            uint256 id = tokenOfOwnerByIndex(_owner, i);
+            info[i] = getProphet(id);
+        }
+        return info;
     }
     
     function _baseURI() internal view override returns (string memory) {

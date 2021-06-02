@@ -230,6 +230,11 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
 
+  getProphetInfoByOwner(
+    _owner: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN[][]>;
+
   isApprovedForAll(
     owner: string,
     operator: string,
@@ -582,6 +587,11 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
       _owner: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
+
+    getProphetInfoByOwner(
+      _owner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN[][]>;
 
     isApprovedForAll(
       owner: string,
