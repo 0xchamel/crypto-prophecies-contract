@@ -50,12 +50,13 @@ module.exports = async function (deployer, network, accounts) {
     //EXTRA
     // "0x8BA29Acbc17D043635CD98ABD5ebA7adB2c665D4",
     // "0xB800895394C34509978Af9Ee26A9B821Ac360C53",
+    // "0x4276F21f9dE6f6Cccaa5C42D35D8252B5780326D",
   ];
   //let NFTinstance = Prophet.deployed();
   for (let address of addresses) {
     console.log("Address: " + address);
 
-    // FIRST SET
+    // //FIRST SET
     // await NFTinstance._createProphet(1, 4, 0, 0, address);
     // await NFTinstance._createProphet(1, 4, 0, 1, address);
     // await NFTinstance._createProphet(1, 4, 0, 2, address);
@@ -63,7 +64,7 @@ module.exports = async function (deployer, network, accounts) {
     // await NFTinstance._createProphet(1, 4, 0, 4, address);
     // await NFTinstance._createProphet(1, 4, 0, 5, address);
 
-    //SECOND SET
+    // //SECOND SET
     // await NFTinstance._createProphet(1, 4, 1, 0, address);
     // await NFTinstance._createProphet(1, 4, 1, 1, address);
     // await NFTinstance._createProphet(1, 4, 1, 2, address);

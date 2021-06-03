@@ -50,6 +50,7 @@ module.exports = async function (deployer, network, accounts) {
     //EXTRA
     // "0x8BA29Acbc17D043635CD98ABD5ebA7adB2c665D4",
     // "0xB800895394C34509978Af9Ee26A9B821Ac360C53",
+    // "0x4276F21f9dE6f6Cccaa5C42D35D8252B5780326D",
   ];
   
   for (let address of addresses) {
