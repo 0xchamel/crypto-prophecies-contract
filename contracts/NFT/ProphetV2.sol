@@ -17,9 +17,15 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         _;
     }
 
+    modifier noContractCalls() {
+        require(tx.origin == msg.sender, "No Contract Calls!");
+        _;
+    }
+
     constructor() ERC721("Crypto Prophecies Prophets", "Prophet") {
         //gen > rarity > race > character
         _createInitialProphetTypes();
+        maxRarity = 4;
     }
 
     function _createInitialProphetTypes() internal {
@@ -35,7 +41,7 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         addRace("Reptilian");
     }
 
-    function _createInitialProphetNames() internal { //TODO import on generation creation not on contract creation
+    function _createInitialProphetNames() internal { //TODO import on generation creation not on contract creation + export to external rather than solidity based
         addName(0, "Etherian 1");
         addName(0, "Etherian 2");
         addName(0, "Etherian 3");
@@ -68,7 +74,7 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         addRarity("Rare");
         addRarity("Epic");
         addRarity("Legendary");
-        addRarity("Founder");
+        addRarity("Founder"); // for ever 4 prophets that are created RNG for a founder one
     }
 
     function addRace(string memory _race) public onlyOwner {
@@ -83,7 +89,11 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         prophetRarities.push(_rarity);
     }
 
-    function _createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) public onlyOwner { //TODO only from THIS contract or from the orb
+    function createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) public onlyOwner { //TODO only from the orb
+        _createProphet(generation, rarity, race, character, destination);
+    }
+
+    function _createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) internal {
         uint256 id = Counters.current(prophetCounter) + 1;
         _mint(destination, id);
         _increaseProphetCounter(uint16(generation), uint16(rarity), uint16(race), uint16(character));
@@ -110,8 +120,41 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         Counters.increment(prophetRarityPerRaceCounter[race][rarity]);
     }
 
+    function _decreaseProphetCounter(uint16 generation, uint16 rarity, uint16 race, uint16 character) internal {
+        Counters.decrement(prophetCounter);
+        Counters.decrement(prophetGenerationCounter[generation]);
+        Counters.decrement(prophetRaceCounter[race]);
+        Counters.decrement(prophetCharacterCounter[character]);
+        Counters.decrement(prophetRarityCounter[rarity]);
+        Counters.decrement(prophetRarityPerRaceCounter[race][rarity]);
+    }
+
+    function burnUpgrade(uint256[] memory tokenIds) public noContractCalls { //noContractCalls only required for pseudo rng
+        uint16 generation = prophetData[tokenIds[0]].generation;
+        uint16 rarity = prophetData[tokenIds[0]].rarity;
+        uint16 race = prophetData[tokenIds[0]].race;
+        uint16 character = prophetData[tokenIds[0]].character;
+        require(rarity+1 <= maxRarity, "Max rarity achieved");
+        for (uint i = 0; i < tokenIds.length; i++) {
+            uint256 tokenId = tokenIds[tokenIds[i]];
+            require(prophetData[tokenId].generation == generation, "Generations do not match");
+            require(prophetData[tokenId].rarity == rarity, "Rarities do not match");
+            require(prophetData[tokenId].race == race, "Races do not match");
+            require(prophetData[tokenId].character == character, "Characters do not match");
+        }
+        burnProphets(tokenIds);
+        character = uint16(_getRandomNumber(prophetCharacter[race].length));
+        _createProphet(generation, rarity, race, character, msg.sender);
+    }
+
     function burnProphet(uint256 tokenId) prophetOwner(tokenId) public {
         _burn(tokenId);
+        _decreaseProphetCounter(
+            prophetData[tokenId].generation, 
+            prophetData[tokenId].rarity, 
+            prophetData[tokenId].race, 
+            prophetData[tokenId].character
+        );
     }
 
     function burnProphets(uint256[] memory tokenIds) public {
@@ -154,8 +197,17 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         return info;
     }
     
-    function _baseURI() internal view override returns (string memory) {
+    function _baseURI() internal pure override returns (string memory) {
         return "https://api.cryptoprophecies.com/v1/prophet/{id}";
+    }
+
+    function _getRandomNumber(uint _upper) private returns (uint) {
+        uint _seed = uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, block.number)));
+        return _seed % _upper;
+    }
+
+    function setMaxRarity(uint16 _maxRarity) public onlyOwner{
+        maxRarity = _maxRarity;
     }
     
 }

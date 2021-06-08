@@ -38,8 +38,9 @@ contract ProphetV2Storage {
     //Keep track of rarities
     string[] public prophetRarities;
 
-    
     //Prophet storage
     mapping(uint256 => Prophet) public prophetData;
+
+    uint16 maxRarity;
 
 }
