@@ -56,6 +56,18 @@ module.exports = async function (deployer, network, accounts) {
     // "0x46fd3dcd2E47d8093739F6e6FE401EF6fCC434f0",
     // "0xA8C3a4A3f89e1f1936476FAA314185A430B251ea",
 
+    //FOURTH SET
+    // "0xA8C3a4A3f89e1f1936476FAA314185A430B251ea",
+    // "0x9aD1Acfefa4bB3e13D0dECb3F5247e64C520e9AD",
+    // "0xCb12591976544d57c482F05dfBAb89eA898063ba",
+    // "0xaFE4fC546108d24A5B9C76235188fb76888CC86a",
+    // "0x7E8b3cC4A464bb77a6b6C6637cC0308B0B178A0C",
+    // "0xb275B0bD0B9b4587DD28f9e6c8f77162D6FB3280",
+    // "0x6eDac9C922f3fC17299760940861aB4fE3b19BbB",
+    // "0x68e797AEd43F08f024Fe817D0B5777D3D09667b2",
+    // "0x0304C96578E9449A847b7B95EB345aAaF5d76BA6",
+    // "0xd9D1730A243B5e563b5238dbE4FD81427E6d5A94",
+
 
     //EXTRA
     // "0x8BA29Acbc17D043635CD98ABD5ebA7adB2c665D4",
@@ -67,17 +79,17 @@ module.exports = async function (deployer, network, accounts) {
     console.log("Address: " + address);
 
     //FIRST SET
-    // await NFTinstance._createProphet(1, 4, 0, 0, address);
-    // await NFTinstance._createProphet(1, 4, 0, 1, address);
-    // await NFTinstance._createProphet(1, 4, 0, 2, address);
-    // await NFTinstance._createProphet(1, 4, 0, 3, address);
-    // await NFTinstance._createProphet(1, 4, 0, 4, address);
-    // await NFTinstance._createProphet(1, 4, 0, 5, address);
+    await NFTinstance._createProphet(1, 4, 0, 0, address);
+    await NFTinstance._createProphet(1, 4, 0, 1, address);
+    await NFTinstance._createProphet(1, 4, 0, 2, address);
+    await NFTinstance._createProphet(1, 4, 0, 3, address);
+    await NFTinstance._createProphet(1, 4, 0, 4, address);
+    await NFTinstance._createProphet(1, 4, 0, 5, address);
 
-    // //SECOND SET
-    // await NFTinstance._createProphet(1, 4, 1, 0, address);
-    // await NFTinstance._createProphet(1, 4, 1, 1, address);
-    // await NFTinstance._createProphet(1, 4, 1, 2, address);
+    //SECOND SET
+    await NFTinstance._createProphet(1, 4, 1, 0, address);
+    await NFTinstance._createProphet(1, 4, 1, 1, address);
+    await NFTinstance._createProphet(1, 4, 1, 2, address);
 
     //TODO RANDOMISE ITEMS
   }

@@ -50,6 +50,7 @@ contract Battle is Ownable {
         }
     }
 
+    //NOT ALWAYS CALLED ON ERRORS ETC... SO FUNDS GET STUCK
     //function endGame(uint256 _id, address winner) public onlyOwner {
     function endGame(uint256 _id, address winner) public { //for testing ONLY
         tcp.safeTransfer(address(winner), gameDeposits[_id]); //Subtract fee and send somewhere else

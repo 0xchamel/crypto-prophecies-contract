@@ -12,6 +12,8 @@ import "./ProphetV2Storage.sol";
  */
 contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
 
+    //TODO EVENTS FOR ALL BURNS AND MINTS
+
     modifier prophetOwner(uint256 tokenId) {
         require(ERC721.ownerOf(tokenId) == msg.sender, "ERC721: burn of token that is not own");
         _;
@@ -74,7 +76,8 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         addRarity("Rare");
         addRarity("Epic");
         addRarity("Legendary");
-        addRarity("Founder"); // for ever 4 prophets that are created RNG for a founder one
+        addRarity("Founder"); 
+        //TODO for ever 4 prophets that are created RNG for a founder one // obsolete
     }
 
     function addRace(string memory _race) public onlyOwner {
@@ -89,11 +92,13 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         prophetRarities.push(_rarity);
     }
 
-    function createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) public onlyOwner { //TODO only from the orb
-        _createProphet(generation, rarity, race, character, destination);
-    }
+    // function createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) public onlyOwner { //TODO only from the orb
+    //     _createProphet(generation, rarity, race, character, destination);
+    //     //PURE and IMPURE inside burn mechanic
+    // }
 
-    function _createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) internal {
+    //PAUSABLE
+    function _createProphet(uint16 generation, uint16 rarity, uint16 race, uint16 character, address destination) public {
         uint256 id = Counters.current(prophetCounter) + 1;
         _mint(destination, id);
         _increaseProphetCounter(uint16(generation), uint16(rarity), uint16(race), uint16(character));
@@ -118,6 +123,12 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         Counters.increment(prophetCharacterCounter[character]);
         Counters.increment(prophetRarityCounter[rarity]);
         Counters.increment(prophetRarityPerRaceCounter[race][rarity]);
+        //MAKE IT MORE ACCURATE for e.g. all stats should be per gen per rarity per race per character
+        //SAME FOR BURN
+
+        //Character name per generation
+        //Rarity Per generation
+        //Race per generation
     }
 
     function _decreaseProphetCounter(uint16 generation, uint16 rarity, uint16 race, uint16 character) internal {
@@ -127,24 +138,41 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
         Counters.decrement(prophetCharacterCounter[character]);
         Counters.decrement(prophetRarityCounter[rarity]);
         Counters.decrement(prophetRarityPerRaceCounter[race][rarity]);
+
+        //Character name per generation
+        //Rarity Per generation
+        //Race per generation
+
+
+        //BURN COUNTERS
+        //Prophets burned
+        //Prophets per gen
+        //Prophets per race
     }
 
-    function burnUpgrade(uint256[] memory tokenIds) public noContractCalls { //noContractCalls only required for pseudo rng
+    function burnUpgrade(uint256[] memory tokenIds) public noContractCalls { //noContractCalls only required for pseudo rng //TODO PASS SEED FROM ORB
+        //REQUIRE 5 BURNS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //ADJUST THE CHECK
         uint16 generation = prophetData[tokenIds[0]].generation;
         uint16 rarity = prophetData[tokenIds[0]].rarity;
         uint16 race = prophetData[tokenIds[0]].race;
         uint16 character = prophetData[tokenIds[0]].character;
-        require(rarity+1 <= maxRarity, "Max rarity achieved");
+        require(rarity < maxRarity, "Max rarity achieved");
         for (uint i = 0; i < tokenIds.length; i++) {
             uint256 tokenId = tokenIds[tokenIds[i]];
             require(prophetData[tokenId].generation == generation, "Generations do not match");
             require(prophetData[tokenId].rarity == rarity, "Rarities do not match");
             require(prophetData[tokenId].race == race, "Races do not match");
-            require(prophetData[tokenId].character == character, "Characters do not match");
         }
         burnProphets(tokenIds);
-        character = uint16(_getRandomNumber(prophetCharacter[race].length));
-        _createProphet(generation, rarity, race, character, msg.sender);
+        character = uint16(_getRandomNumber(prophetCharacter[race].length) % prophetCharacter[race].length);// CHECK
+        _createProphet(generation, rarity+1, race, character, msg.sender);
+    }
+    //FOUNDER ONCE PER CHARACTER NAME CROSS GENERATIONAL
+
+    function burnProphets(uint256[] memory tokenIds) public {
+        for (uint i = 0; i < tokenIds.length; i++) {
+            burnProphet(tokenIds[i]);
+        }
     }
 
     function burnProphet(uint256 tokenId) prophetOwner(tokenId) public {
@@ -155,12 +183,6 @@ contract ProphetV2 is ProphetV2Storage, ERC721Enumerable, Ownable {
             prophetData[tokenId].race, 
             prophetData[tokenId].character
         );
-    }
-
-    function burnProphets(uint256[] memory tokenIds) public {
-        for (uint i = 0; i < tokenIds.length; i++) {
-            burnProphet(tokenIds[i]);
-        }
     }
 
     function getProphet(uint256 id) public view returns(uint256[] memory) {
