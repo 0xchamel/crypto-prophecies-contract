@@ -6,6 +6,7 @@ import { NetworkUserConfig } from "hardhat/types";
 
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-truffle5";
+import "@openzeppelin/hardhat-upgrades";
 import "hardhat-typechain";
 import "solidity-coverage"
 
@@ -32,9 +33,19 @@ const config = {
       url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.MAINNET_PRIVKEY],
     },
+    matic: {
+      chainId: 137,
+      url: "https://rpc-mainnet.maticvigil.com/",
+      accounts: [process.env.MAINNET_PRIVKEY]
+    },
+    mumbai: {
+      chainId: 80001,
+      url: `https://rpc-mumbai.matic.today`,
+      accounts: [process.env.MAINNET_PRIVKEY]
+    },
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API
+    apiKey: process.env.POLYSCAN_API
   },
   paths: {
     artifacts: "./artifacts",
@@ -46,6 +57,9 @@ const config = {
     compilers: [
       {
         version: "0.6.0"
+      },
+      {
+        version: "0.6.12"
       },
       {
         version: "0.7.4",
