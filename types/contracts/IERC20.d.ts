@@ -70,6 +70,8 @@ export interface IERC20Instance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN>;
 
+  decimals(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
   totalSupply(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
   transfer: {
@@ -156,6 +158,8 @@ export interface IERC20Instance extends Truffle.ContractInstance {
       account: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
+
+    decimals(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
     totalSupply(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 

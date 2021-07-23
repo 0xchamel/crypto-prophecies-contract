@@ -2,11 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { AccessControlContract } from "./AccessControl";
 import { OwnableContract } from "./Ownable";
-import { ERC1155Contract } from "./ERC1155";
-import { IERC1155Contract } from "./IERC1155";
-import { IERC1155ReceiverContract } from "./IERC1155Receiver";
 import { ERC20Contract } from "./ERC20";
 import { ERC20CappedContract } from "./ERC20Capped";
 import { IERC20MetadataContract } from "./IERC20Metadata";
@@ -19,9 +15,12 @@ import { IERC721Contract } from "./IERC721";
 import { IERC721ReceiverContract } from "./IERC721Receiver";
 import { ERC165Contract } from "./ERC165";
 import { IERC165Contract } from "./IERC165";
+import { IERC20Contract } from "./IERC20";
 import { BattleContract } from "./Battle";
 import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
+import { PoolInitializableContract } from "./PoolInitializable";
+import { PoolFactoryContract } from "./PoolFactory";
 import { TCPContract } from "./TCP";
 import { TokenVestingContract } from "./TokenVesting";
 import { VestingDetailsContract } from "./VestingDetails";
@@ -30,11 +29,7 @@ import { VestingStorageContract } from "./VestingStorage";
 declare global {
   namespace Truffle {
     interface Artifacts {
-      require(name: "AccessControl"): AccessControlContract;
       require(name: "Ownable"): OwnableContract;
-      require(name: "ERC1155"): ERC1155Contract;
-      require(name: "IERC1155"): IERC1155Contract;
-      require(name: "IERC1155Receiver"): IERC1155ReceiverContract;
       require(name: "ERC20"): ERC20Contract;
       require(name: "ERC20Capped"): ERC20CappedContract;
       require(name: "IERC20Metadata"): IERC20MetadataContract;
@@ -47,9 +42,12 @@ declare global {
       require(name: "IERC721Receiver"): IERC721ReceiverContract;
       require(name: "ERC165"): ERC165Contract;
       require(name: "IERC165"): IERC165Contract;
+      require(name: "IERC20"): IERC20Contract;
       require(name: "Battle"): BattleContract;
       require(name: "ProphetV2"): ProphetV2Contract;
       require(name: "ProphetV2Storage"): ProphetV2StorageContract;
+      require(name: "PoolInitializable"): PoolInitializableContract;
+      require(name: "PoolFactory"): PoolFactoryContract;
       require(name: "TCP"): TCPContract;
       require(name: "TokenVesting"): TokenVestingContract;
       require(name: "VestingDetails"): VestingDetailsContract;
@@ -58,14 +56,7 @@ declare global {
   }
 }
 
-export { AccessControlContract, AccessControlInstance } from "./AccessControl";
 export { OwnableContract, OwnableInstance } from "./Ownable";
-export { ERC1155Contract, ERC1155Instance } from "./ERC1155";
-export { IERC1155Contract, IERC1155Instance } from "./IERC1155";
-export {
-  IERC1155ReceiverContract,
-  IERC1155ReceiverInstance,
-} from "./IERC1155Receiver";
 export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
 export {
@@ -93,12 +84,18 @@ export {
 } from "./IERC721Receiver";
 export { ERC165Contract, ERC165Instance } from "./ERC165";
 export { IERC165Contract, IERC165Instance } from "./IERC165";
+export { IERC20Contract, IERC20Instance } from "./IERC20";
 export { BattleContract, BattleInstance } from "./Battle";
 export { ProphetV2Contract, ProphetV2Instance } from "./ProphetV2";
 export {
   ProphetV2StorageContract,
   ProphetV2StorageInstance,
 } from "./ProphetV2Storage";
+export {
+  PoolInitializableContract,
+  PoolInitializableInstance,
+} from "./PoolInitializable";
+export { PoolFactoryContract, PoolFactoryInstance } from "./PoolFactory";
 export { TCPContract, TCPInstance } from "./TCP";
 export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
 export {
