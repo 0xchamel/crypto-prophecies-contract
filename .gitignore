@@ -3,7 +3,6 @@ build/
 artifacts/
 cache/
 package-lock.json
-.openzeppelin
 .env
 .vscode
 yarn-error.log
