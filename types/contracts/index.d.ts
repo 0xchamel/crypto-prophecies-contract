@@ -2,13 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { OwnableUpgradeableContract } from "./OwnableUpgradeable";
-import { ERC1155UpgradeableContract } from "./ERC1155Upgradeable";
-import { IERC1155MetadataURIUpgradeableContract } from "./IERC1155MetadataURIUpgradeable";
-import { IERC1155ReceiverUpgradeableContract } from "./IERC1155ReceiverUpgradeable";
-import { IERC1155UpgradeableContract } from "./IERC1155Upgradeable";
-import { ERC165UpgradeableContract } from "./ERC165Upgradeable";
-import { IERC165UpgradeableContract } from "./IERC165Upgradeable";
 import { OwnableContract } from "./Ownable";
 import { ERC20Contract } from "./ERC20";
 import { ERC20CappedContract } from "./ERC20Capped";
@@ -28,7 +21,6 @@ import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
 import { PoolInitializableContract } from "./PoolInitializable";
 import { PoolFactoryContract } from "./PoolFactory";
-import { OrbContract } from "./Orb";
 import { TCPContract } from "./TCP";
 import { TokenVestingContract } from "./TokenVesting";
 import { VestingDetailsContract } from "./VestingDetails";
@@ -37,17 +29,6 @@ import { VestingStorageContract } from "./VestingStorage";
 declare global {
   namespace Truffle {
     interface Artifacts {
-      require(name: "OwnableUpgradeable"): OwnableUpgradeableContract;
-      require(name: "ERC1155Upgradeable"): ERC1155UpgradeableContract;
-      require(
-        name: "IERC1155MetadataURIUpgradeable"
-      ): IERC1155MetadataURIUpgradeableContract;
-      require(
-        name: "IERC1155ReceiverUpgradeable"
-      ): IERC1155ReceiverUpgradeableContract;
-      require(name: "IERC1155Upgradeable"): IERC1155UpgradeableContract;
-      require(name: "ERC165Upgradeable"): ERC165UpgradeableContract;
-      require(name: "IERC165Upgradeable"): IERC165UpgradeableContract;
       require(name: "Ownable"): OwnableContract;
       require(name: "ERC20"): ERC20Contract;
       require(name: "ERC20Capped"): ERC20CappedContract;
@@ -67,7 +48,6 @@ declare global {
       require(name: "ProphetV2Storage"): ProphetV2StorageContract;
       require(name: "PoolInitializable"): PoolInitializableContract;
       require(name: "PoolFactory"): PoolFactoryContract;
-      require(name: "Orb"): OrbContract;
       require(name: "TCP"): TCPContract;
       require(name: "TokenVesting"): TokenVestingContract;
       require(name: "VestingDetails"): VestingDetailsContract;
@@ -76,34 +56,6 @@ declare global {
   }
 }
 
-export {
-  OwnableUpgradeableContract,
-  OwnableUpgradeableInstance,
-} from "./OwnableUpgradeable";
-export {
-  ERC1155UpgradeableContract,
-  ERC1155UpgradeableInstance,
-} from "./ERC1155Upgradeable";
-export {
-  IERC1155MetadataURIUpgradeableContract,
-  IERC1155MetadataURIUpgradeableInstance,
-} from "./IERC1155MetadataURIUpgradeable";
-export {
-  IERC1155ReceiverUpgradeableContract,
-  IERC1155ReceiverUpgradeableInstance,
-} from "./IERC1155ReceiverUpgradeable";
-export {
-  IERC1155UpgradeableContract,
-  IERC1155UpgradeableInstance,
-} from "./IERC1155Upgradeable";
-export {
-  ERC165UpgradeableContract,
-  ERC165UpgradeableInstance,
-} from "./ERC165Upgradeable";
-export {
-  IERC165UpgradeableContract,
-  IERC165UpgradeableInstance,
-} from "./IERC165Upgradeable";
 export { OwnableContract, OwnableInstance } from "./Ownable";
 export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
@@ -144,7 +96,6 @@ export {
   PoolInitializableInstance,
 } from "./PoolInitializable";
 export { PoolFactoryContract, PoolFactoryInstance } from "./PoolFactory";
-export { OrbContract, OrbInstance } from "./Orb";
 export { TCPContract, TCPInstance } from "./TCP";
 export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
 export {
