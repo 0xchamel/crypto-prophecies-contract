@@ -39,7 +39,7 @@ module.exports = {
       gas: 4000000
     },
     mumbai: {
-      provider: () => new HDWalletProvider(MNEMONIC, `https://rpc-mumbai.matic.today`),
+      provider: () => new HDWalletProvider(MNEMONIC, "https://rpc-mumbai.maticvigil.com/v1/0e6761824141e47a278ea0f95f15d58c48ad0086"),
       network_id: 80001,
       confirmations: 0,
       timeoutBlocks: 200,
