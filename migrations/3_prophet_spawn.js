@@ -4,8 +4,10 @@ module.exports = async function (deployer, network, accounts) {
   console.log(NFTinstance.address);
   let addresses = [
     //TEAM
-    // "0x6B0f2b332E13EC4c20B049b486DAaEb43efE5C0b",//Vicki
-    // "0xAdFff875deE58634C5da64409F78cd3CdC9c7736", //Bohdan
+    // "0x009177f7a79142d77b19FCc106fbb72399593Ffb",// Vlad
+    //  "0x5C88D9c2DfF52DB271E684c441ECF382eB645057",//Mo
+    //  "0x6B0f2b332E13EC4c20B049b486DAaEb43efE5C0b",//Vicki
+    //  "0xAdFff875deE58634C5da64409F78cd3CdC9c7736", //Bohdan
     // "0x834F2Ceb5C410A9C7F8206D37096ad0e30766D36", //Volo
     // "0x4767Fc87DBB485b0B7812167AC85eEC14398a882", //Volo Brave
     // "0x69e0C5F5061B864eba6FD5D602060F790b9E3716", //Volo Firefox
