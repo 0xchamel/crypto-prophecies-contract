@@ -58,6 +58,41 @@ export interface Transfer {
 type AllEvents = Approval | ApprovalForAll | OwnershipTransferred | Transfer;
 
 export interface ProphetV2Instance extends Truffle.ContractInstance {
+  _createProphet: {
+    (
+      generation: number | BN | string,
+      rarity: number | BN | string,
+      race: number | BN | string,
+      character: number | BN | string,
+      destination: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      generation: number | BN | string,
+      rarity: number | BN | string,
+      race: number | BN | string,
+      character: number | BN | string,
+      destination: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      generation: number | BN | string,
+      rarity: number | BN | string,
+      race: number | BN | string,
+      character: number | BN | string,
+      destination: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      generation: number | BN | string,
+      rarity: number | BN | string,
+      race: number | BN | string,
+      character: number | BN | string,
+      destination: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   addName: {
     (
       race: number | BN | string,
@@ -192,41 +227,6 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
     ): Promise<string>;
     estimateGas(
       tokenIds: (number | BN | string)[],
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
-  createProphet: {
-    (
-      generation: number | BN | string,
-      rarity: number | BN | string,
-      race: number | BN | string,
-      character: number | BN | string,
-      destination: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      generation: number | BN | string,
-      rarity: number | BN | string,
-      race: number | BN | string,
-      character: number | BN | string,
-      destination: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      generation: number | BN | string,
-      rarity: number | BN | string,
-      race: number | BN | string,
-      character: number | BN | string,
-      destination: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      generation: number | BN | string,
-      rarity: number | BN | string,
-      race: number | BN | string,
-      character: number | BN | string,
-      destination: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -448,6 +448,41 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
   };
 
   methods: {
+    _createProphet: {
+      (
+        generation: number | BN | string,
+        rarity: number | BN | string,
+        race: number | BN | string,
+        character: number | BN | string,
+        destination: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        generation: number | BN | string,
+        rarity: number | BN | string,
+        race: number | BN | string,
+        character: number | BN | string,
+        destination: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        generation: number | BN | string,
+        rarity: number | BN | string,
+        race: number | BN | string,
+        character: number | BN | string,
+        destination: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        generation: number | BN | string,
+        rarity: number | BN | string,
+        race: number | BN | string,
+        character: number | BN | string,
+        destination: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     addName: {
       (
         race: number | BN | string,
@@ -588,41 +623,6 @@ export interface ProphetV2Instance extends Truffle.ContractInstance {
       ): Promise<string>;
       estimateGas(
         tokenIds: (number | BN | string)[],
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    createProphet: {
-      (
-        generation: number | BN | string,
-        rarity: number | BN | string,
-        race: number | BN | string,
-        character: number | BN | string,
-        destination: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        generation: number | BN | string,
-        rarity: number | BN | string,
-        race: number | BN | string,
-        character: number | BN | string,
-        destination: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        generation: number | BN | string,
-        rarity: number | BN | string,
-        race: number | BN | string,
-        character: number | BN | string,
-        destination: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        generation: number | BN | string,
-        rarity: number | BN | string,
-        race: number | BN | string,
-        character: number | BN | string,
-        destination: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
