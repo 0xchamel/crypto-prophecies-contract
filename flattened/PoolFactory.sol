@@ -153,6 +153,9 @@ abstract contract ReentrancyGuard {
     }
 }
 
+/**
+ * @dev Interface of the ERC20 standard as defined in the EIP.
+ */
 interface IERC20 {
     /**
      * @dev Returns the amount of tokens in existence.
@@ -264,17 +267,14 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
     // The precision factor
     uint256 public PRECISION_FACTOR;
 
+    // The reward token holder
+    address public rewardHolder;
+
     // The reward token
     IERC20 public rewardToken;
 
     // The staked token
     IERC20 public stakedToken;
-
-    // The withdrawal interval
-    uint256 public withdrawalInterval;
-
-    // Max withdrawal interval: 30 days.
-    uint256 public constant MAXIMUM_WITHDRAWAL_INTERVAL = 30 days;
 
     // Info of each user that stakes tokens (stakedToken)
     mapping(address => UserInfo) public userInfo;
@@ -282,7 +282,6 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
     struct UserInfo {
         uint256 amount; // How many staked tokens the user has provided
         uint256 rewardDebt; // Reward debt
-        uint256 nextWithdrawalUntil; // When can the user withdraw again.
     }
 
     event AdminTokenRecovery(address tokenRecovered, uint256 amount);
@@ -292,7 +291,6 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
     event NewRewardPerBlock(uint256 rewardPerBlock);
     event RewardsStop(uint256 blockNumber);
     event Withdraw(address indexed user, uint256 amount);
-    event NewWithdrawalInterval(uint256 interval);
 
     constructor() public {
         POOL_FACTORY = msg.sender;
@@ -302,37 +300,33 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
      * @notice Initialize the contract
      * @param _stakedToken: staked token address
      * @param _rewardToken: reward token address
+     * @param _rewardHolder: reward token holder address
      * @param _rewardPerBlock: reward per block (in rewardToken)
      * @param _startBlock: start block
      * @param _bonusEndBlock: end block
-     * @param _withdrawalInterval: the withdrawal interval for stakedToken (if any, else 0)
      * @param _admin: admin address with ownership
      */
     function initialize(
         IERC20 _stakedToken,
         IERC20 _rewardToken,
+        address _rewardHolder,
         uint256 _rewardPerBlock,
         uint256 _startBlock,
         uint256 _bonusEndBlock,
-        uint256 _withdrawalInterval,
         address _admin
     ) external {
         require(!isInitialized, "Already initialized");
         require(msg.sender == POOL_FACTORY, "Not factory");
-        require(
-            _withdrawalInterval <= MAXIMUM_WITHDRAWAL_INTERVAL,
-            "Invalid withdrawal interval"
-        );
 
         // Make this contract initialized
         isInitialized = true;
 
         stakedToken = _stakedToken;
         rewardToken = _rewardToken;
+        rewardHolder = _rewardHolder;
         rewardPerBlock = _rewardPerBlock;
         startBlock = _startBlock;
         bonusEndBlock = _bonusEndBlock;
-        withdrawalInterval = _withdrawalInterval;
 
         uint256 decimalsRewardToken = uint256(rewardToken.decimals());
         require(decimalsRewardToken < 30, "Must be inferior to 30");
@@ -359,8 +353,11 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
             uint256 pending = ((user.amount * accTokenPerShare) /
                 PRECISION_FACTOR) - user.rewardDebt;
             if (pending > 0) {
-                rewardToken.transfer(address(msg.sender), pending);
-                user.nextWithdrawalUntil = block.timestamp + withdrawalInterval;
+                rewardToken.transferFrom(
+                    rewardHolder,
+                    address(msg.sender),
+                    pending
+                );
             }
         }
 
@@ -371,10 +368,6 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
                 _amount
             );
             user.amount = user.amount + _amount;
-
-            if (user.nextWithdrawalUntil == 0) {
-                user.nextWithdrawalUntil = block.timestamp + withdrawalInterval;
-            }
         }
 
         user.rewardDebt = (user.amount * accTokenPerShare) / PRECISION_FACTOR;
@@ -389,10 +382,6 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
     function withdraw(uint256 _amount) external nonReentrant {
         UserInfo storage user = userInfo[msg.sender];
         require(user.amount >= _amount, "Amount to withdraw too high");
-        require(
-            user.nextWithdrawalUntil <= block.timestamp,
-            "Withdrawal locked"
-        );
 
         _updatePool();
 
@@ -406,8 +395,11 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
         }
 
         if (pending > 0) {
-            rewardToken.transfer(address(msg.sender), pending);
-            user.nextWithdrawalUntil = block.timestamp + withdrawalInterval;
+            rewardToken.transferFrom(
+                rewardHolder,
+                address(msg.sender),
+                pending
+            );
         }
 
         user.rewardDebt = (user.amount * accTokenPerShare) / PRECISION_FACTOR;
@@ -421,15 +413,10 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
      */
     function emergencyWithdraw() external nonReentrant {
         UserInfo storage user = userInfo[msg.sender];
-        require(
-            user.nextWithdrawalUntil <= block.timestamp,
-            "Withdrawal locked"
-        );
 
         uint256 amountToTransfer = user.amount;
         user.amount = 0;
         user.rewardDebt = 0;
-        user.nextWithdrawalUntil = 0;
 
         if (amountToTransfer > 0) {
             stakedToken.transfer(address(msg.sender), amountToTransfer);
@@ -443,7 +430,7 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
      * @dev Only callable by owner. Needs to be for emergency.
      */
     function emergencyRewardWithdraw(uint256 _amount) external onlyOwner {
-        rewardToken.transfer(address(msg.sender), _amount);
+        rewardToken.transferFrom(rewardHolder, address(msg.sender), _amount);
     }
 
     /**
@@ -484,7 +471,6 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
      * @param _rewardPerBlock: the reward per block
      */
     function updateRewardPerBlock(uint256 _rewardPerBlock) external onlyOwner {
-        require(block.number < startBlock, "Pool has started");
         rewardPerBlock = _rewardPerBlock;
         emit NewRewardPerBlock(_rewardPerBlock);
     }
@@ -499,7 +485,6 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
         uint256 _startBlock,
         uint256 _bonusEndBlock
     ) external onlyOwner {
-        require(block.number < startBlock, "Pool has started");
         require(
             _startBlock < _bonusEndBlock,
             "New startBlock must be lower than new endBlock"
@@ -516,20 +501,6 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
         lastRewardBlock = startBlock;
 
         emit NewStartAndEndBlocks(_startBlock, _bonusEndBlock);
-    }
-
-    /*
-     * @notice Update the withdrawal interval
-     * @dev Only callable by owner.
-     * @param _interval: the withdrawal interval for staked token in seconds
-     */
-    function updateWithdrawalInterval(uint256 _interval) external onlyOwner {
-        require(
-            _interval <= MAXIMUM_WITHDRAWAL_INTERVAL,
-            "Invalid withdrawal interval"
-        );
-        withdrawalInterval = _interval;
-        emit NewWithdrawalInterval(_interval);
     }
 
     /*
@@ -555,12 +526,6 @@ contract PoolInitializable is Ownable, ReentrancyGuard {
                 PRECISION_FACTOR -
                 user.rewardDebt;
         }
-    }
-
-    // View function to see if user can withdraw staked token.
-    function canWithdraw(address _user) external view returns (bool) {
-        UserInfo storage user = userInfo[_user];
-        return block.timestamp >= user.nextWithdrawalUntil;
     }
 
     /*
@@ -620,22 +585,25 @@ contract PoolFactory is Ownable {
      * @param _rewardPerBlock: reward per block (in rewardToken)
      * @param _startBlock: start block
      * @param _endBlock: end block
-     * @param _withdrawalInterval: the withdrawal interval for stakedToken (if any, else 0)
      * @param _admin: admin address with ownership
      * @return address of new pool contract
      */
     function deployPool(
         IERC20 _stakedToken,
         IERC20 _rewardToken,
+        address _rewardHolder,
         uint256 _rewardPerBlock,
         uint256 _startBlock,
         uint256 _bonusEndBlock,
-        uint256 _withdrawalInterval,
         address _admin
     ) external onlyOwner {
         require(_stakedToken.totalSupply() >= 0);
         require(_rewardToken.totalSupply() >= 0);
         require(_stakedToken != _rewardToken, "Tokens must be be different");
+        require(
+            _bonusEndBlock > _startBlock,
+            "BonusEndBlock number must be bigger than StartBlock number"
+        );
 
         bytes memory bytecode = type(PoolInitializable).creationCode;
         bytes32 salt = keccak256(
@@ -650,13 +618,42 @@ contract PoolFactory is Ownable {
         PoolInitializable(poolAddress).initialize(
             _stakedToken,
             _rewardToken,
+            _rewardHolder,
             _rewardPerBlock,
             _startBlock,
             _bonusEndBlock,
-            _withdrawalInterval,
             _admin
         );
 
         emit NewPoolContract(poolAddress);
+    }
+
+    /*
+     * @notice Get pool address
+     * @param _stakedToken: staked token address
+     * @param _rewardToken: reward token address
+     * @param _startBlock: start block
+     * @return address of precomputed pool contract address
+     */
+    function getPoolAddress(
+        IERC20 _stakedToken,
+        IERC20 _rewardToken,
+        uint256 _startBlock
+    ) public view returns (address) {
+        bytes memory bytecode = type(PoolInitializable).creationCode;
+        bytes32 salt = keccak256(
+            abi.encodePacked(_stakedToken, _rewardToken, _startBlock)
+        );
+
+        bytes32 hash = keccak256(
+            abi.encodePacked(
+                bytes1(0xff),
+                address(this),
+                salt,
+                keccak256(bytecode)
+            )
+        );
+
+        return address(uint160(uint256(hash)));
     }
 }

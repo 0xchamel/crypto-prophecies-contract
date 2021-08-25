@@ -26,9 +26,9 @@ import { IERC20Contract } from "./IERC20";
 import { BattleContract } from "./Battle";
 import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
+import { OrbContract } from "./Orb";
 import { PoolInitializableContract } from "./PoolInitializable";
 import { PoolFactoryContract } from "./PoolFactory";
-import { OrbContract } from "./Orb";
 import { TCPContract } from "./TCP";
 import { TokenVestingContract } from "./TokenVesting";
 import { VestingDetailsContract } from "./VestingDetails";
@@ -65,9 +65,9 @@ declare global {
       require(name: "Battle"): BattleContract;
       require(name: "ProphetV2"): ProphetV2Contract;
       require(name: "ProphetV2Storage"): ProphetV2StorageContract;
+      require(name: "Orb"): OrbContract;
       require(name: "PoolInitializable"): PoolInitializableContract;
       require(name: "PoolFactory"): PoolFactoryContract;
-      require(name: "Orb"): OrbContract;
       require(name: "TCP"): TCPContract;
       require(name: "TokenVesting"): TokenVestingContract;
       require(name: "VestingDetails"): VestingDetailsContract;
@@ -139,12 +139,12 @@ export {
   ProphetV2StorageContract,
   ProphetV2StorageInstance,
 } from "./ProphetV2Storage";
+export { OrbContract, OrbInstance } from "./Orb";
 export {
   PoolInitializableContract,
   PoolInitializableInstance,
 } from "./PoolInitializable";
 export { PoolFactoryContract, PoolFactoryInstance } from "./PoolFactory";
-export { OrbContract, OrbInstance } from "./Orb";
 export { TCPContract, TCPInstance } from "./TCP";
 export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
 export {

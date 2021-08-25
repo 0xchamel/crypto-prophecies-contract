@@ -25,12 +25,21 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     }
 
     event Supply(uint256 indexed tokenId, uint256 value);
-    event Creators(uint256 indexed tokenId, address indexed value);
+    event GenerationUpdated(uint16 indexed id);
+    event OrbInfoAdded(
+        OrbType varity,
+        string name,
+        uint16 common,
+        uint16 uncommon,
+        uint16 rare,
+        uint16 epic,
+        uint16 legendary,
+        uint16 indexed generation
+    );
+    event URI(uint256 indexed tokenId, string value);
 
     uint16 public orbGenId;
-    mapping(uint256 => address) public creators;
     mapping(uint256 => uint256) public supply;
-    mapping(uint256 => uint256) public minted;
     mapping(uint256 => string) private tokenURIs;
     mapping(uint256 => OrbInfo) private orbs;
     mapping(address => bool) private minters;
@@ -50,27 +59,16 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     function mint(
         address account,
         uint256 id,
-        uint256 amount,
         uint256 maximum,
         string memory tokenUri,
         bytes memory data
     ) external onlyMinter {
         require(maximum > 0, "supply incorrect");
-        require(amount > 0, "amount incorrect");
+        require(supply[id] == 0, "token id is existed");
 
-        if (supply[id] == 0) {
-            _saveSupply(id, maximum);
-            _saveCreator(id, _msgSender());
-        }
-
-        uint256 newMinted = amount + minted[id];
-        require(newMinted <= supply[id], "more than supply");
-        minted[id] = newMinted;
-
-        require(creators[id] == _msgSender(), "different creator");
-
+        _saveSupply(id, maximum);
         _setTokenURI(id, tokenUri);
-        _mint(account, id, amount, data);
+        _mint(account, id, maximum, data);
     }
 
     function setOrbData(
@@ -98,6 +96,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     function setGenerationId(uint16 _id) external onlyOwner {
         require(orbGenId < _id, "invalid generation id");
         orbGenId = _id;
+        emit GenerationUpdated(_id);
     }
 
     function setMinter(address _address, bool _isMinter) external onlyOwner {
@@ -161,6 +160,17 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
             _legendary,
             orbGenId
         );
+
+        emit OrbInfoAdded(
+            _orbType,
+            _name,
+            _common,
+            _uncommon,
+            _rare,
+            _epic,
+            _legendary,
+            orbGenId
+        );
     }
 
     function _saveSupply(uint256 _tokenId, uint256 _supply) internal {
@@ -169,15 +179,11 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         emit Supply(_tokenId, _supply);
     }
 
-    function _saveCreator(uint256 _tokenId, address _creator) internal {
-        creators[_tokenId] = _creator;
-        emit Creators(_tokenId, _creator);
-    }
-
     function _setTokenURI(uint256 tokenId, string memory tokenUri)
         internal
         virtual
     {
         tokenURIs[tokenId] = tokenUri;
+        emit URI(tokenId, tokenUri);
     }
 }

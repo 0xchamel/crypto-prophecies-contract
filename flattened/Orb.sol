@@ -1089,8 +1089,8 @@ contract ERC1155Upgradeable is
                 if (
                     response !=
                     IERC1155ReceiverUpgradeable(to)
-                    .onERC1155BatchReceived
-                    .selector
+                        .onERC1155BatchReceived
+                        .selector
                 ) {
                     revert("ERC1155: ERC1155Receiver rejected tokens");
                 }
@@ -1196,25 +1196,52 @@ abstract contract OwnableUpgradeable is Initializable, ContextUpgradeable {
 }
 
 contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
+    enum OrbType {
+        STONE,
+        CUBE,
+        DIAMOND,
+        CAPE,
+        EGG
+    }
+
     struct OrbInfo {
+        OrbType variety;
         string name;
         uint16 common;
         uint16 uncommon;
         uint16 rare;
         uint16 epic;
         uint16 legendary;
+        uint16 generation;
     }
 
     event Supply(uint256 indexed tokenId, uint256 value);
-    event Creators(uint256 indexed tokenId, address indexed value);
+    event GenerationUpdated(uint16 indexed id);
+    event OrbInfoAdded(
+        OrbType varity,
+        string name,
+        uint16 common,
+        uint16 uncommon,
+        uint16 rare,
+        uint16 epic,
+        uint16 legendary,
+        uint16 indexed generation
+    );
+    event URI(uint256 indexed tokenId, string value);
 
-    mapping(uint256 => address) public creators;
+    uint16 public orbGenId;
     mapping(uint256 => uint256) public supply;
-    mapping(uint256 => uint256) public minted;
     mapping(uint256 => string) private tokenURIs;
     mapping(uint256 => OrbInfo) private orbs;
+    mapping(address => bool) private minters;
+
+    modifier onlyMinter() {
+        require(minters[_msgSender()], "Invalid minter");
+        _;
+    }
 
     function initialize(string memory _uri) public initializer {
+        minters[_msgSender()] = true;
         __Ownable_init();
         __ERC1155_init(_uri);
         __ERC1155_init_unchained(_uri);
@@ -1223,31 +1250,21 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     function mint(
         address account,
         uint256 id,
-        uint256 amount,
         uint256 maximum,
         string memory tokenUri,
         bytes memory data
-    ) external onlyOwner {
+    ) external onlyMinter {
         require(maximum > 0, "supply incorrect");
-        require(amount > 0, "amount incorrect");
+        require(supply[id] == 0, "token id is existed");
 
-        if (supply[id] == 0) {
-            _saveSupply(id, maximum);
-            _saveCreator(id, _msgSender());
-        }
-
-        uint256 newMinted = amount + minted[id];
-        require(newMinted <= supply[id], "more than supply");
-        minted[id] = newMinted;
-
-        require(creators[id] == _msgSender(), "different creator");
-
+        _saveSupply(id, maximum);
         _setTokenURI(id, tokenUri);
-        _mint(account, id, amount, data);
+        _mint(account, id, maximum, data);
     }
 
     function setOrbData(
         uint256 _orbId,
+        OrbType _orbType,
         string memory _name,
         uint16 _common,
         uint16 _uncommon,
@@ -1257,6 +1274,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     ) external onlyOwner {
         _setOrbData(
             _orbId,
+            _orbType,
             _name,
             _common,
             _uncommon,
@@ -1264,6 +1282,21 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
             _epic,
             _legendary
         );
+    }
+
+    function setGenerationId(uint16 _id) external onlyOwner {
+        require(orbGenId < _id, "invalid generation id");
+        orbGenId = _id;
+        emit GenerationUpdated(_id);
+    }
+
+    function setMinter(address _address, bool _isMinter) external onlyOwner {
+        minters[_address] = _isMinter;
+    }
+
+    function setSupply(uint256 _tokenId, uint256 _supply) external onlyOwner {
+        require(_supply != 0, "supply can't be zero");
+        _saveSupply(_tokenId, _supply);
     }
 
     function tokenURI(uint256 tokenId) external view returns (string memory) {
@@ -1274,6 +1307,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         external
         view
         returns (
+            OrbType,
             string memory,
             uint16,
             uint16,
@@ -1283,6 +1317,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         )
     {
         return (
+            orbs[orbId].variety,
             orbs[orbId].name,
             orbs[orbId].common,
             orbs[orbId].uncommon,
@@ -1294,6 +1329,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
 
     function _setOrbData(
         uint256 _orbId,
+        OrbType _orbType,
         string memory _name,
         uint16 _common,
         uint16 _uncommon,
@@ -1306,12 +1342,25 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
             revert("invalid orb id");
         }
         orbs[_orbId] = OrbInfo(
+            _orbType,
             _name,
             _common,
             _uncommon,
             _rare,
             _epic,
-            _legendary
+            _legendary,
+            orbGenId
+        );
+
+        emit OrbInfoAdded(
+            _orbType,
+            _name,
+            _common,
+            _uncommon,
+            _rare,
+            _epic,
+            _legendary,
+            orbGenId
         );
     }
 
@@ -1321,15 +1370,11 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         emit Supply(_tokenId, _supply);
     }
 
-    function _saveCreator(uint256 _tokenId, address _creator) internal {
-        creators[_tokenId] = _creator;
-        emit Creators(_tokenId, _creator);
-    }
-
     function _setTokenURI(uint256 tokenId, string memory tokenUri)
         internal
         virtual
     {
         tokenURIs[tokenId] = tokenUri;
+        emit URI(tokenId, tokenUri);
     }
 }

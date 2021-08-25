@@ -21,13 +21,33 @@ export interface ApprovalForAll {
   };
 }
 
-export interface Creators {
-  name: "Creators";
+export interface GenerationUpdated {
+  name: "GenerationUpdated";
   args: {
-    tokenId: BN;
-    value: string;
+    id: BN;
+    0: BN;
+  };
+}
+
+export interface OrbInfoAdded {
+  name: "OrbInfoAdded";
+  args: {
+    varity: BN;
+    name: string;
+    common: BN;
+    uncommon: BN;
+    rare: BN;
+    epic: BN;
+    legendary: BN;
+    generation: BN;
     0: BN;
     1: string;
+    2: BN;
+    3: BN;
+    4: BN;
+    5: BN;
+    6: BN;
+    7: BN;
   };
 }
 
@@ -83,7 +103,17 @@ export interface TransferSingle {
   };
 }
 
-export interface URI {
+export interface URI_uint256_string {
+  name: "URI";
+  args: {
+    tokenId: BN;
+    value: string;
+    0: BN;
+    1: string;
+  };
+}
+
+export interface URI_string_uint256 {
   name: "URI";
   args: {
     value: string;
@@ -93,9 +123,12 @@ export interface URI {
   };
 }
 
+type URI = URI_uint256_string | URI_string_uint256;
+
 type AllEvents =
   | ApprovalForAll
-  | Creators
+  | GenerationUpdated
+  | OrbInfoAdded
   | OwnershipTransferred
   | Supply
   | TransferBatch
@@ -114,11 +147,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
     ids: (number | BN | string)[],
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
-
-  creators(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<string>;
 
   initialize: {
     (_uri: string, txDetails?: Truffle.TransactionDetails): Promise<
@@ -145,7 +173,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
     (
       account: string,
       id: number | BN | string,
-      amount: number | BN | string,
       maximum: number | BN | string,
       tokenUri: string,
       data: string,
@@ -154,7 +181,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
     call(
       account: string,
       id: number | BN | string,
-      amount: number | BN | string,
       maximum: number | BN | string,
       tokenUri: string,
       data: string,
@@ -163,7 +189,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
     sendTransaction(
       account: string,
       id: number | BN | string,
-      amount: number | BN | string,
       maximum: number | BN | string,
       tokenUri: string,
       data: string,
@@ -172,18 +197,12 @@ export interface OrbInstance extends Truffle.ContractInstance {
     estimateGas(
       account: string,
       id: number | BN | string,
-      amount: number | BN | string,
       maximum: number | BN | string,
       tokenUri: string,
       data: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
-
-  minted(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
 
   orbData(
     orbId: number | BN | string,
@@ -459,11 +478,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
 
-    creators(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-
     initialize: {
       (_uri: string, txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
@@ -489,7 +503,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
       (
         account: string,
         id: number | BN | string,
-        amount: number | BN | string,
         maximum: number | BN | string,
         tokenUri: string,
         data: string,
@@ -498,7 +511,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
       call(
         account: string,
         id: number | BN | string,
-        amount: number | BN | string,
         maximum: number | BN | string,
         tokenUri: string,
         data: string,
@@ -507,7 +519,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
       sendTransaction(
         account: string,
         id: number | BN | string,
-        amount: number | BN | string,
         maximum: number | BN | string,
         tokenUri: string,
         data: string,
@@ -516,18 +527,12 @@ export interface OrbInstance extends Truffle.ContractInstance {
       estimateGas(
         account: string,
         id: number | BN | string,
-        amount: number | BN | string,
         maximum: number | BN | string,
         tokenUri: string,
         data: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
-
-    minted(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
 
     orbData(
       orbId: number | BN | string,
