@@ -6,10 +6,10 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     enum OrbType {
+        ORB,
         STONE,
         CUBE,
         DIAMOND,
-        CAPE,
         EGG
     }
 
@@ -112,12 +112,17 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         return tokenURIs[tokenId];
     }
 
+    function isMinter(address _minter) external view returns (bool) {
+        return minters[_minter];
+    }
+
     function orbData(uint256 orbId)
         external
         view
         returns (
             OrbType,
             string memory,
+            uint16,
             uint16,
             uint16,
             uint16,
@@ -132,7 +137,8 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
             orbs[orbId].uncommon,
             orbs[orbId].rare,
             orbs[orbId].epic,
-            orbs[orbId].legendary
+            orbs[orbId].legendary,
+            orbs[orbId].generation
         );
     }
 
