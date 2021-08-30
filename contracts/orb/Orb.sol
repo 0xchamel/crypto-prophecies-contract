@@ -27,7 +27,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     event Supply(uint256 indexed tokenId, uint256 value);
     event GenerationUpdated(uint16 indexed id);
     event OrbInfoAdded(
-        OrbType varity,
+        OrbType variety,
         string name,
         uint16 common,
         uint16 uncommon,
@@ -37,15 +37,23 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         uint16 indexed generation
     );
     event URI(uint256 indexed tokenId, string value);
+    event SetMinter(address indexed account, bool value);
+    event SetBurner(address indexed account, bool value);
 
     uint16 public orbGenId;
     mapping(uint256 => uint256) public supply;
     mapping(uint256 => string) private tokenURIs;
     mapping(uint256 => OrbInfo) private orbs;
     mapping(address => bool) private minters;
+    mapping(address => bool) private burners;
 
     modifier onlyMinter() {
         require(minters[_msgSender()], "Invalid minter");
+        _;
+    }
+
+    modifier onlyBurner() {
+        require(burners[_msgSender()], "Invalid burner");
         _;
     }
 
@@ -69,6 +77,14 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         _saveSupply(id, maximum);
         _setTokenURI(id, tokenUri);
         _mint(account, id, maximum, data);
+    }
+
+    function burn(
+        address account,
+        uint256 id,
+        uint256 amount
+    ) external onlyBurnder {
+        _burn(account, id, amount);
     }
 
     function setOrbData(
@@ -101,6 +117,12 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
 
     function setMinter(address _address, bool _isMinter) external onlyOwner {
         minters[_address] = _isMinter;
+        emit SetMinter(_address, _isMinter);
+    }
+
+    function setBurner(address _address, bool _isBurner) external onlyOwner {
+        burners[_address] = _isBurner;
+        emit SetBurner(_address, _isBurner);
     }
 
     function setSupply(uint256 _tokenId, uint256 _supply) external onlyOwner {
@@ -114,6 +136,10 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
 
     function isMinter(address _minter) external view returns (bool) {
         return minters[_minter];
+    }
+
+    function isBurnder(address _burner) external view returns (bool) {
+        return burners[_burner];
     }
 
     function orbData(uint256 orbId)
