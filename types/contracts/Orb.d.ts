@@ -32,7 +32,7 @@ export interface GenerationUpdated {
 export interface OrbInfoAdded {
   name: "OrbInfoAdded";
   args: {
-    varity: BN;
+    variety: BN;
     name: string;
     common: BN;
     uncommon: BN;
@@ -58,6 +58,26 @@ export interface OwnershipTransferred {
     newOwner: string;
     0: string;
     1: string;
+  };
+}
+
+export interface SetBurner {
+  name: "SetBurner";
+  args: {
+    account: string;
+    value: boolean;
+    0: string;
+    1: boolean;
+  };
+}
+
+export interface SetMinter {
+  name: "SetMinter";
+  args: {
+    account: string;
+    value: boolean;
+    0: string;
+    1: boolean;
   };
 }
 
@@ -130,6 +150,8 @@ type AllEvents =
   | GenerationUpdated
   | OrbInfoAdded
   | OwnershipTransferred
+  | SetBurner
+  | SetMinter
   | Supply
   | TransferBatch
   | TransferSingle
@@ -147,6 +169,33 @@ export interface OrbInstance extends Truffle.ContractInstance {
     ids: (number | BN | string)[],
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
+
+  burn: {
+    (
+      account: string,
+      id: number | BN | string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      account: string,
+      id: number | BN | string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      account: string,
+      id: number | BN | string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      account: string,
+      id: number | BN | string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
 
   initialize: {
     (_uri: string, txDetails?: Truffle.TransactionDetails): Promise<
@@ -166,6 +215,16 @@ export interface OrbInstance extends Truffle.ContractInstance {
   isApprovedForAll(
     account: string,
     operator: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<boolean>;
+
+  isBurnder(
+    _burner: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<boolean>;
+
+  isMinter(
+    _minter: string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
 
@@ -204,12 +263,12 @@ export interface OrbInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  orbData(
-    orbId: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<{ 0: BN; 1: string; 2: BN; 3: BN; 4: BN; 5: BN; 6: BN }>;
-
   orbGenId(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+  orbs(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<{ 0: BN; 1: string; 2: BN; 3: BN; 4: BN; 5: BN; 6: BN; 7: BN }>;
 
   owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
@@ -311,6 +370,29 @@ export interface OrbInstance extends Truffle.ContractInstance {
     estimateGas(
       operator: string,
       approved: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  setBurner: {
+    (
+      _address: string,
+      _isBurner: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _address: string,
+      _isBurner: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _address: string,
+      _isBurner: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _address: string,
+      _isBurner: boolean,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -478,6 +560,33 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
 
+    burn: {
+      (
+        account: string,
+        id: number | BN | string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        account: string,
+        id: number | BN | string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        account: string,
+        id: number | BN | string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        account: string,
+        id: number | BN | string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     initialize: {
       (_uri: string, txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
@@ -496,6 +605,16 @@ export interface OrbInstance extends Truffle.ContractInstance {
     isApprovedForAll(
       account: string,
       operator: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<boolean>;
+
+    isBurnder(
+      _burner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<boolean>;
+
+    isMinter(
+      _minter: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
 
@@ -534,12 +653,12 @@ export interface OrbInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
-    orbData(
-      orbId: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<{ 0: BN; 1: string; 2: BN; 3: BN; 4: BN; 5: BN; 6: BN }>;
-
     orbGenId(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+    orbs(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<{ 0: BN; 1: string; 2: BN; 3: BN; 4: BN; 5: BN; 6: BN; 7: BN }>;
 
     owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
@@ -641,6 +760,29 @@ export interface OrbInstance extends Truffle.ContractInstance {
       estimateGas(
         operator: string,
         approved: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    setBurner: {
+      (
+        _address: string,
+        _isBurner: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _address: string,
+        _isBurner: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _address: string,
+        _isBurner: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _address: string,
+        _isBurner: boolean,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

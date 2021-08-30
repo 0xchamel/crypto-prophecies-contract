@@ -41,9 +41,9 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     event SetBurner(address indexed account, bool value);
 
     uint16 public orbGenId;
+    mapping(uint256 => OrbInfo) public orbs;
     mapping(uint256 => uint256) public supply;
     mapping(uint256 => string) private tokenURIs;
-    mapping(uint256 => OrbInfo) private orbs;
     mapping(address => bool) private minters;
     mapping(address => bool) private burners;
 
@@ -83,7 +83,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         address account,
         uint256 id,
         uint256 amount
-    ) external onlyBurnder {
+    ) external onlyBurner {
         _burn(account, id, amount);
     }
 
@@ -140,32 +140,6 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
 
     function isBurnder(address _burner) external view returns (bool) {
         return burners[_burner];
-    }
-
-    function orbData(uint256 orbId)
-        external
-        view
-        returns (
-            OrbType,
-            string memory,
-            uint16,
-            uint16,
-            uint16,
-            uint16,
-            uint16,
-            uint16
-        )
-    {
-        return (
-            orbs[orbId].variety,
-            orbs[orbId].name,
-            orbs[orbId].common,
-            orbs[orbId].uncommon,
-            orbs[orbId].rare,
-            orbs[orbId].epic,
-            orbs[orbId].legendary,
-            orbs[orbId].generation
-        );
     }
 
     function _setOrbData(
