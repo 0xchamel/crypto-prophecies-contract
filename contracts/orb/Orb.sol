@@ -81,15 +81,17 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         uint256 id,
         uint256 maximum,
         string memory tokenUri,
-        OrbInfo memory data
+        OrbType _orbType,
+        OrbRarity _orbRarity,
+        bytes memory data
     ) external onlyMinter {
         require(maximum > 0, "supply incorrect");
         require(supply[id] == 0, "token id is existed");
 
         _saveSupply(id, maximum);
         _setTokenURI(id, tokenUri);
-        _mint(account, id, maximum, "");
-        _setOrbData(id, data.orbType, data.orbRarity);
+        _mint(account, id, maximum, data);
+        _setOrbData(id, _orbType, _orbRarity);
     }
 
     function burn(
