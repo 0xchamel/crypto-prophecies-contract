@@ -13,22 +13,33 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         EGG
     }
 
+    enum OrbRarity {
+        COMMON,
+        UNCOMMON,
+        RARE,
+        EPIC,
+        LEGENDARY
+    }
+
     struct OrbInfo {
-        OrbType variety;
-        string name;
+        OrbType orbType;
+        OrbRarity orbRarity;
+        uint16 generation;
+    }
+
+    struct Rarity {
         uint16 common;
         uint16 uncommon;
         uint16 rare;
         uint16 epic;
         uint16 legendary;
-        uint16 generation;
     }
 
     event Supply(uint256 indexed tokenId, uint256 value);
     event GenerationUpdated(uint16 indexed id);
     event OrbInfoAdded(
-        OrbType variety,
-        string name,
+        OrbType orbType,
+        OrbRarity orbRarity,
         uint16 common,
         uint16 uncommon,
         uint16 rare,
@@ -43,6 +54,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     uint16 public orbGenId;
     mapping(uint256 => OrbInfo) public orbs;
     mapping(uint256 => uint256) public supply;
+    mapping(OrbRarity => Rarity) public rarities;
     mapping(uint256 => string) private tokenURIs;
     mapping(address => bool) private minters;
     mapping(address => bool) private burners;
@@ -69,14 +81,15 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         uint256 id,
         uint256 maximum,
         string memory tokenUri,
-        bytes memory data
+        OrbInfo memory data
     ) external onlyMinter {
         require(maximum > 0, "supply incorrect");
         require(supply[id] == 0, "token id is existed");
 
         _saveSupply(id, maximum);
         _setTokenURI(id, tokenUri);
-        _mint(account, id, maximum, data);
+        _mint(account, id, maximum, "");
+        _setOrbData(id, data.orbType, data.orbRarity);
     }
 
     function burn(
@@ -85,28 +98,6 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         uint256 amount
     ) external onlyBurner {
         _burn(account, id, amount);
-    }
-
-    function setOrbData(
-        uint256 _orbId,
-        OrbType _orbType,
-        string memory _name,
-        uint16 _common,
-        uint16 _uncommon,
-        uint16 _rare,
-        uint16 _epic,
-        uint16 _legendary
-    ) external onlyOwner {
-        _setOrbData(
-            _orbId,
-            _orbType,
-            _name,
-            _common,
-            _uncommon,
-            _rare,
-            _epic,
-            _legendary
-        );
     }
 
     function setGenerationId(uint16 _id) external onlyOwner {
@@ -130,6 +121,28 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         _saveSupply(_tokenId, _supply);
     }
 
+    function setRarity(
+        OrbRarity _orbRarity,
+        uint16 _common,
+        uint16 _uncommon,
+        uint16 _rare,
+        uint16 _epic,
+        uint16 _legendary
+    ) external onlyOwner {
+        require(
+            _common + _uncommon + _rare + _epic + _legendary == 10000,
+            "invalid rarity values"
+        );
+
+        rarities[_orbRarity] = Rarity(
+            _common,
+            _uncommon,
+            _rare,
+            _epic,
+            _legendary
+        );
+    }
+
     function tokenURI(uint256 tokenId) external view returns (string memory) {
         return tokenURIs[tokenId];
     }
@@ -145,36 +158,22 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     function _setOrbData(
         uint256 _orbId,
         OrbType _orbType,
-        string memory _name,
-        uint16 _common,
-        uint16 _uncommon,
-        uint16 _rare,
-        uint16 _epic,
-        uint16 _legendary
+        OrbRarity _orbRarity
     ) internal {
         bytes memory emptyStringTest = bytes(tokenURIs[_orbId]);
         if (emptyStringTest.length == 0) {
             revert("invalid orb id");
         }
-        orbs[_orbId] = OrbInfo(
-            _orbType,
-            _name,
-            _common,
-            _uncommon,
-            _rare,
-            _epic,
-            _legendary,
-            orbGenId
-        );
+        orbs[_orbId] = OrbInfo(_orbType, _orbRarity, orbGenId);
 
         emit OrbInfoAdded(
             _orbType,
-            _name,
-            _common,
-            _uncommon,
-            _rare,
-            _epic,
-            _legendary,
+            _orbRarity,
+            rarities[_orbRarity].common,
+            rarities[_orbRarity].uncommon,
+            rarities[_orbRarity].rare,
+            rarities[_orbRarity].epic,
+            rarities[_orbRarity].legendary,
             orbGenId
         );
     }
