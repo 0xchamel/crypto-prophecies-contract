@@ -55,51 +55,52 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     mapping(uint256 => OrbInfo) public orbs;
     mapping(uint256 => uint256) public supply;
     mapping(OrbRarity => Rarity) public rarities;
-    mapping(uint256 => string) private tokenURIs;
-    mapping(address => bool) private minters;
-    mapping(address => bool) private burners;
+
+    mapping(uint256 => string) private _tokenURIs;
+    mapping(address => bool) private _minters;
+    mapping(address => bool) private _burners;
 
     modifier onlyMinter() {
-        require(minters[_msgSender()], "Invalid minter");
+        require(_minters[_msgSender()], "Invalid minter");
         _;
     }
 
     modifier onlyBurner() {
-        require(burners[_msgSender()], "Invalid burner");
+        require(_burners[_msgSender()], "Invalid burner");
         _;
     }
 
     function initialize(string memory _uri) public initializer {
-        minters[_msgSender()] = true;
+        _minters[_msgSender()] = true;
         __Ownable_init();
         __ERC1155_init(_uri);
         __ERC1155_init_unchained(_uri);
     }
 
     function mint(
-        address account,
-        uint256 id,
-        uint256 maximum,
-        string memory tokenUri,
+        address _account,
+        uint256 _id,
+        uint256 _maximum,
+        string memory _tokenUri,
         OrbType _orbType,
         OrbRarity _orbRarity,
-        bytes memory data
+        bytes memory _data
     ) external onlyMinter {
-        require(maximum > 0, "supply incorrect");
-        require(supply[id] == 0, "token id is existed");
+        require(_maximum > 0, "supply incorrect");
+        require(supply[_id] == 0, "token id is existed");
 
-        _saveSupply(id, maximum);
-        _setTokenURI(id, tokenUri);
-        _mint(account, id, maximum, data);
-        _setOrbData(id, _orbType, _orbRarity);
+        _saveSupply(_id, _maximum);
+        _setTokenURI(_id, _tokenUri);
+        _mint(_account, _id, _maximum, _data);
+        _setOrbData(_id, _orbType, _orbRarity);
     }
 
     function burn(
-        address account,
-        uint256 id,
-        uint256 amount
+        address _account,
+        uint256 _id,
+        uint256 _amount
     ) external onlyBurner {
-        _burn(account, id, amount);
+        _burn(_account, _id, _amount);
     }
 
     function setGenerationId(uint16 _id) external onlyOwner {
@@ -109,12 +110,12 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     }
 
     function setMinter(address _address, bool _isMinter) external onlyOwner {
-        minters[_address] = _isMinter;
+        _minters[_address] = _isMinter;
         emit SetMinter(_address, _isMinter);
     }
 
     function setBurner(address _address, bool _isBurner) external onlyOwner {
-        burners[_address] = _isBurner;
+        _burners[_address] = _isBurner;
         emit SetBurner(_address, _isBurner);
     }
 
@@ -145,16 +146,16 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         );
     }
 
-    function tokenURI(uint256 tokenId) external view returns (string memory) {
-        return tokenURIs[tokenId];
+    function tokenURI(uint256 _tokenId) external view returns (string memory) {
+        return _tokenURIs[_tokenId];
     }
 
     function isMinter(address _minter) external view returns (bool) {
-        return minters[_minter];
+        return _minters[_minter];
     }
 
     function isBurnder(address _burner) external view returns (bool) {
-        return burners[_burner];
+        return _burners[_burner];
     }
 
     function _setOrbData(
@@ -162,10 +163,6 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         OrbType _orbType,
         OrbRarity _orbRarity
     ) internal {
-        bytes memory emptyStringTest = bytes(tokenURIs[_orbId]);
-        if (emptyStringTest.length == 0) {
-            revert("invalid orb id");
-        }
         orbs[_orbId] = OrbInfo(_orbType, _orbRarity, orbGenId);
 
         emit OrbInfoAdded(
@@ -186,11 +183,16 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         emit Supply(_tokenId, _supply);
     }
 
-    function _setTokenURI(uint256 tokenId, string memory tokenUri)
+    function _setTokenURI(uint256 _tokenId, string memory _tokenUri)
         internal
         virtual
     {
-        tokenURIs[tokenId] = tokenUri;
-        emit URI(tokenId, tokenUri);
+        bytes memory emptyStringTest = bytes(_tokenUri);
+        if (emptyStringTest.length == 0) {
+            revert("invalid token uri");
+        }
+
+        _tokenURIs[_tokenId] = _tokenUri;
+        emit URI(_tokenId, _tokenUri);
     }
 }
