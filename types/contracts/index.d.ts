@@ -10,6 +10,7 @@ import { IERC1155UpgradeableContract } from "./IERC1155Upgradeable";
 import { ERC165UpgradeableContract } from "./ERC165Upgradeable";
 import { IERC165UpgradeableContract } from "./IERC165Upgradeable";
 import { OwnableContract } from "./Ownable";
+import { IERC1155Contract } from "./IERC1155";
 import { ERC20Contract } from "./ERC20";
 import { ERC20CappedContract } from "./ERC20Capped";
 import { IERC20MetadataContract } from "./IERC20Metadata";
@@ -26,9 +27,9 @@ import { IERC20Contract } from "./IERC20";
 import { BattleContract } from "./Battle";
 import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
+import { OrbContract } from "./Orb";
 import { PoolInitializableContract } from "./PoolInitializable";
 import { PoolFactoryContract } from "./PoolFactory";
-import { OrbContract } from "./Orb";
 import { TCPContract } from "./TCP";
 import { TokenVestingContract } from "./TokenVesting";
 import { VestingDetailsContract } from "./VestingDetails";
@@ -49,6 +50,7 @@ declare global {
       require(name: "ERC165Upgradeable"): ERC165UpgradeableContract;
       require(name: "IERC165Upgradeable"): IERC165UpgradeableContract;
       require(name: "Ownable"): OwnableContract;
+      require(name: "IERC1155"): IERC1155Contract;
       require(name: "ERC20"): ERC20Contract;
       require(name: "ERC20Capped"): ERC20CappedContract;
       require(name: "IERC20Metadata"): IERC20MetadataContract;
@@ -65,9 +67,9 @@ declare global {
       require(name: "Battle"): BattleContract;
       require(name: "ProphetV2"): ProphetV2Contract;
       require(name: "ProphetV2Storage"): ProphetV2StorageContract;
+      require(name: "Orb"): OrbContract;
       require(name: "PoolInitializable"): PoolInitializableContract;
       require(name: "PoolFactory"): PoolFactoryContract;
-      require(name: "Orb"): OrbContract;
       require(name: "TCP"): TCPContract;
       require(name: "TokenVesting"): TokenVestingContract;
       require(name: "VestingDetails"): VestingDetailsContract;
@@ -105,6 +107,7 @@ export {
   IERC165UpgradeableInstance,
 } from "./IERC165Upgradeable";
 export { OwnableContract, OwnableInstance } from "./Ownable";
+export { IERC1155Contract, IERC1155Instance } from "./IERC1155";
 export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
 export {
@@ -139,12 +142,12 @@ export {
   ProphetV2StorageContract,
   ProphetV2StorageInstance,
 } from "./ProphetV2Storage";
+export { OrbContract, OrbInstance } from "./Orb";
 export {
   PoolInitializableContract,
   PoolInitializableInstance,
 } from "./PoolInitializable";
 export { PoolFactoryContract, PoolFactoryInstance } from "./PoolFactory";
-export { OrbContract, OrbInstance } from "./Orb";
 export { TCPContract, TCPInstance } from "./TCP";
 export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
 export {

@@ -21,13 +21,33 @@ export interface ApprovalForAll {
   };
 }
 
-export interface Creators {
-  name: "Creators";
+export interface GenerationUpdated {
+  name: "GenerationUpdated";
   args: {
-    tokenId: BN;
-    value: string;
+    id: BN;
     0: BN;
-    1: string;
+  };
+}
+
+export interface OrbInfoAdded {
+  name: "OrbInfoAdded";
+  args: {
+    orbType: BN;
+    orbRarity: BN;
+    common: BN;
+    uncommon: BN;
+    rare: BN;
+    epic: BN;
+    legendary: BN;
+    generation: BN;
+    0: BN;
+    1: BN;
+    2: BN;
+    3: BN;
+    4: BN;
+    5: BN;
+    6: BN;
+    7: BN;
   };
 }
 
@@ -38,6 +58,26 @@ export interface OwnershipTransferred {
     newOwner: string;
     0: string;
     1: string;
+  };
+}
+
+export interface SetBurner {
+  name: "SetBurner";
+  args: {
+    account: string;
+    value: boolean;
+    0: string;
+    1: boolean;
+  };
+}
+
+export interface SetMinter {
+  name: "SetMinter";
+  args: {
+    account: string;
+    value: boolean;
+    0: string;
+    1: boolean;
   };
 }
 
@@ -83,7 +123,17 @@ export interface TransferSingle {
   };
 }
 
-export interface URI {
+export interface URI_uint256_string {
+  name: "URI";
+  args: {
+    tokenId: BN;
+    value: string;
+    0: BN;
+    1: string;
+  };
+}
+
+export interface URI_string_uint256 {
   name: "URI";
   args: {
     value: string;
@@ -93,10 +143,15 @@ export interface URI {
   };
 }
 
+type URI = URI_uint256_string | URI_string_uint256;
+
 type AllEvents =
   | ApprovalForAll
-  | Creators
+  | GenerationUpdated
+  | OrbInfoAdded
   | OwnershipTransferred
+  | SetBurner
+  | SetMinter
   | Supply
   | TransferBatch
   | TransferSingle
@@ -115,10 +170,32 @@ export interface OrbInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
 
-  creators(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<string>;
+  burn: {
+    (
+      _account: string,
+      _id: number | BN | string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _account: string,
+      _id: number | BN | string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _account: string,
+      _id: number | BN | string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _account: string,
+      _id: number | BN | string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
 
   initialize: {
     (_uri: string, txDetails?: Truffle.TransactionDetails): Promise<
@@ -141,56 +218,72 @@ export interface OrbInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
 
+  isBurnder(
+    _burner: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<boolean>;
+
+  isMinter(
+    _minter: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<boolean>;
+
   mint: {
     (
-      account: string,
-      id: number | BN | string,
-      amount: number | BN | string,
-      maximum: number | BN | string,
-      tokenUri: string,
-      data: string,
+      _account: string,
+      _id: number | BN | string,
+      _maximum: number | BN | string,
+      _tokenUri: string,
+      _orbType: number | BN | string,
+      _orbRarity: number | BN | string,
+      _data: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
-      account: string,
-      id: number | BN | string,
-      amount: number | BN | string,
-      maximum: number | BN | string,
-      tokenUri: string,
-      data: string,
+      _account: string,
+      _id: number | BN | string,
+      _maximum: number | BN | string,
+      _tokenUri: string,
+      _orbType: number | BN | string,
+      _orbRarity: number | BN | string,
+      _data: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
-      account: string,
-      id: number | BN | string,
-      amount: number | BN | string,
-      maximum: number | BN | string,
-      tokenUri: string,
-      data: string,
+      _account: string,
+      _id: number | BN | string,
+      _maximum: number | BN | string,
+      _tokenUri: string,
+      _orbType: number | BN | string,
+      _orbRarity: number | BN | string,
+      _data: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
-      account: string,
-      id: number | BN | string,
-      amount: number | BN | string,
-      maximum: number | BN | string,
-      tokenUri: string,
-      data: string,
+      _account: string,
+      _id: number | BN | string,
+      _maximum: number | BN | string,
+      _tokenUri: string,
+      _orbType: number | BN | string,
+      _orbRarity: number | BN | string,
+      _data: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
 
-  minted(
+  orbGenId(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+  orbs(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  orbData(
-    orbId: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<{ 0: string; 1: BN; 2: BN; 3: BN; 4: BN; 5: BN }>;
+  ): Promise<{ 0: BN; 1: BN; 2: BN }>;
 
   owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  rarities(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN; 4: BN }>;
 
   renounceOwnership: {
     (txDetails?: Truffle.TransactionDetails): Promise<
@@ -294,10 +387,74 @@ export interface OrbInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  setOrbData: {
+  setBurner: {
     (
-      _orbId: number | BN | string,
-      _name: string,
+      _address: string,
+      _isBurner: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _address: string,
+      _isBurner: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _address: string,
+      _isBurner: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _address: string,
+      _isBurner: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  setGenerationId: {
+    (
+      _id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _id: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  setMinter: {
+    (
+      _address: string,
+      _isMinter: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _address: string,
+      _isMinter: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _address: string,
+      _isMinter: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _address: string,
+      _isMinter: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  setRarity: {
+    (
+      _orbRarity: number | BN | string,
       _common: number | BN | string,
       _uncommon: number | BN | string,
       _rare: number | BN | string,
@@ -306,8 +463,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
-      _orbId: number | BN | string,
-      _name: string,
+      _orbRarity: number | BN | string,
       _common: number | BN | string,
       _uncommon: number | BN | string,
       _rare: number | BN | string,
@@ -316,8 +472,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
-      _orbId: number | BN | string,
-      _name: string,
+      _orbRarity: number | BN | string,
       _common: number | BN | string,
       _uncommon: number | BN | string,
       _rare: number | BN | string,
@@ -326,13 +481,35 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
-      _orbId: number | BN | string,
-      _name: string,
+      _orbRarity: number | BN | string,
       _common: number | BN | string,
       _uncommon: number | BN | string,
       _rare: number | BN | string,
       _epic: number | BN | string,
       _legendary: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  setSupply: {
+    (
+      _tokenId: number | BN | string,
+      _supply: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _tokenId: number | BN | string,
+      _supply: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _tokenId: number | BN | string,
+      _supply: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _tokenId: number | BN | string,
+      _supply: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -348,7 +525,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
   ): Promise<boolean>;
 
   tokenURI(
-    tokenId: number | BN | string,
+    _tokenId: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
 
@@ -388,10 +565,32 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
 
-    creators(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
+    burn: {
+      (
+        _account: string,
+        _id: number | BN | string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _account: string,
+        _id: number | BN | string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _account: string,
+        _id: number | BN | string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _account: string,
+        _id: number | BN | string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
 
     initialize: {
       (_uri: string, txDetails?: Truffle.TransactionDetails): Promise<
@@ -414,56 +613,72 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
 
+    isBurnder(
+      _burner: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<boolean>;
+
+    isMinter(
+      _minter: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<boolean>;
+
     mint: {
       (
-        account: string,
-        id: number | BN | string,
-        amount: number | BN | string,
-        maximum: number | BN | string,
-        tokenUri: string,
-        data: string,
+        _account: string,
+        _id: number | BN | string,
+        _maximum: number | BN | string,
+        _tokenUri: string,
+        _orbType: number | BN | string,
+        _orbRarity: number | BN | string,
+        _data: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
-        account: string,
-        id: number | BN | string,
-        amount: number | BN | string,
-        maximum: number | BN | string,
-        tokenUri: string,
-        data: string,
+        _account: string,
+        _id: number | BN | string,
+        _maximum: number | BN | string,
+        _tokenUri: string,
+        _orbType: number | BN | string,
+        _orbRarity: number | BN | string,
+        _data: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
-        account: string,
-        id: number | BN | string,
-        amount: number | BN | string,
-        maximum: number | BN | string,
-        tokenUri: string,
-        data: string,
+        _account: string,
+        _id: number | BN | string,
+        _maximum: number | BN | string,
+        _tokenUri: string,
+        _orbType: number | BN | string,
+        _orbRarity: number | BN | string,
+        _data: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
-        account: string,
-        id: number | BN | string,
-        amount: number | BN | string,
-        maximum: number | BN | string,
-        tokenUri: string,
-        data: string,
+        _account: string,
+        _id: number | BN | string,
+        _maximum: number | BN | string,
+        _tokenUri: string,
+        _orbType: number | BN | string,
+        _orbRarity: number | BN | string,
+        _data: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
 
-    minted(
+    orbGenId(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+    orbs(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    orbData(
-      orbId: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<{ 0: string; 1: BN; 2: BN; 3: BN; 4: BN; 5: BN }>;
+    ): Promise<{ 0: BN; 1: BN; 2: BN }>;
 
     owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    rarities(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN; 4: BN }>;
 
     renounceOwnership: {
       (txDetails?: Truffle.TransactionDetails): Promise<
@@ -567,10 +782,74 @@ export interface OrbInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
-    setOrbData: {
+    setBurner: {
       (
-        _orbId: number | BN | string,
-        _name: string,
+        _address: string,
+        _isBurner: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _address: string,
+        _isBurner: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _address: string,
+        _isBurner: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _address: string,
+        _isBurner: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    setGenerationId: {
+      (
+        _id: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _id: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _id: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _id: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    setMinter: {
+      (
+        _address: string,
+        _isMinter: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _address: string,
+        _isMinter: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _address: string,
+        _isMinter: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _address: string,
+        _isMinter: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    setRarity: {
+      (
+        _orbRarity: number | BN | string,
         _common: number | BN | string,
         _uncommon: number | BN | string,
         _rare: number | BN | string,
@@ -579,8 +858,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
-        _orbId: number | BN | string,
-        _name: string,
+        _orbRarity: number | BN | string,
         _common: number | BN | string,
         _uncommon: number | BN | string,
         _rare: number | BN | string,
@@ -589,8 +867,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
-        _orbId: number | BN | string,
-        _name: string,
+        _orbRarity: number | BN | string,
         _common: number | BN | string,
         _uncommon: number | BN | string,
         _rare: number | BN | string,
@@ -599,13 +876,35 @@ export interface OrbInstance extends Truffle.ContractInstance {
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
-        _orbId: number | BN | string,
-        _name: string,
+        _orbRarity: number | BN | string,
         _common: number | BN | string,
         _uncommon: number | BN | string,
         _rare: number | BN | string,
         _epic: number | BN | string,
         _legendary: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    setSupply: {
+      (
+        _tokenId: number | BN | string,
+        _supply: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _tokenId: number | BN | string,
+        _supply: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _tokenId: number | BN | string,
+        _supply: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _tokenId: number | BN | string,
+        _supply: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -621,7 +920,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
     ): Promise<boolean>;
 
     tokenURI(
-      tokenId: number | BN | string,
+      _tokenId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
 
