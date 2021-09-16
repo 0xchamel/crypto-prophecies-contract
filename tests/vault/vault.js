@@ -6,7 +6,7 @@ const TCPArt = hre.artifacts.require("TCP");
 const PoolFactoryArt = hre.artifacts.require("PoolFactory");
 const PoolInitializableArt = hre.artifacts.require("PoolInitializable");
 
-const unlockAccount = async (address: any) => {
+const unlockAccount = async (address) => {
     await hre.network.provider.send("hardhat_impersonateAccount", [address]);
     return hre.ethers.provider.getSigner(address);
 };
@@ -85,7 +85,9 @@ describe("Vault", function() {
 
     it("emergency withdraw", async function() {
         await this.LP.transfer(this.carol, "1000");
-        await this.LP.approve(this.chef.address, "100", { from: this.carol });
+        await this.LP.approve(this.chef.address, "100", {
+            from: this.carol,
+        });
 
         await this.chef.deposit("20", { from: this.carol });
         await this.chef.deposit("40", { from: this.carol });
