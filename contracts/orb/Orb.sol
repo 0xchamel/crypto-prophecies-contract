@@ -154,7 +154,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         return _minters[_minter];
     }
 
-    function isBurnder(address _burner) external view returns (bool) {
+    function isBurner(address _burner) external view returns (bool) {
         return _burners[_burner];
     }
 

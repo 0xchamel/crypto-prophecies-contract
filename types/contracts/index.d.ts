@@ -28,6 +28,7 @@ import { BattleContract } from "./Battle";
 import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
 import { OrbContract } from "./Orb";
+import { ShopContract } from "./Shop";
 import { PoolInitializableContract } from "./PoolInitializable";
 import { PoolFactoryContract } from "./PoolFactory";
 import { TCPContract } from "./TCP";
@@ -68,6 +69,7 @@ declare global {
       require(name: "ProphetV2"): ProphetV2Contract;
       require(name: "ProphetV2Storage"): ProphetV2StorageContract;
       require(name: "Orb"): OrbContract;
+      require(name: "Shop"): ShopContract;
       require(name: "PoolInitializable"): PoolInitializableContract;
       require(name: "PoolFactory"): PoolFactoryContract;
       require(name: "TCP"): TCPContract;
@@ -143,6 +145,7 @@ export {
   ProphetV2StorageInstance,
 } from "./ProphetV2Storage";
 export { OrbContract, OrbInstance } from "./Orb";
+export { ShopContract, ShopInstance } from "./Shop";
 export {
   PoolInitializableContract,
   PoolInitializableInstance,
