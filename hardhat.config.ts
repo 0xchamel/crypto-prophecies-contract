@@ -4,11 +4,13 @@ require("dotenv").config();
 import { HardhatUserConfig } from "hardhat/config";
 import { NetworkUserConfig } from "hardhat/types";
 
+import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-truffle5";
 import "@openzeppelin/hardhat-upgrades";
 import "hardhat-typechain";
 import "solidity-coverage";
+import "hardhat-contract-sizer";
 
 //if (!process.env.MNEMONICS) throw new Error("MNEMONICS missing from .env file");
 if (!process.env.RINKEBY_PRIVKEY)
@@ -42,7 +44,7 @@ const config = {
         },
         mumbai: {
             chainId: 80001,
-            url: `https://rpc-mumbai.maticvigil.com/`,
+            url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`,
             accounts: [process.env.MAINNET_PRIVKEY],
         },
     },
@@ -58,7 +60,7 @@ const config = {
     solidity: {
         compilers: [
             {
-                version: "0.6.0",
+                version: "0.6.6",
             },
             {
                 version: "0.6.12",

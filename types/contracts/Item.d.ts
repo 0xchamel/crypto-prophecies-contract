@@ -5,11 +5,11 @@
 import BN from "bn.js";
 import { EventData, PastEventOptions } from "web3-eth-contract";
 
-export interface ProphetContract extends Truffle.Contract<ProphetInstance> {
+export interface ItemContract extends Truffle.Contract<ItemInstance> {
   "new"(
     _baseTokenURI: string,
     meta?: Truffle.TransactionDetails
-  ): Promise<ProphetInstance>;
+  ): Promise<ItemInstance>;
 }
 
 export interface Approval {
@@ -86,7 +86,7 @@ type AllEvents =
   | SetMinter
   | Transfer;
 
-export interface ProphetInstance extends Truffle.ContractInstance {
+export interface ItemInstance extends Truffle.ContractInstance {
   approve: {
     (
       to: string,
@@ -114,19 +114,19 @@ export interface ProphetInstance extends Truffle.ContractInstance {
 
   burn: {
     (
-      _prophetId: number | BN | string,
+      _itemId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
-      _prophetId: number | BN | string,
+      _itemId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
-      _prophetId: number | BN | string,
+      _itemId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
-      _prophetId: number | BN | string,
+      _itemId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -136,22 +136,23 @@ export interface ProphetInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
 
-  getProphetIDsByOwner(
+  getItemIDsByOwner(
     _owner: string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN[]>;
 
-  getProphetInfoByOwner(
+  getItemInfoByOwner(
     _owner: string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<
     {
       generation: BN;
       rarity: BN;
-      race: BN;
-      character: BN;
-      raceOrder: BN;
-      characterOrder: BN;
+      class: BN;
+      magicSource: BN;
+      itemType: BN;
+      magicSourceOrder: BN;
+      classOrder: BN;
     }[]
   >;
 
@@ -161,10 +162,29 @@ export interface ProphetInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
 
-  legendaryProphetsPerGeneration(
+  itemIdPointer(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+  items(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN; 4: BN; 5: BN; 6: BN }>;
+
+  itemsPerClass(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  itemsPerMagicSource(
+    arg0: number | BN | string,
+    arg1: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
+
+  legendaryItemsPerGeneration(
     arg0: number | BN | string,
     arg1: number | BN | string,
     arg2: number | BN | string,
+    arg3: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN>;
 
@@ -173,32 +193,36 @@ export interface ProphetInstance extends Truffle.ContractInstance {
       _owner: string,
       _generation: number | BN | string,
       _rarity: number | BN | string,
-      _race: number | BN | string,
-      _character: number | BN | string,
+      _class: number | BN | string,
+      _magicSource: number | BN | string,
+      _itemType: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
       _owner: string,
       _generation: number | BN | string,
       _rarity: number | BN | string,
-      _race: number | BN | string,
-      _character: number | BN | string,
+      _class: number | BN | string,
+      _magicSource: number | BN | string,
+      _itemType: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
     sendTransaction(
       _owner: string,
       _generation: number | BN | string,
       _rarity: number | BN | string,
-      _race: number | BN | string,
-      _character: number | BN | string,
+      _class: number | BN | string,
+      _magicSource: number | BN | string,
+      _itemType: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
       _owner: string,
       _generation: number | BN | string,
       _rarity: number | BN | string,
-      _race: number | BN | string,
-      _character: number | BN | string,
+      _class: number | BN | string,
+      _magicSource: number | BN | string,
+      _itemType: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -211,23 +235,6 @@ export interface ProphetInstance extends Truffle.ContractInstance {
     tokenId: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
-
-  prophetIdPointer(txDetails?: Truffle.TransactionDetails): Promise<BN>;
-
-  prophets(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN; 4: BN; 5: BN }>;
-
-  prophetsPerCharacter(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
-  prophetsPerRace(
-    arg0: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
 
   renounceOwnership: {
     (txDetails?: Truffle.TransactionDetails): Promise<
@@ -426,19 +433,19 @@ export interface ProphetInstance extends Truffle.ContractInstance {
 
     burn: {
       (
-        _prophetId: number | BN | string,
+        _itemId: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
-        _prophetId: number | BN | string,
+        _itemId: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
-        _prophetId: number | BN | string,
+        _itemId: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
-        _prophetId: number | BN | string,
+        _itemId: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -448,22 +455,23 @@ export interface ProphetInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
 
-    getProphetIDsByOwner(
+    getItemIDsByOwner(
       _owner: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN[]>;
 
-    getProphetInfoByOwner(
+    getItemInfoByOwner(
       _owner: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<
       {
         generation: BN;
         rarity: BN;
-        race: BN;
-        character: BN;
-        raceOrder: BN;
-        characterOrder: BN;
+        class: BN;
+        magicSource: BN;
+        itemType: BN;
+        magicSourceOrder: BN;
+        classOrder: BN;
       }[]
     >;
 
@@ -473,10 +481,29 @@ export interface ProphetInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
 
-    legendaryProphetsPerGeneration(
+    itemIdPointer(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
+    items(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN; 4: BN; 5: BN; 6: BN }>;
+
+    itemsPerClass(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    itemsPerMagicSource(
+      arg0: number | BN | string,
+      arg1: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+
+    legendaryItemsPerGeneration(
       arg0: number | BN | string,
       arg1: number | BN | string,
       arg2: number | BN | string,
+      arg3: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
 
@@ -485,32 +512,36 @@ export interface ProphetInstance extends Truffle.ContractInstance {
         _owner: string,
         _generation: number | BN | string,
         _rarity: number | BN | string,
-        _race: number | BN | string,
-        _character: number | BN | string,
+        _class: number | BN | string,
+        _magicSource: number | BN | string,
+        _itemType: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
         _owner: string,
         _generation: number | BN | string,
         _rarity: number | BN | string,
-        _race: number | BN | string,
-        _character: number | BN | string,
+        _class: number | BN | string,
+        _magicSource: number | BN | string,
+        _itemType: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<BN>;
       sendTransaction(
         _owner: string,
         _generation: number | BN | string,
         _rarity: number | BN | string,
-        _race: number | BN | string,
-        _character: number | BN | string,
+        _class: number | BN | string,
+        _magicSource: number | BN | string,
+        _itemType: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
         _owner: string,
         _generation: number | BN | string,
         _rarity: number | BN | string,
-        _race: number | BN | string,
-        _character: number | BN | string,
+        _class: number | BN | string,
+        _magicSource: number | BN | string,
+        _itemType: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -523,23 +554,6 @@ export interface ProphetInstance extends Truffle.ContractInstance {
       tokenId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
-
-    prophetIdPointer(txDetails?: Truffle.TransactionDetails): Promise<BN>;
-
-    prophets(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN; 4: BN; 5: BN }>;
-
-    prophetsPerCharacter(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
-    prophetsPerRace(
-      arg0: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
 
     renounceOwnership: {
       (txDetails?: Truffle.TransactionDetails): Promise<
