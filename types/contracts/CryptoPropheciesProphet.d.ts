@@ -5,11 +5,12 @@
 import BN from "bn.js";
 import { EventData, PastEventOptions } from "web3-eth-contract";
 
-export interface ProphetContract extends Truffle.Contract<ProphetInstance> {
+export interface CryptoPropheciesProphetContract
+  extends Truffle.Contract<CryptoPropheciesProphetInstance> {
   "new"(
     _baseTokenURI: string,
     meta?: Truffle.TransactionDetails
-  ): Promise<ProphetInstance>;
+  ): Promise<CryptoPropheciesProphetInstance>;
 }
 
 export interface Approval {
@@ -86,7 +87,8 @@ type AllEvents =
   | SetMinter
   | Transfer;
 
-export interface ProphetInstance extends Truffle.ContractInstance {
+export interface CryptoPropheciesProphetInstance
+  extends Truffle.ContractInstance {
   approve: {
     (
       to: string,

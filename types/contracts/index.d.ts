@@ -2,6 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import { LinkTokenInterfaceContract } from "./LinkTokenInterface";
+import { VRFCoordinatorMockContract } from "./VRFCoordinatorMock";
+import { VRFConsumerBaseContract } from "./VRFConsumerBase";
 import { OwnableUpgradeableContract } from "./OwnableUpgradeable";
 import { ERC1155UpgradeableContract } from "./ERC1155Upgradeable";
 import { IERC1155MetadataURIUpgradeableContract } from "./IERC1155MetadataURIUpgradeable";
@@ -10,8 +13,8 @@ import { IERC1155UpgradeableContract } from "./IERC1155Upgradeable";
 import { ERC165UpgradeableContract } from "./ERC165Upgradeable";
 import { IERC165UpgradeableContract } from "./IERC165Upgradeable";
 import { OwnableContract } from "./Ownable";
-import { IERC1155Contract } from "./IERC1155";
 import { ERC20Contract } from "./ERC20";
+import { ERC20BurnableContract } from "./ERC20Burnable";
 import { ERC20CappedContract } from "./ERC20Capped";
 import { IERC20MetadataContract } from "./IERC20Metadata";
 import { IERC20Contract } from "./IERC20";
@@ -23,14 +26,23 @@ import { IERC721Contract } from "./IERC721";
 import { IERC721ReceiverContract } from "./IERC721Receiver";
 import { ERC165Contract } from "./ERC165";
 import { IERC165Contract } from "./IERC165";
-import { IERC20Contract } from "./IERC20";
+import { IOrbContract } from "./IOrb";
 import { BattleContract } from "./Battle";
+import { CryptoPropheciesItemContract } from "./CryptoPropheciesItem";
+import { CryptoPropheciesProphetContract } from "./CryptoPropheciesProphet";
 import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
 import { OrbContract } from "./Orb";
+import { IItemContract } from "./IItem";
+import { INFTContract } from "./INFT";
+import { IProphetContract } from "./IProphet";
+import { SummoningContract } from "./Summoning";
 import { ShopContract } from "./Shop";
 import { PoolInitializableContract } from "./PoolInitializable";
 import { PoolFactoryContract } from "./PoolFactory";
+import { ERC677ReceiverContract } from "./ERC677Receiver";
+import { MockLinkContract } from "./MockLink";
+import { MagicContract } from "./Magic";
 import { TCPContract } from "./TCP";
 import { TokenVestingContract } from "./TokenVesting";
 import { VestingDetailsContract } from "./VestingDetails";
@@ -39,6 +51,11 @@ import { VestingStorageContract } from "./VestingStorage";
 declare global {
   namespace Truffle {
     interface Artifacts {
+      require(name: "LinkTokenInterface"): LinkTokenInterfaceContract;
+      require(name: "VRFCoordinatorMock"): VRFCoordinatorMockContract;
+      require(name: "VRFConsumerBase"): VRFConsumerBaseContract;
+      require(name: "LinkTokenInterface"): LinkTokenInterfaceContract;
+      require(name: "VRFConsumerBase"): VRFConsumerBaseContract;
       require(name: "OwnableUpgradeable"): OwnableUpgradeableContract;
       require(name: "ERC1155Upgradeable"): ERC1155UpgradeableContract;
       require(
@@ -51,8 +68,8 @@ declare global {
       require(name: "ERC165Upgradeable"): ERC165UpgradeableContract;
       require(name: "IERC165Upgradeable"): IERC165UpgradeableContract;
       require(name: "Ownable"): OwnableContract;
-      require(name: "IERC1155"): IERC1155Contract;
       require(name: "ERC20"): ERC20Contract;
+      require(name: "ERC20Burnable"): ERC20BurnableContract;
       require(name: "ERC20Capped"): ERC20CappedContract;
       require(name: "IERC20Metadata"): IERC20MetadataContract;
       require(name: "IERC20"): IERC20Contract;
@@ -64,14 +81,24 @@ declare global {
       require(name: "IERC721Receiver"): IERC721ReceiverContract;
       require(name: "ERC165"): ERC165Contract;
       require(name: "IERC165"): IERC165Contract;
+      require(name: "IOrb"): IOrbContract;
       require(name: "IERC20"): IERC20Contract;
       require(name: "Battle"): BattleContract;
+      require(name: "CryptoPropheciesItem"): CryptoPropheciesItemContract;
+      require(name: "CryptoPropheciesProphet"): CryptoPropheciesProphetContract;
       require(name: "ProphetV2"): ProphetV2Contract;
       require(name: "ProphetV2Storage"): ProphetV2StorageContract;
       require(name: "Orb"): OrbContract;
+      require(name: "IItem"): IItemContract;
+      require(name: "INFT"): INFTContract;
+      require(name: "IProphet"): IProphetContract;
+      require(name: "Summoning"): SummoningContract;
       require(name: "Shop"): ShopContract;
       require(name: "PoolInitializable"): PoolInitializableContract;
       require(name: "PoolFactory"): PoolFactoryContract;
+      require(name: "ERC677Receiver"): ERC677ReceiverContract;
+      require(name: "MockLink"): MockLinkContract;
+      require(name: "Magic"): MagicContract;
       require(name: "TCP"): TCPContract;
       require(name: "TokenVesting"): TokenVestingContract;
       require(name: "VestingDetails"): VestingDetailsContract;
@@ -80,6 +107,18 @@ declare global {
   }
 }
 
+export {
+  LinkTokenInterfaceContract,
+  LinkTokenInterfaceInstance,
+} from "./LinkTokenInterface";
+export {
+  VRFCoordinatorMockContract,
+  VRFCoordinatorMockInstance,
+} from "./VRFCoordinatorMock";
+export {
+  VRFConsumerBaseContract,
+  VRFConsumerBaseInstance,
+} from "./VRFConsumerBase";
 export {
   OwnableUpgradeableContract,
   OwnableUpgradeableInstance,
@@ -109,8 +148,8 @@ export {
   IERC165UpgradeableInstance,
 } from "./IERC165Upgradeable";
 export { OwnableContract, OwnableInstance } from "./Ownable";
-export { IERC1155Contract, IERC1155Instance } from "./IERC1155";
 export { ERC20Contract, ERC20Instance } from "./ERC20";
+export { ERC20BurnableContract, ERC20BurnableInstance } from "./ERC20Burnable";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
 export {
   IERC20MetadataContract,
@@ -137,20 +176,38 @@ export {
 } from "./IERC721Receiver";
 export { ERC165Contract, ERC165Instance } from "./ERC165";
 export { IERC165Contract, IERC165Instance } from "./IERC165";
-export { IERC20Contract, IERC20Instance } from "./IERC20";
+export { IOrbContract, IOrbInstance } from "./IOrb";
 export { BattleContract, BattleInstance } from "./Battle";
+export {
+  CryptoPropheciesItemContract,
+  CryptoPropheciesItemInstance,
+} from "./CryptoPropheciesItem";
+export {
+  CryptoPropheciesProphetContract,
+  CryptoPropheciesProphetInstance,
+} from "./CryptoPropheciesProphet";
 export { ProphetV2Contract, ProphetV2Instance } from "./ProphetV2";
 export {
   ProphetV2StorageContract,
   ProphetV2StorageInstance,
 } from "./ProphetV2Storage";
 export { OrbContract, OrbInstance } from "./Orb";
+export { IItemContract, IItemInstance } from "./IItem";
+export { INFTContract, INFTInstance } from "./INFT";
+export { IProphetContract, IProphetInstance } from "./IProphet";
+export { SummoningContract, SummoningInstance } from "./Summoning";
 export { ShopContract, ShopInstance } from "./Shop";
 export {
   PoolInitializableContract,
   PoolInitializableInstance,
 } from "./PoolInitializable";
 export { PoolFactoryContract, PoolFactoryInstance } from "./PoolFactory";
+export {
+  ERC677ReceiverContract,
+  ERC677ReceiverInstance,
+} from "./ERC677Receiver";
+export { MockLinkContract, MockLinkInstance } from "./MockLink";
+export { MagicContract, MagicInstance } from "./Magic";
 export { TCPContract, TCPInstance } from "./TCP";
 export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
 export {

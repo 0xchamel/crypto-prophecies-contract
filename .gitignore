@@ -2,6 +2,7 @@ node_modules/
 build/
 artifacts/
 cache/
+arguments/
 package-lock.json
 .openzeppelin
 .env
