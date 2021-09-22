@@ -87,7 +87,7 @@ contract Shop is ReentrancyGuard, Ownable {
         uint256 _tokenId,
         uint256 _count
     ) external payable nonReentrant whenNotPaused {
-        require(startTime >= block.timestamp, "purchase: Not started");
+        require(startTime < block.timestamp, "purchase: Not started");
 
         ItemInfo storage item = _items[_nftAddress][_tokenId];
         require(
@@ -127,6 +127,18 @@ contract Shop is ReentrancyGuard, Ownable {
             ""
         );
         item.amount = item.amount - _count;
+
+        // Update _shopItems
+        for (uint256 i = 0; i < _shopItems.length; i++) {
+            if (
+                _shopItems[i].nftAddress == _nftAddress &&
+                _shopItems[i].tokenId == _tokenId
+            ) {
+                _shopItems[i].amount = _shopItems[i].amount - _count;
+                break;
+            }
+        }
+
         userLimits[dropNo][_msgSender()][_tokenId] =
             userLimits[dropNo][_msgSender()][_tokenId] +
             _count;
@@ -159,6 +171,19 @@ contract Shop is ReentrancyGuard, Ownable {
 
     function getList() external view returns (ItemInfo[] memory) {
         return _shopItems;
+    }
+
+    function getLimits(
+        uint256 _dropNo,
+        address _account,
+        uint256[] memory _tokenIds
+    ) external view returns (uint256[] memory) {
+        uint256[] memory limits;
+        for (uint256 i = 0; i < _tokenIds.length; i++) {
+            limits.push(userLimits[_dropNo][_account][_tokenIds[i]]);
+        }
+
+        return limits;
     }
 
     //////////
