@@ -7,6 +7,7 @@ import { EventData, PastEventOptions } from "web3-eth-contract";
 
 export interface ShopContract extends Truffle.Contract<ShopInstance> {
   "new"(
+    _rewardAddress: string,
     _tcpToken: string,
     _startTime: number | BN | string,
     meta?: Truffle.TransactionDetails
@@ -30,7 +31,7 @@ export interface ItemListed {
     owner: string;
     amount: BN;
     limit: BN;
-    reservePrice: BN;
+    price: BN;
     tokenId: BN;
     0: string;
     1: string;
@@ -46,7 +47,7 @@ export interface ItemPriceUpdated {
   args: {
     nftAddress: string;
     tokenId: BN;
-    _reservePrice: BN;
+    _price: BN;
     0: string;
     1: BN;
     2: BN;
@@ -99,7 +100,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
       _tokenId: number | BN | string,
       _amount: number | BN | string,
       _limit: number | BN | string,
-      _reservePrice: number | BN | string,
+      _price: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
@@ -107,7 +108,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
       _tokenId: number | BN | string,
       _amount: number | BN | string,
       _limit: number | BN | string,
-      _reservePrice: number | BN | string,
+      _price: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
@@ -115,7 +116,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
       _tokenId: number | BN | string,
       _amount: number | BN | string,
       _limit: number | BN | string,
-      _reservePrice: number | BN | string,
+      _price: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
@@ -123,16 +124,25 @@ export interface ShopInstance extends Truffle.ContractInstance {
       _tokenId: number | BN | string,
       _amount: number | BN | string,
       _limit: number | BN | string,
-      _reservePrice: number | BN | string,
+      _price: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
+
+  dropNo(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
   getItem(
     _nftAddress: string,
     _tokenId: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<{ 0: boolean; 1: string; 2: BN; 3: BN; 4: BN }>;
+
+  getLimits(
+    _dropNo: number | BN | string,
+    _account: string,
+    _tokenIds: (number | BN | string)[],
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN[]>;
 
   getList(
     txDetails?: Truffle.TransactionDetails
@@ -142,7 +152,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
       owner: string;
       amount: BN;
       limit: BN;
-      reservePrice: BN;
+      price: BN;
       nftAddress: string;
       tokenId: BN;
     }[]
@@ -157,28 +167,24 @@ export interface ShopInstance extends Truffle.ContractInstance {
       _nftAddress: string,
       _tokenId: number | BN | string,
       _count: number | BN | string,
-      _purchaseAmount: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
       _nftAddress: string,
       _tokenId: number | BN | string,
       _count: number | BN | string,
-      _purchaseAmount: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
       _nftAddress: string,
       _tokenId: number | BN | string,
       _count: number | BN | string,
-      _purchaseAmount: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
       _nftAddress: string,
       _tokenId: number | BN | string,
       _count: number | BN | string,
-      _purchaseAmount: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -208,6 +214,27 @@ export interface ShopInstance extends Truffle.ContractInstance {
     call(txDetails?: Truffle.TransactionDetails): Promise<void>;
     sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
     estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+  };
+
+  rewardAddress(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  startNewDrop: {
+    (
+      _startTime: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _startTime: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _startTime: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _startTime: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
   };
 
   startTime(txDetails?: Truffle.TransactionDetails): Promise<BN>;
@@ -295,29 +322,47 @@ export interface ShopInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  updateItemReservePrice: {
+  updateItemPrice: {
     (
       _nftAddress: string,
       _tokenId: number | BN | string,
-      _reservePrice: number | BN | string,
+      _price: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
       _nftAddress: string,
       _tokenId: number | BN | string,
-      _reservePrice: number | BN | string,
+      _price: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
       _nftAddress: string,
       _tokenId: number | BN | string,
-      _reservePrice: number | BN | string,
+      _price: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
       _nftAddress: string,
       _tokenId: number | BN | string,
-      _reservePrice: number | BN | string,
+      _price: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  updateRewardAddress: {
+    (_rewardAddress: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(
+      _rewardAddress: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _rewardAddress: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _rewardAddress: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -340,6 +385,13 @@ export interface ShopInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
+
+  userLimits(
+    arg0: number | BN | string,
+    arg1: string,
+    arg2: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
 
   methods: {
     cancelItem: {
@@ -371,7 +423,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
         _tokenId: number | BN | string,
         _amount: number | BN | string,
         _limit: number | BN | string,
-        _reservePrice: number | BN | string,
+        _price: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
@@ -379,7 +431,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
         _tokenId: number | BN | string,
         _amount: number | BN | string,
         _limit: number | BN | string,
-        _reservePrice: number | BN | string,
+        _price: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
@@ -387,7 +439,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
         _tokenId: number | BN | string,
         _amount: number | BN | string,
         _limit: number | BN | string,
-        _reservePrice: number | BN | string,
+        _price: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
@@ -395,16 +447,25 @@ export interface ShopInstance extends Truffle.ContractInstance {
         _tokenId: number | BN | string,
         _amount: number | BN | string,
         _limit: number | BN | string,
-        _reservePrice: number | BN | string,
+        _price: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
+
+    dropNo(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
     getItem(
       _nftAddress: string,
       _tokenId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<{ 0: boolean; 1: string; 2: BN; 3: BN; 4: BN }>;
+
+    getLimits(
+      _dropNo: number | BN | string,
+      _account: string,
+      _tokenIds: (number | BN | string)[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN[]>;
 
     getList(
       txDetails?: Truffle.TransactionDetails
@@ -414,7 +475,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
         owner: string;
         amount: BN;
         limit: BN;
-        reservePrice: BN;
+        price: BN;
         nftAddress: string;
         tokenId: BN;
       }[]
@@ -429,28 +490,24 @@ export interface ShopInstance extends Truffle.ContractInstance {
         _nftAddress: string,
         _tokenId: number | BN | string,
         _count: number | BN | string,
-        _purchaseAmount: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
         _nftAddress: string,
         _tokenId: number | BN | string,
         _count: number | BN | string,
-        _purchaseAmount: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
         _nftAddress: string,
         _tokenId: number | BN | string,
         _count: number | BN | string,
-        _purchaseAmount: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
         _nftAddress: string,
         _tokenId: number | BN | string,
         _count: number | BN | string,
-        _purchaseAmount: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -480,6 +537,27 @@ export interface ShopInstance extends Truffle.ContractInstance {
       call(txDetails?: Truffle.TransactionDetails): Promise<void>;
       sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
       estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+    };
+
+    rewardAddress(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    startNewDrop: {
+      (
+        _startTime: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _startTime: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _startTime: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _startTime: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
     };
 
     startTime(txDetails?: Truffle.TransactionDetails): Promise<BN>;
@@ -567,29 +645,47 @@ export interface ShopInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
-    updateItemReservePrice: {
+    updateItemPrice: {
       (
         _nftAddress: string,
         _tokenId: number | BN | string,
-        _reservePrice: number | BN | string,
+        _price: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
         _nftAddress: string,
         _tokenId: number | BN | string,
-        _reservePrice: number | BN | string,
+        _price: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
         _nftAddress: string,
         _tokenId: number | BN | string,
-        _reservePrice: number | BN | string,
+        _price: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
         _nftAddress: string,
         _tokenId: number | BN | string,
-        _reservePrice: number | BN | string,
+        _price: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    updateRewardAddress: {
+      (_rewardAddress: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        _rewardAddress: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _rewardAddress: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _rewardAddress: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -612,6 +708,13 @@ export interface ShopInstance extends Truffle.ContractInstance {
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
+
+    userLimits(
+      arg0: number | BN | string,
+      arg1: string,
+      arg2: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
   };
 
   getPastEvents(event: string): Promise<EventData[]>;

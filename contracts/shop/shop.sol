@@ -178,9 +178,9 @@ contract Shop is ReentrancyGuard, Ownable {
         address _account,
         uint256[] memory _tokenIds
     ) external view returns (uint256[] memory) {
-        uint256[] memory limits;
+        uint256[] memory limits = new uint256[](_tokenIds.length);
         for (uint256 i = 0; i < _tokenIds.length; i++) {
-            limits.push(userLimits[_dropNo][_account][_tokenIds[i]]);
+            limits[i] = userLimits[_dropNo][_account][_tokenIds[i]];
         }
 
         return limits;

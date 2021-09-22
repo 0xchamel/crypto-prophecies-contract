@@ -218,7 +218,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
 
-  isBurnder(
+  isBurner(
     _burner: string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
@@ -613,7 +613,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
 
-    isBurnder(
+    isBurner(
       _burner: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;

@@ -5,6 +5,8 @@
 import { LinkTokenInterfaceContract } from "./LinkTokenInterface";
 import { VRFCoordinatorMockContract } from "./VRFCoordinatorMock";
 import { VRFConsumerBaseContract } from "./VRFConsumerBase";
+import { LinkTokenInterfaceContract } from "./LinkTokenInterface";
+import { VRFConsumerBaseContract } from "./VRFConsumerBase";
 import { OwnableUpgradeableContract } from "./OwnableUpgradeable";
 import { ERC1155UpgradeableContract } from "./ERC1155Upgradeable";
 import { IERC1155MetadataURIUpgradeableContract } from "./IERC1155MetadataURIUpgradeable";
@@ -13,6 +15,7 @@ import { IERC1155UpgradeableContract } from "./IERC1155Upgradeable";
 import { ERC165UpgradeableContract } from "./ERC165Upgradeable";
 import { IERC165UpgradeableContract } from "./IERC165Upgradeable";
 import { OwnableContract } from "./Ownable";
+import { IERC1155Contract } from "./IERC1155";
 import { ERC20Contract } from "./ERC20";
 import { ERC20BurnableContract } from "./ERC20Burnable";
 import { ERC20CappedContract } from "./ERC20Capped";
@@ -27,6 +30,7 @@ import { IERC721ReceiverContract } from "./IERC721Receiver";
 import { ERC165Contract } from "./ERC165";
 import { IERC165Contract } from "./IERC165";
 import { IOrbContract } from "./IOrb";
+import { IERC20Contract } from "./IERC20";
 import { BattleContract } from "./Battle";
 import { CryptoPropheciesItemContract } from "./CryptoPropheciesItem";
 import { CryptoPropheciesProphetContract } from "./CryptoPropheciesProphet";
@@ -68,6 +72,7 @@ declare global {
       require(name: "ERC165Upgradeable"): ERC165UpgradeableContract;
       require(name: "IERC165Upgradeable"): IERC165UpgradeableContract;
       require(name: "Ownable"): OwnableContract;
+      require(name: "IERC1155"): IERC1155Contract;
       require(name: "ERC20"): ERC20Contract;
       require(name: "ERC20Burnable"): ERC20BurnableContract;
       require(name: "ERC20Capped"): ERC20CappedContract;
@@ -120,6 +125,14 @@ export {
   VRFConsumerBaseInstance,
 } from "./VRFConsumerBase";
 export {
+  LinkTokenInterfaceContract,
+  LinkTokenInterfaceInstance,
+} from "./LinkTokenInterface";
+export {
+  VRFConsumerBaseContract,
+  VRFConsumerBaseInstance,
+} from "./VRFConsumerBase";
+export {
   OwnableUpgradeableContract,
   OwnableUpgradeableInstance,
 } from "./OwnableUpgradeable";
@@ -148,6 +161,7 @@ export {
   IERC165UpgradeableInstance,
 } from "./IERC165Upgradeable";
 export { OwnableContract, OwnableInstance } from "./Ownable";
+export { IERC1155Contract, IERC1155Instance } from "./IERC1155";
 export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC20BurnableContract, ERC20BurnableInstance } from "./ERC20Burnable";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
@@ -177,6 +191,7 @@ export {
 export { ERC165Contract, ERC165Instance } from "./ERC165";
 export { IERC165Contract, IERC165Instance } from "./IERC165";
 export { IOrbContract, IOrbInstance } from "./IOrb";
+export { IERC20Contract, IERC20Instance } from "./IERC20";
 export { BattleContract, BattleInstance } from "./Battle";
 export {
   CryptoPropheciesItemContract,
