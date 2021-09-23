@@ -11,7 +11,7 @@ export interface SummoningContract extends Truffle.Contract<SummoningInstance> {
     _prophet: string,
     _item: string,
     _magic: string,
-    _summoningAmount: number | BN | string,
+    _summoningAmounts: (number | BN | string)[],
     _upgradeAmounts: (number | BN | string)[],
     _vrfCoordinator: string,
     _link: string,
@@ -147,7 +147,10 @@ export interface SummoningInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  summoningAmount(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+  summoningAmounts(
+    arg0: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<BN>;
 
   summoningRequests(
     arg0: string,
@@ -264,26 +267,26 @@ export interface SummoningInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  updateSummoningAmount: {
+  updateSummoningAmounts: {
     (
-      _amount: number | BN | string,
+      _amounts: (number | BN | string)[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
-      _amount: number | BN | string,
+      _amounts: (number | BN | string)[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
-      _amount: number | BN | string,
+      _amounts: (number | BN | string)[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
-      _amount: number | BN | string,
+      _amounts: (number | BN | string)[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
 
-  updateUpgradeAmount: {
+  updateUpgradeAmounts: {
     (
       _amounts: (number | BN | string)[],
       txDetails?: Truffle.TransactionDetails
@@ -438,7 +441,10 @@ export interface SummoningInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
-    summoningAmount(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+    summoningAmounts(
+      arg0: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
 
     summoningRequests(
       arg0: string,
@@ -555,26 +561,26 @@ export interface SummoningInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
-    updateSummoningAmount: {
+    updateSummoningAmounts: {
       (
-        _amount: number | BN | string,
+        _amounts: (number | BN | string)[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
-        _amount: number | BN | string,
+        _amounts: (number | BN | string)[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
-        _amount: number | BN | string,
+        _amounts: (number | BN | string)[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
-        _amount: number | BN | string,
+        _amounts: (number | BN | string)[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
 
-    updateUpgradeAmount: {
+    updateUpgradeAmounts: {
       (
         _amounts: (number | BN | string)[],
         txDetails?: Truffle.TransactionDetails
