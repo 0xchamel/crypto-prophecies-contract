@@ -99,7 +99,7 @@ contract Summoning is Ownable, VRFConsumerBase {
     ERC20Burnable public magic;
 
     // Magic token amount required to summon an orb
-    uint256 public summoningAmount;
+    uint256[5] public summoningAmounts;
 
     uint256[4] public upgradeAmounts;
 
@@ -142,7 +142,7 @@ contract Summoning is Ownable, VRFConsumerBase {
         address _prophet,
         address _item,
         address _magic,
-        uint256 _summoningAmount,
+        uint256[5] memory _summoningAmounts,
         uint256[4] memory _upgradeAmounts,
         address _vrfCoordinator,
         address _link,
@@ -159,8 +159,11 @@ contract Summoning is Ownable, VRFConsumerBase {
         item = IItem(_item);
         magic = ERC20Burnable(_magic);
 
-        summoningAmount = _summoningAmount;
-        for (uint256 i = 0; i < 4; i++) {
+        uint256 i;
+        for (i = 0; i < 5; i++) {
+            summoningAmounts[i] = _summoningAmounts[i];
+        }
+        for (i = 0; i < 4; i++) {
             upgradeAmounts[i] = _upgradeAmounts[i];
         }
 
@@ -178,7 +181,9 @@ contract Summoning is Ownable, VRFConsumerBase {
         require(!isSummoning[msg.sender][orbID], "already requested to summon");
         isSummoning[msg.sender][orbID] = true;
 
-        magic.burnFrom(msg.sender, summoningAmount);
+        (, uint8 rarity, ) = orb.orbs(orbID);
+
+        magic.burnFrom(msg.sender, summoningAmounts[rarity]);
 
         bytes32 requestID = getRandomNumber();
         SummoningRequest storage request = summoningRequests[requestID];
@@ -443,11 +448,16 @@ contract Summoning is Ownable, VRFConsumerBase {
         }
     }
 
-    function updateSummoningAmount(uint256 _amount) external onlyOwner {
-        summoningAmount = _amount;
+    function updateSummoningAmounts(uint256[5] memory _amounts)
+        external
+        onlyOwner
+    {
+        for (uint256 i = 0; i < 5; i++) {
+            summoningAmounts[i] = _amounts[i];
+        }
     }
 
-    function updateUpgradeAmount(uint256[4] memory _amounts)
+    function updateUpgradeAmounts(uint256[4] memory _amounts)
         external
         onlyOwner
     {
