@@ -8,7 +8,7 @@ import { ethers } from "hardhat";
 async function deploy() {
   // Deploy prophet nft
   const Magic: ContractFactory = await ethers.getContractFactory("Magic");
-  const magic: Contract = await Magic.deploy("1000000000000000000000");
+  const magic: Contract = await Magic.deploy("100000000000000000000000000");
   console.log("Magic token was deployed to: ", magic.address);
 }
 

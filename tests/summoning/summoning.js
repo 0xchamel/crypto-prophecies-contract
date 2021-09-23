@@ -1,4 +1,4 @@
-import { expect } from "chai";
+const { expect } = require("chai");
 
 const Summoning = hre.artifacts.require("Summoning");
 const Magic = hre.artifacts.require("Magic");
@@ -34,7 +34,7 @@ describe("Summoning Contract", function() {
 
     this.prophet = await Prophet.new(prophetBaseTokenURI);
     this.item = await Item.new(itemBaseTokenURI);
-    this.magic = await Magic.new("10000000000000000000000");
+    this.magic = await Magic.new(this.alice, "10000000000000000000000");
 
     this.keyhash =
       "0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4";

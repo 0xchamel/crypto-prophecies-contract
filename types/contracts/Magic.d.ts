@@ -7,6 +7,7 @@ import { EventData, PastEventOptions } from "web3-eth-contract";
 
 export interface MagicContract extends Truffle.Contract<MagicInstance> {
   "new"(
+    _addr: string,
     _cap: number | BN | string,
     meta?: Truffle.TransactionDetails
   ): Promise<MagicInstance>;
@@ -34,6 +35,14 @@ export interface OwnershipTransferred {
   };
 }
 
+export interface SetMinter {
+  name: "SetMinter";
+  args: {
+    0: string;
+    1: boolean;
+  };
+}
+
 export interface Transfer {
   name: "Transfer";
   args: {
@@ -46,7 +55,7 @@ export interface Transfer {
   };
 }
 
-type AllEvents = Approval | OwnershipTransferred | Transfer;
+type AllEvents = Approval | OwnershipTransferred | SetMinter | Transfer;
 
 export interface MagicInstance extends Truffle.ContractInstance {
   allowance(
@@ -173,6 +182,29 @@ export interface MagicInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  mint: {
+    (
+      _to: string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _to: string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _to: string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _to: string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
@@ -184,6 +216,29 @@ export interface MagicInstance extends Truffle.ContractInstance {
     call(txDetails?: Truffle.TransactionDetails): Promise<void>;
     sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
     estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+  };
+
+  setMinter: {
+    (
+      _user: string,
+      _isMinter: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _user: string,
+      _isMinter: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _user: string,
+      _isMinter: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _user: string,
+      _isMinter: boolean,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
   };
 
   symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
@@ -383,6 +438,29 @@ export interface MagicInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
+    mint: {
+      (
+        _to: string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _to: string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _to: string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _to: string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
@@ -394,6 +472,29 @@ export interface MagicInstance extends Truffle.ContractInstance {
       call(txDetails?: Truffle.TransactionDetails): Promise<void>;
       sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
       estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+    };
+
+    setMinter: {
+      (
+        _user: string,
+        _isMinter: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _user: string,
+        _isMinter: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _user: string,
+        _isMinter: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _user: string,
+        _isMinter: boolean,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
     };
 
     symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
