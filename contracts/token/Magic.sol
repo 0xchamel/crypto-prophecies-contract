@@ -19,7 +19,7 @@ contract Magic is ERC20Burnable, Ownable {
 
     constructor(address _addr, uint256 _cap)
         public
-        ERC20("Magic Token", "MT")
+        ERC20("Magic Potion", "MPOT")
     {
         _mint(_addr, _cap);
         _minters[_addr] = true;
