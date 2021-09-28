@@ -31,7 +31,7 @@ contract Shop is ReentrancyGuard, Ownable {
         public userLimits;
 
     // NFT Address
-    ItemInfo[] private _shopItems;
+    mapping(uint256 => ItemInfo[]) private _shopItems;
 
     // Sale start timestamp
     uint256 public startTime;
@@ -129,12 +129,14 @@ contract Shop is ReentrancyGuard, Ownable {
         item.amount = item.amount - _count;
 
         // Update _shopItems
-        for (uint256 i = 0; i < _shopItems.length; i++) {
+        for (uint256 i = 0; i < _shopItems[dropNo].length; i++) {
             if (
-                _shopItems[i].nftAddress == _nftAddress &&
-                _shopItems[i].tokenId == _tokenId
+                _shopItems[dropNo][i].nftAddress == _nftAddress &&
+                _shopItems[dropNo][i].tokenId == _tokenId
             ) {
-                _shopItems[i].amount = _shopItems[i].amount - _count;
+                _shopItems[dropNo][i].amount =
+                    _shopItems[dropNo][i].amount -
+                    _count;
                 break;
             }
         }
@@ -169,8 +171,12 @@ contract Shop is ReentrancyGuard, Ownable {
         );
     }
 
-    function getList() external view returns (ItemInfo[] memory) {
-        return _shopItems;
+    function getList(uint256 _dropNo)
+        external
+        view
+        returns (ItemInfo[] memory)
+    {
+        return _shopItems[_dropNo];
     }
 
     function getLimits(
@@ -230,7 +236,18 @@ contract Shop is ReentrancyGuard, Ownable {
             tokenId: _tokenId
         });
 
-        _shopItems.push(_items[_nftAddress][_tokenId]);
+        uint256 i;
+        for (i = 0; i < _shopItems[dropNo].length; i++) {
+            if (
+                _shopItems[dropNo][i].nftAddress == _nftAddress &&
+                _shopItems[dropNo][i].tokenId == _tokenId
+            ) {
+                _shopItems[dropNo][i] = _items[_nftAddress][_tokenId];
+            }
+        }
+
+        if (i == _shopItems[dropNo].length)
+            _shopItems[dropNo].push(_items[_nftAddress][_tokenId]);
 
         emit ItemListed(
             _nftAddress,
@@ -250,13 +267,15 @@ contract Shop is ReentrancyGuard, Ownable {
 
         require(item.initialized, "cancelItem: not initialized");
 
-        for (uint256 i = 0; i < _shopItems.length; i++) {
+        for (uint256 i = 0; i < _shopItems[dropNo].length; i++) {
             if (
-                _shopItems[i].nftAddress == _nftAddress &&
-                _shopItems[i].tokenId == _tokenId
+                _shopItems[dropNo][i].nftAddress == _nftAddress &&
+                _shopItems[dropNo][i].tokenId == _tokenId
             ) {
-                _shopItems[i] = _shopItems[_shopItems.length - 1];
-                _shopItems.pop();
+                _shopItems[dropNo][i] = _shopItems[dropNo][
+                    _shopItems[dropNo].length - 1
+                ];
+                _shopItems[dropNo].pop();
 
                 break;
             }

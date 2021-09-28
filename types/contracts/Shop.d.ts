@@ -145,6 +145,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
   ): Promise<BN[]>;
 
   getList(
+    _dropNo: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<
     {
@@ -468,6 +469,7 @@ export interface ShopInstance extends Truffle.ContractInstance {
     ): Promise<BN[]>;
 
     getList(
+      _dropNo: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<
       {

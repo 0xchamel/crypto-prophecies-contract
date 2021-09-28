@@ -20,12 +20,13 @@ describe("Shop Contract", function() {
         this.TCP = await TCPArt.new("10000000000000000000000");
         await this.TCP.mint();
 
-        this.startTime = Math.floor(new Date().getTime() / 1000);
+        this.startTime = Number((await time.latest()).toString()) + 100;
         this.Shop = await ShopArt.new(
             this.rewardHolder,
             this.TCP.address,
             this.startTime
         );
+        await time.increase(600);
     });
 
     beforeEach(async function() {

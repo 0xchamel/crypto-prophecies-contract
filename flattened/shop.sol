@@ -773,7 +773,7 @@ contract Shop is ReentrancyGuard, Ownable {
         address owner;
         uint256 amount;
         uint256 limit;
-        uint256 reservePrice;
+        uint256 price;
         address nftAddress;
         uint256 tokenId;
     }
@@ -781,11 +781,18 @@ contract Shop is ReentrancyGuard, Ownable {
     // NFT Address => token id => itemInfo
     mapping(address => mapping(uint256 => ItemInfo)) private _items;
 
+    // DropNo => address => token id => purchased number
+    mapping(uint256 => mapping(address => mapping(uint256 => uint256)))
+        public userLimits;
+
     // NFT Address
-    ItemInfo[] private _shopItems;
+    mapping(uint256 => ItemInfo[]) private _shopItems;
 
     // Sale start timestamp
     uint256 public startTime;
+
+    // Drop Number
+    uint256 public dropNo;
 
     // Pausable variable
     bool public isPaused;
@@ -793,18 +800,21 @@ contract Shop is ReentrancyGuard, Ownable {
     // TCP token address
     IERC20 public tcpToken;
 
+    // Reward address
+    address public rewardAddress;
+
     event ItemListed(
         address indexed nftAddress,
         address indexed owner,
         uint256 amount,
         uint256 limit,
-        uint256 reservePrice,
+        uint256 price,
         uint256 indexed tokenId
     );
     event ItemPriceUpdated(
         address indexed nftAddress,
         uint256 indexed tokenId,
-        uint256 _reservePrice
+        uint256 _price
     );
     event ItemCancelled(address indexed nftAddress, uint256 indexed tokenId);
 
@@ -813,10 +823,16 @@ contract Shop is ReentrancyGuard, Ownable {
         _;
     }
 
-    constructor(address _tcpToken, uint256 _startTime) public {
+    constructor(
+        address _rewardAddress,
+        address _tcpToken,
+        uint256 _startTime
+    ) public {
+        require(_rewardAddress != address(0), "invalid reward address");
         require(_tcpToken != address(0), "invalid tcp token address");
         require(_startTime >= block.timestamp, "invalid start time");
 
+        rewardAddress = _rewardAddress;
         tcpToken = IERC20(_tcpToken);
         startTime = _startTime;
     }
@@ -824,15 +840,17 @@ contract Shop is ReentrancyGuard, Ownable {
     function purchase(
         address _nftAddress,
         uint256 _tokenId,
-        uint256 _count,
-        uint256 _purchaseAmount
+        uint256 _count
     ) external payable nonReentrant whenNotPaused {
-        require(startTime >= block.timestamp, "purchase: Not started");
+        require(startTime < block.timestamp, "purchase: Not started");
 
         ItemInfo storage item = _items[_nftAddress][_tokenId];
+        require(
+            userLimits[dropNo][_msgSender()][_tokenId] + _count <= item.limit,
+            "purchase: User limit exceeded"
+        );
 
         require(_count != 0, "purchase: invalid purchase count");
-        require(_count <= item.limit, "purchase: limit exceeded");
         require(item.amount != 0, "purchase: Not enough items left");
         require(
             _msgSender().isContract() == false,
@@ -846,16 +864,12 @@ contract Shop is ReentrancyGuard, Ownable {
             IERC1155(_nftAddress).balanceOf(item.owner, _tokenId) >= _count,
             "purchase: owner doesn't have NFT items"
         );
-        require(
-            _purchaseAmount >= item.reservePrice * _count,
-            "purchase: Not enough TCP Token to buy"
-        );
 
         // Send to owner
         bool saleTransferSuccess = tcpToken.transferFrom(
             _msgSender(),
-            item.owner,
-            item.reservePrice * _count
+            rewardAddress,
+            item.price * _count
         );
         require(saleTransferSuccess, "purchase: Failed to send sale amount");
 
@@ -868,6 +882,23 @@ contract Shop is ReentrancyGuard, Ownable {
             ""
         );
         item.amount = item.amount - _count;
+
+        // Update _shopItems
+        for (uint256 i = 0; i < _shopItems[dropNo].length; i++) {
+            if (
+                _shopItems[dropNo][i].nftAddress == _nftAddress &&
+                _shopItems[dropNo][i].tokenId == _tokenId
+            ) {
+                _shopItems[dropNo][i].amount =
+                    _shopItems[dropNo][i].amount -
+                    _count;
+                break;
+            }
+        }
+
+        userLimits[dropNo][_msgSender()][_tokenId] =
+            userLimits[dropNo][_msgSender()][_tokenId] +
+            _count;
     }
 
     ///////////////
@@ -882,7 +913,7 @@ contract Shop is ReentrancyGuard, Ownable {
             address _owner,
             uint256 _amount,
             uint256 _limit,
-            uint256 _reservePrice
+            uint256 _price
         )
     {
         ItemInfo memory item = _items[_nftAddress][_tokenId];
@@ -891,45 +922,29 @@ contract Shop is ReentrancyGuard, Ownable {
             item.owner,
             item.amount,
             item.limit,
-            item.reservePrice
+            item.price
         );
     }
 
-    function getList() external view returns (ItemInfo[] memory) {
-        return _shopItems;
+    function getList(uint256 _dropNo)
+        external
+        view
+        returns (ItemInfo[] memory)
+    {
+        return _shopItems[_dropNo];
     }
 
-    ///////////////
-    /// Private ///
-    ///////////////
+    function getLimits(
+        uint256 _dropNo,
+        address _account,
+        uint256[] memory _tokenIds
+    ) external view returns (uint256[] memory) {
+        uint256[] memory limits = new uint256[](_tokenIds.length);
+        for (uint256 i = 0; i < _tokenIds.length; i++) {
+            limits[i] = userLimits[_dropNo][_account][_tokenIds[i]];
+        }
 
-    function _createItem(
-        address _nftAddress,
-        uint256 _tokenId,
-        uint256 _amount,
-        uint256 _limit,
-        uint256 _reservePrice
-    ) private {
-        _items[_nftAddress][_tokenId] = ItemInfo({
-            initialized: true,
-            owner: _msgSender(),
-            amount: _amount,
-            limit: _limit,
-            reservePrice: _reservePrice,
-            nftAddress: _nftAddress,
-            tokenId: _tokenId
-        });
-
-        _shopItems.push(_items[_nftAddress][_tokenId]);
-
-        emit ItemListed(
-            _nftAddress,
-            _msgSender(),
-            _amount,
-            _limit,
-            _reservePrice,
-            _tokenId
-        );
+        return limits;
     }
 
     //////////
@@ -940,16 +955,22 @@ contract Shop is ReentrancyGuard, Ownable {
         isPaused = !isPaused;
     }
 
+    function startNewDrop(uint256 _startTime) external onlyOwner {
+        require(_startTime >= block.timestamp, "invalid start time");
+        startTime = _startTime;
+        dropNo = dropNo + 1;
+    }
+
     function createItem(
         address _nftAddress,
         uint256 _tokenId,
         uint256 _amount,
         uint256 _limit,
-        uint256 _reservePrice
+        uint256 _price
     ) external onlyOwner {
         require(_amount != 0, "invalid amount");
         require(_limit != 0, "invalid limit number");
-        require(_reservePrice != 0, "invalid reserve price");
+        require(_price != 0, "invalid price");
         require(
             IERC1155(_nftAddress).balanceOf(_msgSender(), _tokenId) >=
                 _amount &&
@@ -960,7 +981,37 @@ contract Shop is ReentrancyGuard, Ownable {
             "createItem: not owner or approved"
         );
 
-        _createItem(_nftAddress, _tokenId, _amount, _limit, _reservePrice);
+        _items[_nftAddress][_tokenId] = ItemInfo({
+            initialized: true,
+            owner: _msgSender(),
+            amount: _amount,
+            limit: _limit,
+            price: _price,
+            nftAddress: _nftAddress,
+            tokenId: _tokenId
+        });
+
+        uint256 i;
+        for (i = 0; i < _shopItems[dropNo].length; i++) {
+            if (
+                _shopItems[dropNo][i].nftAddress == _nftAddress &&
+                _shopItems[dropNo][i].tokenId == _tokenId
+            ) {
+                _shopItems[dropNo][i] = _items[_nftAddress][_tokenId];
+            }
+        }
+
+        if (i == _shopItems[dropNo].length)
+            _shopItems[dropNo].push(_items[_nftAddress][_tokenId]);
+
+        emit ItemListed(
+            _nftAddress,
+            _msgSender(),
+            _amount,
+            _limit,
+            _price,
+            _tokenId
+        );
     }
 
     function cancelItem(address _nftAddress, uint256 _tokenId)
@@ -971,13 +1022,15 @@ contract Shop is ReentrancyGuard, Ownable {
 
         require(item.initialized, "cancelItem: not initialized");
 
-        for (uint256 i = 0; i < _shopItems.length; i++) {
+        for (uint256 i = 0; i < _shopItems[dropNo].length; i++) {
             if (
-                _shopItems[i].nftAddress == _nftAddress &&
-                _shopItems[i].tokenId == _tokenId
+                _shopItems[dropNo][i].nftAddress == _nftAddress &&
+                _shopItems[dropNo][i].tokenId == _tokenId
             ) {
-                _shopItems[i] = _shopItems[_shopItems.length - 1];
-                _shopItems.pop();
+                _shopItems[dropNo][i] = _shopItems[dropNo][
+                    _shopItems[dropNo].length - 1
+                ];
+                _shopItems[dropNo].pop();
 
                 break;
             }
@@ -988,15 +1041,15 @@ contract Shop is ReentrancyGuard, Ownable {
         emit ItemCancelled(_nftAddress, _tokenId);
     }
 
-    function updateItemReservePrice(
+    function updateItemPrice(
         address _nftAddress,
         uint256 _tokenId,
-        uint256 _reservePrice
+        uint256 _price
     ) external onlyOwner {
         ItemInfo storage item = _items[_nftAddress][_tokenId];
 
-        item.reservePrice = _reservePrice;
-        emit ItemPriceUpdated(_nftAddress, _tokenId, _reservePrice);
+        item.price = _price;
+        emit ItemPriceUpdated(_nftAddress, _tokenId, _price);
     }
 
     function updateItemAmount(
@@ -1006,7 +1059,7 @@ contract Shop is ReentrancyGuard, Ownable {
     ) external onlyOwner {
         ItemInfo storage item = _items[_nftAddress][_tokenId];
         require(
-            IERC1155(_nftAddress).balanceOf(_msgSender(), _tokenId) >= _amount,
+            IERC1155(_nftAddress).balanceOf(item.owner, _tokenId) >= _amount,
             "updateItemAmount: Not enough NFT"
         );
 
@@ -1022,6 +1075,12 @@ contract Shop is ReentrancyGuard, Ownable {
         ItemInfo storage item = _items[_nftAddress][_tokenId];
 
         item.limit = _limit;
+    }
+
+    function updateRewardAddress(address _rewardAddress) external onlyOwner {
+        require(_rewardAddress != address(0), "invalid address");
+
+        rewardAddress = _rewardAddress;
     }
 
     function updateStartTime(uint256 _startTime) external onlyOwner {
