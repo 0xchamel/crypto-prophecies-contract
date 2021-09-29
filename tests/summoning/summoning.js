@@ -16,7 +16,13 @@ describe("Summoning Contract", function() {
     this.bob = bob;
     this.carol = carol;
 
-    this.summoningAmount = "10000000000000000000";
+    this.summoningAmount = [
+      "5000000000000000000",
+      "25000000000000000000",
+      "125000000000000000000",
+      "625000000000000000000",
+      "3125000000000000000000",
+    ];
     this.upgradeAmounts = [
       "25000000000000000000",
       "125000000000000000000",

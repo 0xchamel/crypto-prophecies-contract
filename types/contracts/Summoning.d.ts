@@ -31,6 +31,14 @@ export interface OwnershipTransferred {
   };
 }
 
+export interface SummoningFailed {
+  name: "SummoningFailed";
+  args: {
+    requestID: string;
+    0: string;
+  };
+}
+
 export interface SummoningRequested {
   name: "SummoningRequested";
   args: {
@@ -57,7 +65,11 @@ export interface UpgradeRequested {
   };
 }
 
-type AllEvents = OwnershipTransferred | SummoningRequested | UpgradeRequested;
+type AllEvents =
+  | OwnershipTransferred
+  | SummoningFailed
+  | SummoningRequested
+  | UpgradeRequested;
 
 export interface SummoningInstance extends Truffle.ContractInstance {
   isSummoning(

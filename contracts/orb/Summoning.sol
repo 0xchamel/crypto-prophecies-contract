@@ -73,6 +73,8 @@ contract Summoning is Ownable, VRFConsumerBase {
         bytes32 requestID
     );
 
+    event SummoningFailed(bytes32 requestID);
+
     event UpgradeRequested(
         address indexed requester,
         bool isProphet,
@@ -201,39 +203,61 @@ contract Summoning is Ownable, VRFConsumerBase {
                 request.orbID
             );
 
-            uint16 rarity = _getRarity(orbRarity, randomness);
+            (bool success, uint16 rarity) = _getRarity(orbRarity, randomness);
 
-            // Burn orb item
-            orb.burn(request.requester, request.orbID, 1);
-
-            // Generate Prophet/Item NFT
-            if (orbType == 0) {
-                require(numRacePerGen[generation] > 0, "numRacePerGen not set");
-                require(numCharPerGen[generation] > 0, "numCharPerGen not set");
-                prophet.mint(
-                    request.requester,
-                    generation,
-                    rarity,
-                    uint16(randomness % numRacePerGen[generation]),
-                    uint16(randomness % numCharPerGen[generation])
-                );
-            } else {
-                require(
-                    numMagicSourcePerGen[generation] > 0,
-                    "numMagicSourcePerGen not set"
-                );
-                require(
-                    numItemTypePerGen[generation] > 0,
-                    "numItemTypePerGen not set"
-                );
-                item.mint(
-                    request.requester,
-                    generation,
-                    rarity,
-                    uint16(orbType - 1),
-                    uint16(randomness % numMagicSourcePerGen[generation]),
-                    uint16(randomness % numItemTypePerGen[generation])
-                );
+            if (success) {
+                // Burn orb item
+                try orb.burn(request.requester, request.orbID, 1) {
+                    // Generate Prophet/Item NFT
+                    if (orbType == 0) {
+                        if (
+                            numRacePerGen[generation] > 0 &&
+                            numCharPerGen[generation] > 0
+                        ) {
+                            try
+                                prophet.mint(
+                                    request.requester,
+                                    generation,
+                                    rarity,
+                                    uint16(
+                                        randomness % numRacePerGen[generation]
+                                    ),
+                                    uint16(
+                                        randomness % numCharPerGen[generation]
+                                    )
+                                )
+                            {} catch {
+                                emit SummoningFailed(requestID);
+                            }
+                        }
+                    } else {
+                        if (
+                            numMagicSourcePerGen[generation] > 0 &&
+                            numItemTypePerGen[generation] > 0
+                        ) {
+                            try
+                                item.mint(
+                                    request.requester,
+                                    generation,
+                                    rarity,
+                                    uint16(orbType - 1),
+                                    uint16(
+                                        randomness %
+                                            numMagicSourcePerGen[generation]
+                                    ),
+                                    uint16(
+                                        randomness %
+                                            numItemTypePerGen[generation]
+                                    )
+                                )
+                            {} catch {
+                                emit SummoningFailed(requestID);
+                            }
+                        }
+                    }
+                } catch {
+                    emit SummoningFailed(requestID);
+                }
             }
         }
 
@@ -401,7 +425,7 @@ contract Summoning is Ownable, VRFConsumerBase {
     function _getRarity(uint8 orbRarity, uint256 randomness)
         internal
         view
-        returns (uint16)
+        returns (bool, uint16)
     {
         (
             uint16 common,
@@ -411,16 +435,20 @@ contract Summoning is Ownable, VRFConsumerBase {
             uint16 legendary
         ) = orb.rarities(orbRarity);
         uint16 total = common + uncommon + rare + epic + legendary;
+        if (total == 0) {
+            return (false, 0);
+        }
+
         uint16 mod = uint16(randomness % uint256(total));
 
-        if (mod < common) return 0;
+        if (mod < common) return (true, 0);
         mod -= common;
-        if (mod < uncommon) return 1;
+        if (mod < uncommon) return (true, 1);
         mod -= uncommon;
-        if (mod < rare) return 2;
+        if (mod < rare) return (true, 2);
         mod -= rare;
-        if (mod < epic) return 3;
-        return 4;
+        if (mod < epic) return (true, 3);
+        return (true, 4);
     }
 
     /**
