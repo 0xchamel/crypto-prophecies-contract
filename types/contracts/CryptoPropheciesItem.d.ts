@@ -153,7 +153,7 @@ export interface CryptoPropheciesItemInstance extends Truffle.ContractInstance {
       magicSource: BN;
       itemType: BN;
       magicSourceOrder: BN;
-      classOrder: BN;
+      characterOrder: BN;
     }[]
   >;
 
@@ -170,8 +170,10 @@ export interface CryptoPropheciesItemInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN; 4: BN; 5: BN; 6: BN }>;
 
-  itemsPerClass(
+  itemsPerCharacter(
     arg0: number | BN | string,
+    arg1: number | BN | string,
+    arg2: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<BN>;
 
@@ -472,7 +474,7 @@ export interface CryptoPropheciesItemInstance extends Truffle.ContractInstance {
         magicSource: BN;
         itemType: BN;
         magicSourceOrder: BN;
-        classOrder: BN;
+        characterOrder: BN;
       }[]
     >;
 
@@ -489,8 +491,10 @@ export interface CryptoPropheciesItemInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<{ 0: BN; 1: BN; 2: BN; 3: BN; 4: BN; 5: BN; 6: BN }>;
 
-    itemsPerClass(
+    itemsPerCharacter(
       arg0: number | BN | string,
+      arg1: number | BN | string,
+      arg2: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
 

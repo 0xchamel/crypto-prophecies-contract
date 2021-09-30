@@ -39,8 +39,9 @@ const config = {
         },
         matic: {
             chainId: 137,
-            url: "https://rpc-mainnet.maticvigil.com/",
+            url: "https://rpc-mainnet.maticvigil.com",
             accounts: [process.env.MAINNET_PRIVKEY],
+            gasPrice: 8000000000,
         },
         mumbai: {
             chainId: 80001,

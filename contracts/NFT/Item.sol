@@ -12,12 +12,14 @@ contract CryptoPropheciesItem is ERC721Enumerable, Ownable {
         uint16 magicSource;
         uint16 itemType;
         uint256 magicSourceOrder;
-        uint256 classOrder;
+        uint256 characterOrder;
     }
 
     uint256 public itemIdPointer;
+    // magicSource => class => count;
     mapping(uint16 => mapping(uint16 => uint256)) public itemsPerMagicSource;
-    mapping(uint16 => uint256) public itemsPerClass;
+    // magicSource => class => itemType => count;
+    mapping(uint16 => mapping(uint16 => mapping(uint16 => uint256))) public itemsPerCharacter;
     // class => generation => magicSource => itemType => count;
     mapping(uint16 => mapping(uint16 => mapping(uint16 => mapping(uint16 => uint256))))
         public legendaryItemsPerGeneration;
@@ -93,7 +95,7 @@ contract CryptoPropheciesItem is ERC721Enumerable, Ownable {
         itemsPerMagicSource[_magicSource][_class] =
             itemsPerMagicSource[_magicSource][_class] +
             1;
-        itemsPerClass[_class] = itemsPerClass[_class] + 1;
+        itemsPerCharacter[_magicSource][_class][_itemType] = itemsPerCharacter[_magicSource][_class][_itemType] + 1;
         uint16 rarity = _rarity;
         if (rarity == 4) {
             // for first legendary item in the generation, set rarity as founder
@@ -115,7 +117,7 @@ contract CryptoPropheciesItem is ERC721Enumerable, Ownable {
             _magicSource,
             _itemType,
             itemsPerMagicSource[_magicSource][_class],
-            itemsPerClass[_class]
+            itemsPerCharacter[_magicSource][_class][_itemType]
         );
     }
 

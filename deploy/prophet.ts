@@ -8,7 +8,7 @@ import { ethers } from "hardhat";
 async function deploy() {
   // Deploy prophet nft
   const Prophet: ContractFactory = await ethers.getContractFactory("CryptoPropheciesProphet");
-  const prophet: Contract = await Prophet.deploy("https://api.thecryptoprophecies.com/prophet/");
+  const prophet: Contract = await Prophet.deploy("https://api.thecryptoprophecies.com/prophets/");
   console.log("Prophet was deployed to: ", prophet.address);
 }
 
