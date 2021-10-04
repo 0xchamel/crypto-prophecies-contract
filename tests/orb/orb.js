@@ -32,7 +32,7 @@ describe("Orb Contract", function() {
             "Ownable: caller is not the owner"
         );
         await expectRevert(
-            this.Orb.mint(this.carol, 1, 2, "1234", 0, 0, "0x00", {
+            this.Orb.mint(this.carol, 1, 2, 0, 0, "0x00", {
                 from: this.carol,
             }),
             "Invalid minter"
@@ -90,7 +90,8 @@ describe("Orb Contract", function() {
     });
 
     it("should be set the correct values after mint", async function() {
-        await this.Orb.mint(this.bob, 10, 5, "test-token-uri", 0, 4, "0x00", {
+        await this.Orb.setBaseTokenURI("ipfs.io/", { from: this.alice });
+        await this.Orb.mint(this.bob, 10, 5, 0, 4, "0x00", {
             from: this.alice,
         });
         expect((await this.Orb.balanceOf(this.bob, 10)).toString()).to.equal(
@@ -109,7 +110,7 @@ describe("Orb Contract", function() {
         expect(legendaryRarity.epic.toString()).to.equal("1000");
         expect(legendaryRarity.legendary.toString()).to.equal("8500");
 
-        expect(await this.Orb.tokenURI(10), "test-token-uri");
+        expect(await this.Orb.tokenURI(10), "ipfs.io/10");
         expect((await this.Orb.supply(10)).toString(), "5");
     });
 });
