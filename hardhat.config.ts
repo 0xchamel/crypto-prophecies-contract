@@ -46,7 +46,7 @@ const config = {
         mumbai: {
             chainId: 80001,
             url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`,
-            accounts: [process.env.MAINNET_PRIVKEY],
+            accounts: [process.env.MUMBAI_PRIVKEY],
         },
     },
     etherscan: {
@@ -81,6 +81,9 @@ const config = {
                 runs: 200,
             },
         },
+    },
+    mocha: {
+        timeout: 2000000000,
     },
     typechain: {
         outDir: "types/contracts",

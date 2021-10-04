@@ -167,7 +167,7 @@ export interface SummoningInstance extends Truffle.ContractInstance {
   summoningRequests(
     arg0: string,
     txDetails?: Truffle.TransactionDetails
-  ): Promise<{ 0: string; 1: BN }>;
+  ): Promise<{ 0: string; 1: BN; 2: BN }>;
 
   transferOwnership: {
     (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
@@ -461,7 +461,7 @@ export interface SummoningInstance extends Truffle.ContractInstance {
     summoningRequests(
       arg0: string,
       txDetails?: Truffle.TransactionDetails
-    ): Promise<{ 0: string; 1: BN }>;
+    ): Promise<{ 0: string; 1: BN; 2: BN }>;
 
     transferOwnership: {
       (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<

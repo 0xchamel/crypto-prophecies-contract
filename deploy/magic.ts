@@ -10,6 +10,7 @@ async function deploy() {
   const Magic: ContractFactory = await ethers.getContractFactory("Magic");
   const magic: Contract = await Magic.deploy(
     "0xd6D7f80e850e53F47a6Dd91c70638bb3c5523a2d",
+    // "0x2d847211BEf5c1706C66fd5461455B915a11eE76",
     "10000000000000000000000000"
   );
   console.log("Magic token was deployed to: ", magic.address);

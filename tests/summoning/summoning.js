@@ -85,14 +85,16 @@ describe("Summoning Contract", function() {
     await this.orb.setGenerationId("1");
     await this.orb.mint(this.bob, 1, 10, "orb1", "0", "0", "0x");
 
-    await this.magic.transfer(this.bob, "10000000000000000000");
-    await this.magic.approve(this.summoning.address, "10000000000000000000", {
+    await this.magic.transfer(this.bob, "5000000000000000000");
+    await this.magic.approve(this.summoning.address, "5000000000000000000", {
       from: this.bob,
     });
 
     await this.link.transfer(this.summoning.address, "2000000000000000000");
 
     const tx = await this.summoning.summon(1, { from: this.bob });
+    expect((await this.magic.balanceOf(this.bob)).toString()).to.equal("0");
+    expect((await this.magic.balanceOf(this.summoning.address)).toString()).to.equal("5000000000000000000");
     const requestId = tx.logs[0].args.requestID;
 
     const res = await this.vrfCoordinatorMock.callBackWithRandomness(
@@ -122,6 +124,7 @@ describe("Summoning Contract", function() {
     expect(prophetData.race.toString()).to.equal("1");
     expect(prophetData.character.toString()).to.equal("3");
 
+    expect((await this.magic.balanceOf(this.summoning.address)).toString()).to.equal("0");
     expect((await this.orb.balanceOf(this.bob, 1)).toString()).to.equal("9");
   });
 
@@ -129,14 +132,16 @@ describe("Summoning Contract", function() {
     await this.orb.setGenerationId("1");
     await this.orb.mint(this.bob, 1, 10, "orb1", "3", "0", "0x");
 
-    await this.magic.transfer(this.bob, "10000000000000000000");
-    await this.magic.approve(this.summoning.address, "10000000000000000000", {
+    await this.magic.transfer(this.bob, "5000000000000000000");
+    await this.magic.approve(this.summoning.address, "5000000000000000000", {
       from: this.bob,
     });
 
     await this.link.transfer(this.summoning.address, "2000000000000000000");
 
     const tx = await this.summoning.summon(1, { from: this.bob });
+    expect((await this.magic.balanceOf(this.bob)).toString()).to.equal("0");
+    expect((await this.magic.balanceOf(this.summoning.address)).toString()).to.equal("5000000000000000000");
     const requestId = tx.logs[0].args.requestID;
 
     const res = await this.vrfCoordinatorMock.callBackWithRandomness(
@@ -167,10 +172,11 @@ describe("Summoning Contract", function() {
     expect(itemData.magicSource.toString()).to.equal("1");
     expect(itemData.itemType.toString()).to.equal("7");
 
+    expect((await this.magic.balanceOf(this.summoning.address)).toString()).to.equal("0");
     expect((await this.orb.balanceOf(this.bob, 1)).toString()).to.equal("9");
   });
 
-  it("should not summong without magic portion", async function() {
+  it("should not summon without magic portion", async function() {
     await this.orb.setGenerationId("1");
     await this.orb.mint(this.bob, 1, 10, "orb1", "3", "0", "0x");
 
@@ -178,7 +184,7 @@ describe("Summoning Contract", function() {
 
     await expect(
       this.summoning.summon(1, { from: this.bob })
-    ).to.be.revertedWith("ERC20: burn amount exceeds allowance");
+    ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
   });
 
   it("should upgrade prophets", async function() {

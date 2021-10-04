@@ -12,9 +12,9 @@ async function deploy() {
   );
   const summoning: Contract = await Summoning.deploy(
     "0x084Aa2372920607196D8AeAEfb2a78cf3D039B6B", // orb
-    "0x7C5e935B520823342a46FbC6bb145bA38d59860c", // prophet
-    "0x6364E2115f5B1D6E9aaf5C95094eDC27018eE851", // item
-    "0x20767be202921fcf8b1037067b4401f2a3df204c", // magic
+    "0x8f0D004d6484f7A772739C6a585bB99d21E13115", // prophet
+    "0x2329D5C29E8089232cF3b82b5fe69971152f3cE8", // item
+    "0xF49C5A61a7615bE4F7f4bFB2696cD419F33A78Df", // magic
     [
       "5000000000000000000",
       "25000000000000000000",

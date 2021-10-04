@@ -85,6 +85,7 @@ contract Summoning is Ownable, VRFConsumerBase {
     struct SummoningRequest {
         address requester;
         uint256 orbID;
+        uint256 magicAmount;
     }
 
     struct UpgradeRequest {
@@ -185,18 +186,21 @@ contract Summoning is Ownable, VRFConsumerBase {
 
         (, uint8 rarity, ) = orb.orbs(orbID);
 
-        magic.burnFrom(msg.sender, summoningAmounts[rarity]);
+        uint256 summonAmount = summoningAmounts[rarity];
+        magic.safeTransferFrom(msg.sender, address(this), summonAmount);
 
         bytes32 requestID = getRandomNumber();
         SummoningRequest storage request = summoningRequests[requestID];
         request.requester = msg.sender;
         request.orbID = orbID;
+        request.magicAmount = summonAmount;
 
         emit SummoningRequested(msg.sender, orbID, requestID);
     }
 
     function _summon(bytes32 requestID, uint256 randomness) internal {
         SummoningRequest memory request = summoningRequests[requestID];
+        bool summonSuccess;
 
         if (orb.balanceOf(request.requester, request.orbID) > 0) {
             (uint8 orbType, uint8 orbRarity, uint16 generation) = orb.orbs(
@@ -226,8 +230,9 @@ contract Summoning is Ownable, VRFConsumerBase {
                                         randomness % numCharPerGen[generation]
                                     )
                                 )
-                            {} catch {
-                                emit SummoningFailed(requestID);
+                            {
+                                summonSuccess = true;
+                            } catch {
                             }
                         }
                     } else {
@@ -250,15 +255,21 @@ contract Summoning is Ownable, VRFConsumerBase {
                                             numItemTypePerGen[generation]
                                     )
                                 )
-                            {} catch {
-                                emit SummoningFailed(requestID);
+                            {
+                                summonSuccess = true;
+                            } catch {
                             }
                         }
                     }
                 } catch {
-                    emit SummoningFailed(requestID);
                 }
             }
+        }
+
+        if (summonSuccess) {
+            magic.burn(request.magicAmount);
+        } else if (!magic.transfer(request.requester, request.magicAmount)) {
+            emit SummoningFailed(requestID);
         }
 
         isSummoning[request.requester][request.orbID] = false;
