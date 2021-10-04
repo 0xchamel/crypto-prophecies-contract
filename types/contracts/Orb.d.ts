@@ -549,11 +549,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<boolean>;
 
-  tokenURI(
-    _tokenId: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<string>;
-
   transferOwnership: {
     (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
@@ -573,7 +568,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
   };
 
   uri(
-    arg0: number | BN | string,
+    _tokenId: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
 
@@ -960,11 +955,6 @@ export interface OrbInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<boolean>;
 
-    tokenURI(
-      _tokenId: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-
     transferOwnership: {
       (newOwner: string, txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
@@ -984,7 +974,7 @@ export interface OrbInstance extends Truffle.ContractInstance {
     };
 
     uri(
-      arg0: number | BN | string,
+      _tokenId: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
   };

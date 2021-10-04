@@ -83,8 +83,14 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         __ERC1155_init_unchained(_uri);
     }
 
-    function tokenURI(uint256 _tokenId) public view returns (string memory) {
-        require(_exists(_tokenId), " URI query for nonexistent token");
+    function uri(uint256 _tokenId)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
+    {
+        require(_exists(_tokenId), "URI query for nonexistent token");
 
         string memory baseURI = baseTokenURI;
         return
