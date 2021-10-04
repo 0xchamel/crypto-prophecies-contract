@@ -43,7 +43,7 @@ describe("Shop Contract", function() {
     });
 
     it("test createItem function", async function() {
-        await this.Orb.mint(this.alice, 10, 5, "test-token-uri", 0, 0, "0x00", {
+        await this.Orb.mint(this.alice, 10, 5, 0, 0, "0x00", {
             from: this.alice,
         });
         await this.Orb.setApprovalForAll(this.Shop.address, true, {

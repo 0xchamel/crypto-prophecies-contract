@@ -108,12 +108,11 @@ contract Shop is ReentrancyGuard, Ownable {
         );
 
         // Send to owner
-        bool saleTransferSuccess = tcpToken.transferFrom(
+        tcpToken.safeTransferFrom(
             _msgSender(),
             rewardAddress,
             item.price * _count
         );
-        require(saleTransferSuccess, "purchase: Failed to send sale amount");
 
         // Send NFT item to buyer
         IERC1155(_nftAddress).safeTransferFrom(

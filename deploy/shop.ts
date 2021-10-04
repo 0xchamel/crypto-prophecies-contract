@@ -8,9 +8,9 @@ import { ethers } from "hardhat";
 async function deploy() {
     const Shop: ContractFactory = await ethers.getContractFactory("Shop");
     const shop: Contract = await Shop.deploy(
+        "0x5a7863bf31CCd463389D25a3F0ADEdA826C1E287",
         "0xfdb7d9400ea7da71210883a313c0df12aa1beb4f",
-        1631267502,
-        6
+        1633354964
     );
     console.log("Shop was deployed to: ", shop.address);
 }

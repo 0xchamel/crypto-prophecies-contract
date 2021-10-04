@@ -1195,7 +1195,76 @@ abstract contract OwnableUpgradeable is Initializable, ContextUpgradeable {
     uint256[49] private __gap;
 }
 
+/**
+ * @dev String operations.
+ */
+library Strings {
+    bytes16 private constant _HEX_SYMBOLS = "0123456789abcdef";
+
+    /**
+     * @dev Converts a `uint256` to its ASCII `string` decimal representation.
+     */
+    function toString(uint256 value) internal pure returns (string memory) {
+        // Inspired by OraclizeAPI's implementation - MIT licence
+        // https://github.com/oraclize/ethereum-api/blob/b42146b063c7d6ee1358846c198246239e9360e8/oraclizeAPI_0.4.25.sol
+
+        if (value == 0) {
+            return "0";
+        }
+        uint256 temp = value;
+        uint256 digits;
+        while (temp != 0) {
+            digits++;
+            temp /= 10;
+        }
+        bytes memory buffer = new bytes(digits);
+        while (value != 0) {
+            digits -= 1;
+            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            value /= 10;
+        }
+        return string(buffer);
+    }
+
+    /**
+     * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation.
+     */
+    function toHexString(uint256 value) internal pure returns (string memory) {
+        if (value == 0) {
+            return "0x00";
+        }
+        uint256 temp = value;
+        uint256 length = 0;
+        while (temp != 0) {
+            length++;
+            temp >>= 8;
+        }
+        return toHexString(value, length);
+    }
+
+    /**
+     * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.
+     */
+    function toHexString(uint256 value, uint256 length)
+        internal
+        pure
+        returns (string memory)
+    {
+        bytes memory buffer = new bytes(2 * length + 2);
+        buffer[0] = "0";
+        buffer[1] = "x";
+        for (uint256 i = 2 * length + 1; i > 1; --i) {
+            buffer[i] = _HEX_SYMBOLS[value & 0xf];
+            value >>= 4;
+        }
+        require(value == 0, "Strings: hex length insufficient");
+        return string(buffer);
+    }
+}
+
 contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
+    using Strings for uint256;
+
     enum OrbType {
         ORB,
         STONE,
@@ -1239,6 +1308,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         uint16 indexed generation
     );
     event URI(uint256 indexed tokenId, string value);
+    event BaseTokenURIUpdated(string value);
     event SetMinter(address indexed account, bool value);
     event SetBurner(address indexed account, bool value);
 
@@ -1250,6 +1320,8 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
     mapping(uint256 => string) private _tokenURIs;
     mapping(address => bool) private _minters;
     mapping(address => bool) private _burners;
+
+    string public baseTokenURI;
 
     modifier onlyMinter() {
         require(_minters[_msgSender()], "Invalid minter");
@@ -1268,11 +1340,26 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         __ERC1155_init_unchained(_uri);
     }
 
+    function uri(uint256 _tokenId)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
+    {
+        require(_exists(_tokenId), "URI query for nonexistent token");
+
+        string memory baseURI = baseTokenURI;
+        return
+            bytes(baseURI).length > 0
+                ? string(abi.encodePacked(baseURI, _tokenId.toString()))
+                : "";
+    }
+
     function mint(
         address _account,
         uint256 _id,
         uint256 _maximum,
-        string memory _tokenUri,
         OrbType _orbType,
         OrbRarity _orbRarity,
         bytes memory _data
@@ -1281,7 +1368,6 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         require(supply[_id] == 0, "token id is existed");
 
         _saveSupply(_id, _maximum);
-        _setTokenURI(_id, _tokenUri);
         _mint(_account, _id, _maximum, _data);
         _setOrbData(_id, _orbType, _orbRarity);
     }
@@ -1292,6 +1378,11 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         uint256 _amount
     ) external onlyBurner {
         _burn(_account, _id, _amount);
+    }
+
+    function setBaseTokenURI(string memory _baseURI) external onlyOwner {
+        baseTokenURI = _baseURI;
+        emit BaseTokenURIUpdated(baseTokenURI);
     }
 
     function setGenerationId(uint16 _id) external onlyOwner {
@@ -1337,10 +1428,6 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         );
     }
 
-    function tokenURI(uint256 _tokenId) external view returns (string memory) {
-        return _tokenURIs[_tokenId];
-    }
-
     function isMinter(address _minter) external view returns (bool) {
         return _minters[_minter];
     }
@@ -1374,16 +1461,7 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         emit Supply(_tokenId, _supply);
     }
 
-    function _setTokenURI(uint256 _tokenId, string memory _tokenUri)
-        internal
-        virtual
-    {
-        bytes memory emptyStringTest = bytes(_tokenUri);
-        if (emptyStringTest.length == 0) {
-            revert("invalid token uri");
-        }
-
-        _tokenURIs[_tokenId] = _tokenUri;
-        emit URI(_tokenId, _tokenUri);
+    function _exists(uint256 _tokenId) internal view virtual returns (bool) {
+        return supply[_tokenId] != 0;
     }
 }
