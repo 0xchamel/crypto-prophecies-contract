@@ -4,6 +4,7 @@ pragma solidity 0.8.0;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "../libraries/SafeERC20.sol";
 import "../interfaces/IOrb.sol";
@@ -531,5 +532,26 @@ contract Summoning is Ownable, VRFConsumerBase {
         onlyOwner
     {
         numItemTypePerGen[generation] = numItemType;
+    }
+
+    function withdrawTokens(IERC20 erc20) external onlyOwner {
+        uint256 balance = erc20.balanceOf(address(this));
+        erc20.transfer(msg.sender, balance);
+    }
+
+    function updateOrb(address _orb) external onlyOwner {
+        orb = IOrb(_orb);
+    }
+
+    function updateProphet(address _prophet) external onlyOwner {
+        prophet = IProphet(_prophet);
+    }
+
+    function updateItem(address _item) external onlyOwner {
+        item = IItem(_item);
+    }
+
+    function updateMagic(address _magic) external onlyOwner {
+        magic = ERC20Burnable(_magic);
     }
 }

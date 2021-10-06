@@ -187,6 +187,36 @@ export interface SummoningInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  updateItem: {
+    (_item: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(_item: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(
+      _item: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _item: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  updateMagic: {
+    (_magic: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(_magic: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(
+      _magic: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _magic: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   updateNumCharPerGen: {
     (
       generation: number | BN | string,
@@ -279,6 +309,39 @@ export interface SummoningInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  updateOrb: {
+    (_orb: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(_orb: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(
+      _orb: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _orb: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  updateProphet: {
+    (_prophet: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(
+      _prophet: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _prophet: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _prophet: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   updateSummoningAmounts: {
     (
       _amounts: (number | BN | string)[],
@@ -364,6 +427,21 @@ export interface SummoningInstance extends Truffle.ContractInstance {
     arg0: string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<{ 0: string; 1: boolean }>;
+
+  withdrawTokens: {
+    (erc20: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(erc20: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(
+      erc20: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      erc20: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
 
   methods: {
     isSummoning(
@@ -481,6 +559,42 @@ export interface SummoningInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
+    updateItem: {
+      (_item: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        _item: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _item: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _item: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    updateMagic: {
+      (_magic: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        _magic: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _magic: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _magic: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     updateNumCharPerGen: {
       (
         generation: number | BN | string,
@@ -573,6 +687,39 @@ export interface SummoningInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
+    updateOrb: {
+      (_orb: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(_orb: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+      sendTransaction(
+        _orb: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _orb: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    updateProphet: {
+      (_prophet: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        _prophet: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _prophet: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _prophet: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     updateSummoningAmounts: {
       (
         _amounts: (number | BN | string)[],
@@ -658,6 +805,24 @@ export interface SummoningInstance extends Truffle.ContractInstance {
       arg0: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<{ 0: string; 1: boolean }>;
+
+    withdrawTokens: {
+      (erc20: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        erc20: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        erc20: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        erc20: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
   };
 
   getPastEvents(event: string): Promise<EventData[]>;
