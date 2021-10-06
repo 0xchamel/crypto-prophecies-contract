@@ -46,6 +46,7 @@ import { PoolInitializableContract } from "./PoolInitializable";
 import { PoolFactoryContract } from "./PoolFactory";
 import { ERC677ReceiverContract } from "./ERC677Receiver";
 import { MockLinkContract } from "./MockLink";
+import { BTCPContract } from "./BTCP";
 import { MagicContract } from "./Magic";
 import { TCPContract } from "./TCP";
 import { TokenVestingContract } from "./TokenVesting";
@@ -103,6 +104,7 @@ declare global {
       require(name: "PoolFactory"): PoolFactoryContract;
       require(name: "ERC677Receiver"): ERC677ReceiverContract;
       require(name: "MockLink"): MockLinkContract;
+      require(name: "BTCP"): BTCPContract;
       require(name: "Magic"): MagicContract;
       require(name: "TCP"): TCPContract;
       require(name: "TokenVesting"): TokenVestingContract;
@@ -222,6 +224,7 @@ export {
   ERC677ReceiverInstance,
 } from "./ERC677Receiver";
 export { MockLinkContract, MockLinkInstance } from "./MockLink";
+export { BTCPContract, BTCPInstance } from "./BTCP";
 export { MagicContract, MagicInstance } from "./Magic";
 export { TCPContract, TCPInstance } from "./TCP";
 export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
