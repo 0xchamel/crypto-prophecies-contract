@@ -239,6 +239,7 @@ contract Shop is ReentrancyGuard, Ownable {
                 _shopItems[dropNo][i].tokenId == _tokenId
             ) {
                 _shopItems[dropNo][i] = _items[_nftAddress][_tokenId];
+                break;
             }
         }
 

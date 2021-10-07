@@ -841,7 +841,7 @@ contract Shop is ReentrancyGuard, Ownable {
         address _nftAddress,
         uint256 _tokenId,
         uint256 _count
-    ) external payable nonReentrant whenNotPaused {
+    ) external nonReentrant whenNotPaused {
         require(startTime < block.timestamp, "purchase: Not started");
 
         ItemInfo storage item = _items[_nftAddress][_tokenId];
@@ -852,10 +852,7 @@ contract Shop is ReentrancyGuard, Ownable {
 
         require(_count != 0, "purchase: invalid purchase count");
         require(item.amount != 0, "purchase: Not enough items left");
-        require(
-            _msgSender().isContract() == false,
-            "purchase: No contracts permitted"
-        );
+        require(!_msgSender().isContract(), "purchase: No contracts permitted");
         require(
             _items[_nftAddress][_tokenId].initialized,
             "purchase: Not able to purchase which isn't existed"
@@ -866,12 +863,11 @@ contract Shop is ReentrancyGuard, Ownable {
         );
 
         // Send to owner
-        bool saleTransferSuccess = tcpToken.transferFrom(
+        tcpToken.safeTransferFrom(
             _msgSender(),
             rewardAddress,
             item.price * _count
         );
-        require(saleTransferSuccess, "purchase: Failed to send sale amount");
 
         // Send NFT item to buyer
         IERC1155(_nftAddress).safeTransferFrom(
@@ -998,6 +994,7 @@ contract Shop is ReentrancyGuard, Ownable {
                 _shopItems[dropNo][i].tokenId == _tokenId
             ) {
                 _shopItems[dropNo][i] = _items[_nftAddress][_tokenId];
+                break;
             }
         }
 
