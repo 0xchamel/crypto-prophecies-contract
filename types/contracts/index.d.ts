@@ -5,8 +5,6 @@
 import { LinkTokenInterfaceContract } from "./LinkTokenInterface";
 import { VRFCoordinatorMockContract } from "./VRFCoordinatorMock";
 import { VRFConsumerBaseContract } from "./VRFConsumerBase";
-import { LinkTokenInterfaceContract } from "./LinkTokenInterface";
-import { VRFConsumerBaseContract } from "./VRFConsumerBase";
 import { OwnableUpgradeableContract } from "./OwnableUpgradeable";
 import { ERC1155UpgradeableContract } from "./ERC1155Upgradeable";
 import { IERC1155MetadataURIUpgradeableContract } from "./IERC1155MetadataURIUpgradeable";
@@ -37,7 +35,6 @@ import { IDailyPrizeContract } from "./IDailyPrize";
 import { IOrbContract } from "./IOrb";
 import { INFTContract } from "./INFT";
 import { IProphetContract } from "./IProphet";
-import { IERC20Contract } from "./IERC20";
 import { VRFConsumerBaseUpgradeableContract } from "./VRFConsumerBaseUpgradeable";
 import { BattleContract } from "./Battle";
 import { CryptoPropheciesItemContract } from "./CryptoPropheciesItem";
@@ -46,8 +43,6 @@ import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
 import { OrbContract } from "./Orb";
 import { IItemContract } from "./IItem";
-import { INFTContract } from "./INFT";
-import { IProphetContract } from "./IProphet";
 import { SummoningContract } from "./Summoning";
 import { ShopContract } from "./Shop";
 import { PoolInitializableContract } from "./PoolInitializable";
@@ -145,14 +140,6 @@ export {
   VRFConsumerBaseInstance,
 } from "./VRFConsumerBase";
 export {
-  LinkTokenInterfaceContract,
-  LinkTokenInterfaceInstance,
-} from "./LinkTokenInterface";
-export {
-  VRFConsumerBaseContract,
-  VRFConsumerBaseInstance,
-} from "./VRFConsumerBase";
-export {
   OwnableUpgradeableContract,
   OwnableUpgradeableInstance,
 } from "./OwnableUpgradeable";
@@ -221,7 +208,6 @@ export { IDailyPrizeContract, IDailyPrizeInstance } from "./IDailyPrize";
 export { IOrbContract, IOrbInstance } from "./IOrb";
 export { INFTContract, INFTInstance } from "./INFT";
 export { IProphetContract, IProphetInstance } from "./IProphet";
-export { IERC20Contract, IERC20Instance } from "./IERC20";
 export {
   VRFConsumerBaseUpgradeableContract,
   VRFConsumerBaseUpgradeableInstance,
@@ -242,8 +228,6 @@ export {
 } from "./ProphetV2Storage";
 export { OrbContract, OrbInstance } from "./Orb";
 export { IItemContract, IItemInstance } from "./IItem";
-export { INFTContract, INFTInstance } from "./INFT";
-export { IProphetContract, IProphetInstance } from "./IProphet";
 export { SummoningContract, SummoningInstance } from "./Summoning";
 export { ShopContract, ShopInstance } from "./Shop";
 export {
