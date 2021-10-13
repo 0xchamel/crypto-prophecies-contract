@@ -83,20 +83,11 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         __ERC1155_init_unchained(_uri);
     }
 
-    function uri(uint256 _tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
+    function uri(uint256 _tokenId) public view virtual override returns (string memory) {
         require(_exists(_tokenId), "URI query for nonexistent token");
 
         string memory baseURI = baseTokenURI;
-        return
-            bytes(baseURI).length > 0
-                ? string(abi.encodePacked(baseURI, _tokenId.toString()))
-                : "";
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, _tokenId.toString())) : "";
     }
 
     function mint(
@@ -157,18 +148,9 @@ contract Orb is ERC1155Upgradeable, OwnableUpgradeable {
         uint16 _epic,
         uint16 _legendary
     ) external onlyOwner {
-        require(
-            _common + _uncommon + _rare + _epic + _legendary == 10000,
-            "invalid rarity values"
-        );
+        require(_common + _uncommon + _rare + _epic + _legendary == 10000, "invalid rarity values");
 
-        rarities[_orbRarity] = Rarity(
-            _common,
-            _uncommon,
-            _rare,
-            _epic,
-            _legendary
-        );
+        rarities[_orbRarity] = Rarity(_common, _uncommon, _rare, _epic, _legendary);
     }
 
     function isMinter(address _minter) external view returns (bool) {

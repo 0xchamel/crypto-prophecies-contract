@@ -27,8 +27,7 @@ contract Shop is ReentrancyGuard, Ownable {
     mapping(address => mapping(uint256 => ItemInfo)) private _items;
 
     // DropNo => address => token id => purchased number
-    mapping(uint256 => mapping(address => mapping(uint256 => uint256)))
-        public userLimits;
+    mapping(uint256 => mapping(address => mapping(uint256 => uint256))) public userLimits;
 
     // NFT Address
     mapping(uint256 => ItemInfo[]) private _shopItems;
@@ -56,11 +55,7 @@ contract Shop is ReentrancyGuard, Ownable {
         uint256 price,
         uint256 indexed tokenId
     );
-    event ItemPriceUpdated(
-        address indexed nftAddress,
-        uint256 indexed tokenId,
-        uint256 _price
-    );
+    event ItemPriceUpdated(address indexed nftAddress, uint256 indexed tokenId, uint256 _price);
     event ItemCancelled(address indexed nftAddress, uint256 indexed tokenId);
 
     modifier whenNotPaused() {
@@ -108,20 +103,10 @@ contract Shop is ReentrancyGuard, Ownable {
         );
 
         // Send to owner
-        tcpToken.safeTransferFrom(
-            _msgSender(),
-            rewardAddress,
-            item.price * _count
-        );
+        tcpToken.safeTransferFrom(_msgSender(), rewardAddress, item.price * _count);
 
         // Send NFT item to buyer
-        IERC1155(_nftAddress).safeTransferFrom(
-            item.owner,
-            _msgSender(),
-            _tokenId,
-            _count,
-            ""
-        );
+        IERC1155(_nftAddress).safeTransferFrom(item.owner, _msgSender(), _tokenId, _count, "");
         item.amount = item.amount - _count;
 
         // Update _shopItems
@@ -130,9 +115,7 @@ contract Shop is ReentrancyGuard, Ownable {
                 _shopItems[dropNo][i].nftAddress == _nftAddress &&
                 _shopItems[dropNo][i].tokenId == _tokenId
             ) {
-                _shopItems[dropNo][i].amount =
-                    _shopItems[dropNo][i].amount -
-                    _count;
+                _shopItems[dropNo][i].amount = _shopItems[dropNo][i].amount - _count;
                 break;
             }
         }
@@ -158,20 +141,10 @@ contract Shop is ReentrancyGuard, Ownable {
         )
     {
         ItemInfo memory item = _items[_nftAddress][_tokenId];
-        return (
-            item.initialized,
-            item.owner,
-            item.amount,
-            item.limit,
-            item.price
-        );
+        return (item.initialized, item.owner, item.amount, item.limit, item.price);
     }
 
-    function getList(uint256 _dropNo)
-        external
-        view
-        returns (ItemInfo[] memory)
-    {
+    function getList(uint256 _dropNo) external view returns (ItemInfo[] memory) {
         return _shopItems[_dropNo];
     }
 
@@ -213,12 +186,8 @@ contract Shop is ReentrancyGuard, Ownable {
         require(_limit != 0, "invalid limit number");
         require(_price != 0, "invalid price");
         require(
-            IERC1155(_nftAddress).balanceOf(_msgSender(), _tokenId) >=
-                _amount &&
-                IERC1155(_nftAddress).isApprovedForAll(
-                    _msgSender(),
-                    address(this)
-                ),
+            IERC1155(_nftAddress).balanceOf(_msgSender(), _tokenId) >= _amount &&
+                IERC1155(_nftAddress).isApprovedForAll(_msgSender(), address(this)),
             "createItem: not owner or approved"
         );
 
@@ -243,23 +212,12 @@ contract Shop is ReentrancyGuard, Ownable {
             }
         }
 
-        if (i == _shopItems[dropNo].length)
-            _shopItems[dropNo].push(_items[_nftAddress][_tokenId]);
+        if (i == _shopItems[dropNo].length) _shopItems[dropNo].push(_items[_nftAddress][_tokenId]);
 
-        emit ItemListed(
-            _nftAddress,
-            _msgSender(),
-            _amount,
-            _limit,
-            _price,
-            _tokenId
-        );
+        emit ItemListed(_nftAddress, _msgSender(), _amount, _limit, _price, _tokenId);
     }
 
-    function cancelItem(address _nftAddress, uint256 _tokenId)
-        external
-        onlyOwner
-    {
+    function cancelItem(address _nftAddress, uint256 _tokenId) external onlyOwner {
         ItemInfo storage item = _items[_nftAddress][_tokenId];
 
         require(item.initialized, "cancelItem: not initialized");
@@ -269,9 +227,7 @@ contract Shop is ReentrancyGuard, Ownable {
                 _shopItems[dropNo][i].nftAddress == _nftAddress &&
                 _shopItems[dropNo][i].tokenId == _tokenId
             ) {
-                _shopItems[dropNo][i] = _shopItems[dropNo][
-                    _shopItems[dropNo].length - 1
-                ];
+                _shopItems[dropNo][i] = _shopItems[dropNo][_shopItems[dropNo].length - 1];
                 _shopItems[dropNo].pop();
 
                 break;

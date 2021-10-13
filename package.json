@@ -52,6 +52,8 @@
         "ethers": "^5.2.0",
         "hardhat": "^2.3.0",
         "hardhat-contract-sizer": "^2.1.0",
+        "prettier": "^2.4.1",
+        "prettier-plugin-solidity": "^1.0.0-beta.18",
         "solhint": "^3.3.5",
         "solhint-plugin-prettier": "^0.0.5",
         "solidity-coverage": "^0.7.16",
