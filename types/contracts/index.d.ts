@@ -12,6 +12,7 @@ import { ERC1155UpgradeableContract } from "./ERC1155Upgradeable";
 import { IERC1155MetadataURIUpgradeableContract } from "./IERC1155MetadataURIUpgradeable";
 import { IERC1155ReceiverUpgradeableContract } from "./IERC1155ReceiverUpgradeable";
 import { IERC1155UpgradeableContract } from "./IERC1155Upgradeable";
+import { IERC20UpgradeableContract } from "./IERC20Upgradeable";
 import { ERC165UpgradeableContract } from "./ERC165Upgradeable";
 import { IERC165UpgradeableContract } from "./IERC165Upgradeable";
 import { OwnableContract } from "./Ownable";
@@ -29,8 +30,12 @@ import { IERC721Contract } from "./IERC721";
 import { IERC721ReceiverContract } from "./IERC721Receiver";
 import { ERC165Contract } from "./ERC165";
 import { IERC165Contract } from "./IERC165";
+import { BonusContract } from "./Bonus";
+import { DailyPrizeBackUpContract } from "./DailyPrizeBackUp";
+import { DailyPrizeContract } from "./DailyPrize";
 import { IOrbContract } from "./IOrb";
 import { IERC20Contract } from "./IERC20";
+import { VRFConsumerBaseUpgradeableContract } from "./VRFConsumerBaseUpgradeable";
 import { BattleContract } from "./Battle";
 import { CryptoPropheciesItemContract } from "./CryptoPropheciesItem";
 import { CryptoPropheciesProphetContract } from "./CryptoPropheciesProphet";
@@ -70,6 +75,7 @@ declare global {
         name: "IERC1155ReceiverUpgradeable"
       ): IERC1155ReceiverUpgradeableContract;
       require(name: "IERC1155Upgradeable"): IERC1155UpgradeableContract;
+      require(name: "IERC20Upgradeable"): IERC20UpgradeableContract;
       require(name: "ERC165Upgradeable"): ERC165UpgradeableContract;
       require(name: "IERC165Upgradeable"): IERC165UpgradeableContract;
       require(name: "Ownable"): OwnableContract;
@@ -87,8 +93,14 @@ declare global {
       require(name: "IERC721Receiver"): IERC721ReceiverContract;
       require(name: "ERC165"): ERC165Contract;
       require(name: "IERC165"): IERC165Contract;
+      require(name: "Bonus"): BonusContract;
+      require(name: "DailyPrizeBackUp"): DailyPrizeBackUpContract;
+      require(name: "DailyPrize"): DailyPrizeContract;
       require(name: "IOrb"): IOrbContract;
       require(name: "IERC20"): IERC20Contract;
+      require(
+        name: "VRFConsumerBaseUpgradeable"
+      ): VRFConsumerBaseUpgradeableContract;
       require(name: "Battle"): BattleContract;
       require(name: "CryptoPropheciesItem"): CryptoPropheciesItemContract;
       require(name: "CryptoPropheciesProphet"): CryptoPropheciesProphetContract;
@@ -155,6 +167,10 @@ export {
   IERC1155UpgradeableInstance,
 } from "./IERC1155Upgradeable";
 export {
+  IERC20UpgradeableContract,
+  IERC20UpgradeableInstance,
+} from "./IERC20Upgradeable";
+export {
   ERC165UpgradeableContract,
   ERC165UpgradeableInstance,
 } from "./ERC165Upgradeable";
@@ -192,8 +208,18 @@ export {
 } from "./IERC721Receiver";
 export { ERC165Contract, ERC165Instance } from "./ERC165";
 export { IERC165Contract, IERC165Instance } from "./IERC165";
+export { BonusContract, BonusInstance } from "./Bonus";
+export {
+  DailyPrizeBackUpContract,
+  DailyPrizeBackUpInstance,
+} from "./DailyPrizeBackUp";
+export { DailyPrizeContract, DailyPrizeInstance } from "./DailyPrize";
 export { IOrbContract, IOrbInstance } from "./IOrb";
 export { IERC20Contract, IERC20Instance } from "./IERC20";
+export {
+  VRFConsumerBaseUpgradeableContract,
+  VRFConsumerBaseUpgradeableInstance,
+} from "./VRFConsumerBaseUpgradeable";
 export { BattleContract, BattleInstance } from "./Battle";
 export {
   CryptoPropheciesItemContract,
