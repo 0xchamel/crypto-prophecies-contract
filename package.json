@@ -12,6 +12,7 @@
         "deploy-staking:network": "hardhat run deploy/staking.ts --network",
         "deploy-token:network": "hardhat run deploy/token.ts --network",
         "deploy-shop:network": "hardhat run deploy/shop.ts --network",
+        "deploy-game:network": "hardhat run deploy/game.ts --network",
         "deploy-orb:network": "hardhat run deploy/orb.ts --network",
         "deploy-dev": "truffle migrate --network development",
         "deploy-test": "truffle migrate --network rinkeby",

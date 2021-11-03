@@ -33,9 +33,14 @@ import { IERC165Contract } from "./IERC165";
 import { BonusContract } from "./Bonus";
 import { DailyPrizeBackUpContract } from "./DailyPrizeBackUp";
 import { DailyPrizeContract } from "./DailyPrize";
+import { GameContract } from "./Game";
+import { IMPOTContract } from "./IMPOT";
+import { IDailyPrizeContract } from "./IDailyPrize";
 import { IOrbContract } from "./IOrb";
-import { IERC20Contract } from "./IERC20";
 import { VRFConsumerBaseUpgradeableContract } from "./VRFConsumerBaseUpgradeable";
+import { CryptoPropheciesGameContract } from "./CryptoPropheciesGame";
+import { INFTContract } from "./INFT";
+import { IProphetContract } from "./IProphet";
 import { BattleContract } from "./Battle";
 import { CryptoPropheciesItemContract } from "./CryptoPropheciesItem";
 import { CryptoPropheciesProphetContract } from "./CryptoPropheciesProphet";
@@ -43,8 +48,6 @@ import { ProphetV2Contract } from "./ProphetV2";
 import { ProphetV2StorageContract } from "./ProphetV2Storage";
 import { OrbContract } from "./Orb";
 import { IItemContract } from "./IItem";
-import { INFTContract } from "./INFT";
-import { IProphetContract } from "./IProphet";
 import { SummoningContract } from "./Summoning";
 import { ShopContract } from "./Shop";
 import { PoolInitializableContract } from "./PoolInitializable";
@@ -96,7 +99,13 @@ declare global {
       require(name: "Bonus"): BonusContract;
       require(name: "DailyPrizeBackUp"): DailyPrizeBackUpContract;
       require(name: "DailyPrize"): DailyPrizeContract;
+      require(name: "Game"): GameContract;
+      require(name: "CryptoPropheciesGame"): CryptoPropheciesGameContract;
+      require(name: "IMPOT"): IMPOTContract;
+      require(name: "IDailyPrize"): IDailyPrizeContract;
       require(name: "IOrb"): IOrbContract;
+      require(name: "INFT"): INFTContract;
+      require(name: "IProphet"): IProphetContract;
       require(name: "IERC20"): IERC20Contract;
       require(
         name: "VRFConsumerBaseUpgradeable"
@@ -128,55 +137,55 @@ declare global {
 
 export {
   LinkTokenInterfaceContract,
-  LinkTokenInterfaceInstance,
+  LinkTokenInterfaceInstance
 } from "./LinkTokenInterface";
 export {
   VRFCoordinatorMockContract,
-  VRFCoordinatorMockInstance,
+  VRFCoordinatorMockInstance
 } from "./VRFCoordinatorMock";
 export {
   VRFConsumerBaseContract,
-  VRFConsumerBaseInstance,
+  VRFConsumerBaseInstance
 } from "./VRFConsumerBase";
 export {
   LinkTokenInterfaceContract,
-  LinkTokenInterfaceInstance,
+  LinkTokenInterfaceInstance
 } from "./LinkTokenInterface";
 export {
   VRFConsumerBaseContract,
-  VRFConsumerBaseInstance,
+  VRFConsumerBaseInstance
 } from "./VRFConsumerBase";
 export {
   OwnableUpgradeableContract,
-  OwnableUpgradeableInstance,
+  OwnableUpgradeableInstance
 } from "./OwnableUpgradeable";
 export {
   ERC1155UpgradeableContract,
-  ERC1155UpgradeableInstance,
+  ERC1155UpgradeableInstance
 } from "./ERC1155Upgradeable";
 export {
   IERC1155MetadataURIUpgradeableContract,
-  IERC1155MetadataURIUpgradeableInstance,
+  IERC1155MetadataURIUpgradeableInstance
 } from "./IERC1155MetadataURIUpgradeable";
 export {
   IERC1155ReceiverUpgradeableContract,
-  IERC1155ReceiverUpgradeableInstance,
+  IERC1155ReceiverUpgradeableInstance
 } from "./IERC1155ReceiverUpgradeable";
 export {
   IERC1155UpgradeableContract,
-  IERC1155UpgradeableInstance,
+  IERC1155UpgradeableInstance
 } from "./IERC1155Upgradeable";
 export {
   IERC20UpgradeableContract,
-  IERC20UpgradeableInstance,
+  IERC20UpgradeableInstance
 } from "./IERC20Upgradeable";
 export {
   ERC165UpgradeableContract,
-  ERC165UpgradeableInstance,
+  ERC165UpgradeableInstance
 } from "./ERC165Upgradeable";
 export {
   IERC165UpgradeableContract,
-  IERC165UpgradeableInstance,
+  IERC165UpgradeableInstance
 } from "./IERC165Upgradeable";
 export { OwnableContract, OwnableInstance } from "./Ownable";
 export { IERC1155Contract, IERC1155Instance } from "./IERC1155";
@@ -185,69 +194,75 @@ export { ERC20BurnableContract, ERC20BurnableInstance } from "./ERC20Burnable";
 export { ERC20CappedContract, ERC20CappedInstance } from "./ERC20Capped";
 export {
   IERC20MetadataContract,
-  IERC20MetadataInstance,
+  IERC20MetadataInstance
 } from "./IERC20Metadata";
 export { IERC20Contract, IERC20Instance } from "./IERC20";
 export { ERC721Contract, ERC721Instance } from "./ERC721";
 export {
   ERC721EnumerableContract,
-  ERC721EnumerableInstance,
+  ERC721EnumerableInstance
 } from "./ERC721Enumerable";
 export {
   IERC721EnumerableContract,
-  IERC721EnumerableInstance,
+  IERC721EnumerableInstance
 } from "./IERC721Enumerable";
 export {
   IERC721MetadataContract,
-  IERC721MetadataInstance,
+  IERC721MetadataInstance
 } from "./IERC721Metadata";
 export { IERC721Contract, IERC721Instance } from "./IERC721";
 export {
   IERC721ReceiverContract,
-  IERC721ReceiverInstance,
+  IERC721ReceiverInstance
 } from "./IERC721Receiver";
 export { ERC165Contract, ERC165Instance } from "./ERC165";
 export { IERC165Contract, IERC165Instance } from "./IERC165";
 export { BonusContract, BonusInstance } from "./Bonus";
 export {
   DailyPrizeBackUpContract,
-  DailyPrizeBackUpInstance,
+  DailyPrizeBackUpInstance
 } from "./DailyPrizeBackUp";
 export { DailyPrizeContract, DailyPrizeInstance } from "./DailyPrize";
+export { GameContract, GameInstance } from "./Game";
+export { IMPOTContract, IMPOTInstance } from "./IMPOT";
+export { IDailyPrizeContract, IDailyPrizeInstance } from "./IDailyPrize";
 export { IOrbContract, IOrbInstance } from "./IOrb";
-export { IERC20Contract, IERC20Instance } from "./IERC20";
 export {
   VRFConsumerBaseUpgradeableContract,
-  VRFConsumerBaseUpgradeableInstance,
+  VRFConsumerBaseUpgradeableInstance
 } from "./VRFConsumerBaseUpgradeable";
+export {
+  CryptoPropheciesGameContract,
+  CryptoPropheciesGameInstance
+} from "./CryptoPropheciesGame";
+export { INFTContract, INFTInstance } from "./INFT";
+export { IProphetContract, IProphetInstance } from "./IProphet";
 export { BattleContract, BattleInstance } from "./Battle";
 export {
   CryptoPropheciesItemContract,
-  CryptoPropheciesItemInstance,
+  CryptoPropheciesItemInstance
 } from "./CryptoPropheciesItem";
 export {
   CryptoPropheciesProphetContract,
-  CryptoPropheciesProphetInstance,
+  CryptoPropheciesProphetInstance
 } from "./CryptoPropheciesProphet";
 export { ProphetV2Contract, ProphetV2Instance } from "./ProphetV2";
 export {
   ProphetV2StorageContract,
-  ProphetV2StorageInstance,
+  ProphetV2StorageInstance
 } from "./ProphetV2Storage";
 export { OrbContract, OrbInstance } from "./Orb";
 export { IItemContract, IItemInstance } from "./IItem";
-export { INFTContract, INFTInstance } from "./INFT";
-export { IProphetContract, IProphetInstance } from "./IProphet";
 export { SummoningContract, SummoningInstance } from "./Summoning";
 export { ShopContract, ShopInstance } from "./Shop";
 export {
   PoolInitializableContract,
-  PoolInitializableInstance,
+  PoolInitializableInstance
 } from "./PoolInitializable";
 export { PoolFactoryContract, PoolFactoryInstance } from "./PoolFactory";
 export {
   ERC677ReceiverContract,
-  ERC677ReceiverInstance,
+  ERC677ReceiverInstance
 } from "./ERC677Receiver";
 export { MockLinkContract, MockLinkInstance } from "./MockLink";
 export { BTCPContract, BTCPInstance } from "./BTCP";
@@ -256,9 +271,9 @@ export { TCPContract, TCPInstance } from "./TCP";
 export { TokenVestingContract, TokenVestingInstance } from "./TokenVesting";
 export {
   VestingDetailsContract,
-  VestingDetailsInstance,
+  VestingDetailsInstance
 } from "./VestingDetails";
 export {
   VestingStorageContract,
-  VestingStorageInstance,
+  VestingStorageInstance
 } from "./VestingStorage";
