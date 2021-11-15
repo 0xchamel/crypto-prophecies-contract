@@ -350,6 +350,21 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  updateMPOT: {
+    (_MPOT: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(_MPOT: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(
+      _MPOT: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _MPOT: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   updateMultipliers: {
     (
       _tiers: (number | BN | string)[],
@@ -605,6 +620,24 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
       ): Promise<string>;
       estimateGas(
         _account: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    updateMPOT: {
+      (_MPOT: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        _MPOT: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _MPOT: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _MPOT: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

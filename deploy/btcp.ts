@@ -9,7 +9,7 @@ async function deploy() {
   // Deploy pool factory
   const bTCP: ContractFactory = await ethers.getContractFactory("BTCP");
   const contract: Contract = await bTCP.deploy(
-    "0xd6D7f80e850e53F47a6Dd91c70638bb3c5523a2d",
+    "0x9d070Ff13103D24455355391ce55DEc3bF3EC01f",
     "16500000000000000000000000"
   );
   console.log("bTCP was deployed to: ", contract.address);

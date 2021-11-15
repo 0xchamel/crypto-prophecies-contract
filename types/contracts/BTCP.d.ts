@@ -13,6 +13,14 @@ export interface BTCPContract extends Truffle.Contract<BTCPInstance> {
   ): Promise<BTCPInstance>;
 }
 
+export interface AllowSpend {
+  name: "AllowSpend";
+  args: {
+    addr: string;
+    0: string;
+  };
+}
+
 export interface Approval {
   name: "Approval";
   args: {
@@ -22,6 +30,30 @@ export interface Approval {
     0: string;
     1: string;
     2: BN;
+  };
+}
+
+export interface DisallowSpend {
+  name: "DisallowSpend";
+  args: {
+    addr: string;
+    0: string;
+  };
+}
+
+export interface MinterAdded {
+  name: "MinterAdded";
+  args: {
+    minter: string;
+    0: string;
+  };
+}
+
+export interface MinterRemoved {
+  name: "MinterRemoved";
+  args: {
+    minter: string;
+    0: string;
   };
 }
 
@@ -47,9 +79,31 @@ export interface Transfer {
   };
 }
 
-type AllEvents = Approval | OwnershipTransferred | Transfer;
+type AllEvents =
+  | AllowSpend
+  | Approval
+  | DisallowSpend
+  | MinterAdded
+  | MinterRemoved
+  | OwnershipTransferred
+  | Transfer;
 
 export interface BTCPInstance extends Truffle.ContractInstance {
+  addMinter: {
+    (_addr: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(_addr: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(
+      _addr: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _addr: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   allowSpend: {
     (_addr: string, txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
@@ -204,9 +258,47 @@ export interface BTCPInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  mint: {
+    (
+      _to: string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _to: string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _to: string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _to: string,
+      _amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  removeMinter: {
+    (_addr: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(_addr: string, txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(
+      _addr: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _addr: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
 
   renounceOwnership: {
     (txDetails?: Truffle.TransactionDetails): Promise<
@@ -290,6 +382,24 @@ export interface BTCPInstance extends Truffle.ContractInstance {
   };
 
   methods: {
+    addMinter: {
+      (_addr: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        _addr: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _addr: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _addr: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     allowSpend: {
       (_addr: string, txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
@@ -450,9 +560,50 @@ export interface BTCPInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
+    mint: {
+      (
+        _to: string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _to: string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _to: string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _to: string,
+        _amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    removeMinter: {
+      (_addr: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        _addr: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _addr: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _addr: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
 
     renounceOwnership: {
       (txDetails?: Truffle.TransactionDetails): Promise<
