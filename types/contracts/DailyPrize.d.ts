@@ -7,7 +7,15 @@ import { EventData, PastEventOptions } from "web3-eth-contract";
 
 export interface DailyPrizeContract
   extends Truffle.Contract<DailyPrizeInstance> {
-  "new"(meta?: Truffle.TransactionDetails): Promise<DailyPrizeInstance>;
+  "new"(
+    _treasury: string,
+    _tcp: string,
+    _vrfCoordinator: string,
+    _link: string,
+    _vrfKeyHash: string,
+    _vrfFee: number | BN | string,
+    meta?: Truffle.TransactionDetails
+  ): Promise<DailyPrizeInstance>;
 }
 
 export interface DrawRequested {
@@ -48,11 +56,13 @@ export interface PrizeClaimed {
   name: "PrizeClaimed";
   args: {
     day: BN;
+    place: BN;
     player: string;
     prize: BN;
     0: BN;
-    1: string;
-    2: BN;
+    1: BN;
+    2: string;
+    3: BN;
   };
 }
 
@@ -143,32 +153,30 @@ export interface DailyPrizeInstance extends Truffle.ContractInstance {
   claimPrize: {
     (
       _day: number | BN | string,
+      _place: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
       _day: number | BN | string,
+      _place: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
       _day: number | BN | string,
+      _place: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
       _day: number | BN | string,
+      _place: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
 
-  dailyPrizes(
-    arg0: number | BN | string,
-    arg1: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
-
   dailyTickets(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
-  ): Promise<BN>;
+  ): Promise<{ 0: BN; 1: BN }>;
 
   dailyWinners(
     arg0: number | BN | string,
@@ -203,68 +211,31 @@ export interface DailyPrizeInstance extends Truffle.ContractInstance {
   drawWinners: {
     (
       _day: number | BN | string,
-      _winners: string[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
       _day: number | BN | string,
-      _winners: string[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
       _day: number | BN | string,
-      _winners: string[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
       _day: number | BN | string,
-      _winners: string[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
 
   game(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-  initialize: {
-    (
-      _treasury: string,
-      _tcp: string,
-      _vrfCoordinator: string,
-      _link: string,
-      _vrfKeyHash: string,
-      _vrfFee: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      _treasury: string,
-      _tcp: string,
-      _vrfCoordinator: string,
-      _link: string,
-      _vrfKeyHash: string,
-      _vrfFee: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      _treasury: string,
-      _tcp: string,
-      _vrfCoordinator: string,
-      _link: string,
-      _vrfKeyHash: string,
-      _vrfFee: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      _treasury: string,
-      _tcp: string,
-      _vrfCoordinator: string,
-      _link: string,
-      _vrfKeyHash: string,
-      _vrfFee: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
   owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  prizeClaimed(
+    arg0: number | BN | string,
+    arg1: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<boolean>;
 
   rawFulfillRandomness: {
     (
@@ -466,32 +437,30 @@ export interface DailyPrizeInstance extends Truffle.ContractInstance {
     claimPrize: {
       (
         _day: number | BN | string,
+        _place: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
         _day: number | BN | string,
+        _place: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
         _day: number | BN | string,
+        _place: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
         _day: number | BN | string,
+        _place: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
 
-    dailyPrizes(
-      arg0: number | BN | string,
-      arg1: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-
     dailyTickets(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
+    ): Promise<{ 0: BN; 1: BN }>;
 
     dailyWinners(
       arg0: number | BN | string,
@@ -526,68 +495,31 @@ export interface DailyPrizeInstance extends Truffle.ContractInstance {
     drawWinners: {
       (
         _day: number | BN | string,
-        _winners: string[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
         _day: number | BN | string,
-        _winners: string[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
         _day: number | BN | string,
-        _winners: string[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
         _day: number | BN | string,
-        _winners: string[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
 
     game(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-    initialize: {
-      (
-        _treasury: string,
-        _tcp: string,
-        _vrfCoordinator: string,
-        _link: string,
-        _vrfKeyHash: string,
-        _vrfFee: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        _treasury: string,
-        _tcp: string,
-        _vrfCoordinator: string,
-        _link: string,
-        _vrfKeyHash: string,
-        _vrfFee: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        _treasury: string,
-        _tcp: string,
-        _vrfCoordinator: string,
-        _link: string,
-        _vrfKeyHash: string,
-        _vrfFee: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        _treasury: string,
-        _tcp: string,
-        _vrfCoordinator: string,
-        _link: string,
-        _vrfKeyHash: string,
-        _vrfFee: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
     owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    prizeClaimed(
+      arg0: number | BN | string,
+      arg1: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<boolean>;
 
     rawFulfillRandomness: {
       (

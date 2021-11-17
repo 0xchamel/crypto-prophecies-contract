@@ -41,7 +41,7 @@ describe("Daily Prize Contract", function () {
     await network.provider.send("evm_setNextBlockTimestamp", [day * 60 * 60 * 24 + 100]);
     let i;
     const players = [];
-    const numPlayers = 1000;
+    const numPlayers = 10000;
     let totalPrize = 0;
     console.log('Start generating players');
     for (i = 0; i < numPlayers; i++) {
@@ -55,7 +55,7 @@ describe("Daily Prize Contract", function () {
     for (i = 0; i < numPlayers; i++) {
       const tickets = Math.floor(Math.random() * 100) + 1;
       await this.dailyPrize.addTickets(players[i], tickets.toString(), { from: this.mockGame });
-      const prize = Math.floor(Math.random() * 100000000000000000);
+      const prize = Math.floor(Math.random() * 1000000000);
       totalPrize += prize;
       await this.dailyPrize.addPrize(prize.toString(), { from: this.mockGame });
       if ((i + 1) % 500 == 0) console.log(i + 1);

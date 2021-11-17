@@ -8,9 +8,11 @@ import args from "../arguments/dailyPrize";
 
 async function deploy() {
   const DailyPrize: ContractFactory = await ethers.getContractFactory("DailyPrize");
-  const contract = await upgrades.deployProxy(DailyPrize, args);
+  // const contract = await upgrades.deployProxy(DailyPrize, args);
   // await upgrades.prepareUpgrade('0x8663BfdEFed1ea1C74F3816797D939a70127eBdF', DailyPrize);
   // const contract = await upgrades.upgradeProxy('0x76718848a80EC011d08444f9f1AC975DF399A301', DailyPrize);
+
+  const contract: Contract = await DailyPrize.deploy(...args);
   await contract.deployed();
   console.log("DailyPrize deployed to: ", contract.address);
 }

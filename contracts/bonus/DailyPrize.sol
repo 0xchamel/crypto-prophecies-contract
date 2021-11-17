@@ -1,41 +1,49 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.0;
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
-import "../libraries/VRFConsumerBaseUpgradeable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../libraries/SafeERC20.sol";
 
-contract DailyPrize is OwnableUpgradeable, VRFConsumerBaseUpgradeable {
-    using SafeERC20Upgradeable for IERC20Upgradeable;
+contract DailyPrize is Ownable, VRFConsumerBase {
+    using SafeERC20 for IERC20;
 
     event DrawRequested(bytes32 requestID, uint256 indexed day, uint256 prize);
     event ResultDrawn(uint256 indexed day);
     event PrizeClaimed(
         uint256 indexed day,
+        uint8 indexed place,
         address indexed player,
         uint256 prize
     );
-    event TicketsAdded(uint256 indexed day, address indexed player, uint256 tickets, uint256 timestamp);
+    event TicketsAdded(
+        uint256 indexed day,
+        address indexed player,
+        uint256 tickets,
+        uint256 timestamp
+    );
     event PrizeAdded(uint256 indexed day, uint256 amount, uint256 timestamp);
     event RandomFulfilled(uint256 indexed day, uint256 randomness);
 
     struct DailyTicketInfo {
         uint256 prize;
+        uint256 totalTickets;
         address[] players;
-        mapping(address => uint256) tickets;
+        uint256[] sum;
     }
 
-    mapping(uint256 => mapping(address => uint256)) public dailyPrizes;
     mapping(uint256 => address[]) public dailyWinners;
     mapping(bytes32 => uint256) public drawRequests;
     mapping(uint256 => DailyTicketInfo) public dailyTickets;
+    mapping(uint256 => mapping(uint8 => bool)) public prizeClaimed;
     mapping(uint256 => bool) private _drawn;
     mapping(uint256 => uint256) private _rand;
     mapping(uint256 => bool) private _randFulfilled;
+    mapping(uint256 => mapping(uint256 => bool)) private _winnerSelected;
 
     address public treasury;
-    IERC20Upgradeable public tcp;
+    IERC20 public tcp;
     address public game;
 
     // VRF
@@ -43,30 +51,7 @@ contract DailyPrize is OwnableUpgradeable, VRFConsumerBaseUpgradeable {
     uint256 internal vrfFee;
 
     uint256 private constant SECONDS_PER_DAY = 60 * 60 * 24;
-    uint8[25] private POOL_PERCENT;
-
-    modifier onlyGameContract() {
-        require(msg.sender == game, "not game contract");
-        _;
-    }
-
-    function initialize(
-        address _treasury,
-        IERC20Upgradeable _tcp,
-        address _vrfCoordinator,
-        address _link,
-        bytes32 _vrfKeyHash,
-        uint256 _vrfFee
-    ) public
-    initializer
-    {
-        require(_treasury != address(0));
-        require(address(_tcp) != address(0));
-        treasury = _treasury;
-        tcp = _tcp;
-        vrfKeyHash = _vrfKeyHash;
-        vrfFee = _vrfFee;
-        POOL_PERCENT = [
+    uint8[25] private POOL_PERCENT = [
         15,
         10,
         7,
@@ -94,47 +79,71 @@ contract DailyPrize is OwnableUpgradeable, VRFConsumerBaseUpgradeable {
         1
     ];
 
-        __VRFConsumerBaseUpgradeable_init(
+    modifier onlyGameContract() {
+        require(msg.sender == game, "not game contract");
+        _;
+    }
+
+    constructor(
+        address _treasury,
+        IERC20 _tcp,
+        address _vrfCoordinator,
+        address _link,
+        bytes32 _vrfKeyHash,
+        uint256 _vrfFee
+    )
+        VRFConsumerBase(
             _vrfCoordinator, // VRF Coordinator
             _link // LINK Token
-        );
-        __Ownable_init();
+        )
+    {
+        require(_treasury != address(0));
+        require(address(_tcp) != address(0));
+        treasury = _treasury;
+        tcp = _tcp;
+        vrfKeyHash = _vrfKeyHash;
+        vrfFee = _vrfFee;
     }
 
     function winnings(uint256 _day) public view returns (address[] memory, uint256[] memory) {
         DailyTicketInfo storage info = dailyTickets[_day];
         uint256[] memory prizes = new uint256[](dailyWinners[_day].length);
         for (uint256 i; i < dailyWinners[_day].length; i++) {
-            prizes[i] = dailyPrizes[_day][dailyWinners[_day][i]] * info.prize / 100;
+            prizes[i] = (info.prize * POOL_PERCENT[i]) / 100;
         }
         return (dailyWinners[_day], prizes);
     }
 
-    function claimPrize(uint256 _day) public {
-        DailyTicketInfo storage info = dailyTickets[_day];
-        uint256 prize = dailyPrizes[_day][msg.sender] * info.prize / 100;
-        require(prize > 0, "no prize!");
+    function claimPrize(uint256 _day, uint8 _place) public {
+        require(!prizeClaimed[_day][_place], "already claimed");
+        require(_place < dailyWinners[_day].length, "invalid place");
+        address winner = dailyWinners[_day][_place];
+        require(msg.sender == winner, "can't claim other's prize");
 
-        dailyPrizes[_day][msg.sender] = 0;
+        prizeClaimed[_day][_place] = true;
+
+        DailyTicketInfo storage info = dailyTickets[_day];
+        uint256 prize = (info.prize * POOL_PERCENT[_place]) / 100;
 
         tcp.safeTransferFrom(treasury, msg.sender, prize);
-        emit PrizeClaimed(_day, msg.sender, prize);
+        emit PrizeClaimed(_day, _place, msg.sender, prize);
     }
 
-    function addTickets(
-        address _player,
-        uint256 _tickets
-    ) external onlyGameContract {
+    function addTickets(address _player, uint256 _tickets) external onlyGameContract {
         require(_tickets > 0, "tickets must be > 0");
 
         uint256 day = block.timestamp / SECONDS_PER_DAY;
         require(!_drawn[day], "already drawn");
 
         DailyTicketInfo storage info = dailyTickets[day];
-        if (info.tickets[_player] == 0) {
-            info.players.push(_player);
+        info.players.push(_player);
+        uint256 length = info.sum.length;
+        if (length == 0) {
+            info.sum.push(_tickets);
+        } else {
+            info.sum.push(info.sum[length - 1] + _tickets);
         }
-        info.tickets[_player] += _tickets;
+        info.totalTickets += _tickets;
 
         emit TicketsAdded(day, _player, _tickets, block.timestamp);
     }
@@ -169,17 +178,43 @@ contract DailyPrize is OwnableUpgradeable, VRFConsumerBaseUpgradeable {
         emit DrawRequested(requestID, _day, dailyTickets[_day].prize);
     }
 
-    function drawWinners(uint256 _day, address[] memory _winners) public onlyOwner {
+    function drawWinners(uint256 _day) public onlyOwner {
         require(_randFulfilled[_day], "randomness not fulfilled");
-        require(_winners.length > 0 && _winners.length <= 25, "invalid input data");
-        require(dailyPrizes[_day][_winners[0]] == 0, "already drawn");
+        require(dailyWinners[_day].length == 0, "already drawn");
 
-        for (uint256 i = 0; i < 25; i++) {
-            address winner = _winners[i];
-            if (dailyPrizes[_day][winner] == 0) {
-                dailyWinners[_day].push(winner);
+        uint256 randomness = _rand[_day];
+        DailyTicketInfo storage info = dailyTickets[_day];
+
+        uint8 i;
+        uint256 left;
+        uint256 right;
+        uint256 mid;
+
+        for (i = 0; i < 25; i++) {
+            uint256 rand;
+            mid = 0;
+            while (true) {
+                rand = uint256(keccak256(abi.encodePacked(randomness, i, mid))) % info.totalTickets;
+                if (!_winnerSelected[_day][rand]) {
+                    _winnerSelected[_day][rand] = true;
+                    break;
+                }
+                mid++;
             }
-            dailyPrizes[_day][winner] += POOL_PERCENT[i];
+
+            left = 0;
+            right = info.players.length - 1;
+            while (left < right) {
+                mid = (left + right) / 2;
+                if (rand >= info.sum[mid]) {
+                    left = mid + 1;
+                } else if (rand < info.sum[mid]) {
+                    right = mid;
+                }
+            }
+
+            address winner = info.players[left];
+            dailyWinners[_day].push(winner);
         }
 
         emit ResultDrawn(_day);
@@ -196,10 +231,7 @@ contract DailyPrize is OwnableUpgradeable, VRFConsumerBaseUpgradeable {
     /**
      * Callback function used by VRF Coordinator
      */
-    function fulfillRandomness(bytes32 requestID, uint256 randomness)
-        internal
-        override
-    {
+    function fulfillRandomness(bytes32 requestID, uint256 randomness) internal override {
         uint256 day = drawRequests[requestID];
         _rand[day] = randomness;
         _randFulfilled[day] = true;
@@ -212,7 +244,7 @@ contract DailyPrize is OwnableUpgradeable, VRFConsumerBaseUpgradeable {
         treasury = _treasury;
     }
 
-    function updateTCP(IERC20Upgradeable _tcp) public onlyOwner {
+    function updateTCP(IERC20 _tcp) public onlyOwner {
         require(address(_tcp) != address(0));
         tcp = _tcp;
     }
@@ -226,7 +258,7 @@ contract DailyPrize is OwnableUpgradeable, VRFConsumerBaseUpgradeable {
         payable(msg.sender).transfer(balance);
     }
 
-    function withdrawTokens(IERC20Upgradeable erc20) external onlyOwner {
+    function withdrawTokens(IERC20 erc20) external onlyOwner {
         uint256 balance = erc20.balanceOf(address(this));
         erc20.transfer(msg.sender, balance);
     }
