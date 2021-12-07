@@ -10,10 +10,12 @@ export interface CryptoPropheciesGameContract
   "new"(
     _MPOT: string,
     _TCP: string,
+    _bTCP: string,
     _kfBurnAddr: string,
     _kfDailyPrizeAddr: string,
     _kfCustodyAddr: string,
     _ctDailyPrize: string,
+    _ctExchange: string,
     meta?: Truffle.TransactionDetails
   ): Promise<CryptoPropheciesGameInstance>;
 }
@@ -30,6 +32,7 @@ export interface BattleCreated {
     player2ProphetId: BN;
     player1ProphetTier: BN;
     player2ProphetTier: BN;
+    expireTime: BN;
     0: BN;
     1: string;
     2: string;
@@ -39,6 +42,7 @@ export interface BattleCreated {
     6: BN;
     7: BN;
     8: BN;
+    9: BN;
   };
 }
 
@@ -145,6 +149,10 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
 
   TCP(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
+  bTCP(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  battleDuration(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+
   battleId(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
   battles(
@@ -188,6 +196,8 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
   };
 
   ctDailyPrize(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  ctExchange(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   endBattle: {
     (
@@ -278,7 +288,44 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  updateBattleDuration: {
+    (
+      _duration: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      _duration: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _duration: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _duration: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   updateCTDailyPrize: {
+    (_contract: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(
+      _contract: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      _contract: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      _contract: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  updateExchangeContractAddress: {
     (_contract: string, txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
     >;
@@ -393,19 +440,19 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
   };
 
   updateProphetContractAddress: {
-    (_account: string, txDetails?: Truffle.TransactionDetails): Promise<
+    (_contract: string, txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
     >;
     call(
-      _account: string,
+      _contract: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
-      _account: string,
+      _contract: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
-      _account: string,
+      _contract: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -418,6 +465,10 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
     MPOT(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     TCP(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    bTCP(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    battleDuration(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
     battleId(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
@@ -462,6 +513,8 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
     };
 
     ctDailyPrize(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    ctExchange(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     endBattle: {
       (
@@ -552,7 +605,44 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
+    updateBattleDuration: {
+      (
+        _duration: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        _duration: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _duration: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _duration: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     updateCTDailyPrize: {
+      (_contract: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        _contract: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        _contract: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        _contract: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    updateExchangeContractAddress: {
       (_contract: string, txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
       >;
@@ -670,19 +760,19 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
     };
 
     updateProphetContractAddress: {
-      (_account: string, txDetails?: Truffle.TransactionDetails): Promise<
+      (_contract: string, txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
       >;
       call(
-        _account: string,
+        _contract: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
-        _account: string,
+        _contract: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
-        _account: string,
+        _contract: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

@@ -257,7 +257,8 @@ library Address {
         bytes memory data,
         uint256 value
     ) internal returns (bytes memory) {
-        return functionCallWithValue(target, data, value, "Address: low-level call with value failed");
+        return
+            functionCallWithValue(target, data, value, "Address: low-level call with value failed");
     }
 
     /**
@@ -285,7 +286,11 @@ library Address {
      *
      * _Available since v3.3._
      */
-    function functionStaticCall(address target, bytes memory data) internal view returns (bytes memory) {
+    function functionStaticCall(address target, bytes memory data)
+        internal
+        view
+        returns (bytes memory)
+    {
         return functionStaticCall(target, data, "Address: low-level static call failed");
     }
 
@@ -312,7 +317,10 @@ library Address {
      *
      * _Available since v3.4._
      */
-    function functionDelegateCall(address target, bytes memory data) internal returns (bytes memory) {
+    function functionDelegateCall(address target, bytes memory data)
+        internal
+        returns (bytes memory)
+    {
         return functionDelegateCall(target, data, "Address: low-level delegate call failed");
     }
 
@@ -460,7 +468,10 @@ library SafeERC20 {
         address to,
         uint256 value
     ) internal {
-        _callOptionalReturn(token, abi.encodeWithSelector(token.transferFrom.selector, from, to, value));
+        _callOptionalReturn(
+            token,
+            abi.encodeWithSelector(token.transferFrom.selector, from, to, value)
+        );
     }
 
     /**
@@ -478,7 +489,10 @@ library SafeERC20 {
         // safeApprove should only be called when setting an initial allowance,
         // or when resetting it to zero. To increase and decrease it, use
         // 'safeIncreaseAllowance' and 'safeDecreaseAllowance'
-        require((value == 0) || (token.allowance(address(this), spender) == 0), "SafeERC20: approve from non-zero to non-zero allowance");
+        require(
+            (value == 0) || (token.allowance(address(this), spender) == 0),
+            "SafeERC20: approve from non-zero to non-zero allowance"
+        );
         _callOptionalReturn(token, abi.encodeWithSelector(token.approve.selector, spender, value));
     }
 
@@ -488,7 +502,10 @@ library SafeERC20 {
         uint256 value
     ) internal {
         uint256 newAllowance = token.allowance(address(this), spender) + value;
-        _callOptionalReturn(token, abi.encodeWithSelector(token.approve.selector, spender, newAllowance));
+        _callOptionalReturn(
+            token,
+            abi.encodeWithSelector(token.approve.selector, spender, newAllowance)
+        );
     }
 
     function safeDecreaseAllowance(
@@ -500,7 +517,10 @@ library SafeERC20 {
             uint256 oldAllowance = token.allowance(address(this), spender);
             require(oldAllowance >= value, "SafeERC20: decreased allowance below zero");
             uint256 newAllowance = oldAllowance - value;
-            _callOptionalReturn(token, abi.encodeWithSelector(token.approve.selector, spender, newAllowance));
+            _callOptionalReturn(
+                token,
+                abi.encodeWithSelector(token.approve.selector, spender, newAllowance)
+            );
         }
     }
 
@@ -515,7 +535,10 @@ library SafeERC20 {
         // we're implementing it ourselves. We use {Address.functionCall} to perform this call, which verifies that
         // the target address contains contract code and also asserts for success in the low-level call.
 
-        bytes memory returndata = address(token).functionCall(data, "SafeERC20: low-level call failed");
+        bytes memory returndata = address(token).functionCall(
+            data,
+            "SafeERC20: low-level call failed"
+        );
         if (returndata.length > 0) {
             // Return data is optional
             require(abi.decode(returndata, (bool)), "SafeERC20: ERC20 operation did not succeed");
@@ -554,13 +577,25 @@ interface IERC1155 is IERC165 {
     /**
      * @dev Emitted when `value` tokens of token type `id` are transferred from `from` to `to` by `operator`.
      */
-    event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value);
+    event TransferSingle(
+        address indexed operator,
+        address indexed from,
+        address indexed to,
+        uint256 id,
+        uint256 value
+    );
 
     /**
      * @dev Equivalent to multiple {TransferSingle} events, where `operator`, `from` and `to` are the same for all
      * transfers.
      */
-    event TransferBatch(address indexed operator, address indexed from, address indexed to, uint256[] ids, uint256[] values);
+    event TransferBatch(
+        address indexed operator,
+        address indexed from,
+        address indexed to,
+        uint256[] ids,
+        uint256[] values
+    );
 
     /**
      * @dev Emitted when `account` grants or revokes permission to `operator` to transfer their tokens, according to
@@ -593,7 +628,10 @@ interface IERC1155 is IERC165 {
      *
      * - `accounts` and `ids` must have the same length.
      */
-    function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids) external view returns (uint256[] memory);
+    function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids)
+        external
+        view
+        returns (uint256[] memory);
 
     /**
      * @dev Grants or revokes permission to `operator` to transfer the caller's tokens, according to `approved`,
@@ -772,8 +810,14 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
     ) external nonReentrant onlyGC {
         require(_challenger != address(0), "Invalid challenger address");
         require(_charger != address(0), "Invalid charger address");
-        require(INFT(prophetAddr).ownerOf(_challengerProphetId) == _challenger, "Challenger not owning nft item");
-        require(INFT(prophetAddr).ownerOf(_chargerProphetId) == _charger, "Charger not owning nft item");
+        require(
+            INFT(prophetAddr).ownerOf(_challengerProphetId) == _challenger,
+            "Challenger not owning nft item"
+        );
+        require(
+            INFT(prophetAddr).ownerOf(_chargerProphetId) == _charger,
+            "Charger not owning nft item"
+        );
 
         _sendWager(_challenger, _wagerAmount);
         _sendWager(_charger, _wagerAmount);
@@ -809,7 +853,10 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         require(battles[_battleId].challenger != address(0), "battle is empty");
 
         Battle storage battle = battles[_battleId];
-        require(battle.challenger == _winner || battle.charger == _winner, "Invalid winner address");
+        require(
+            battle.challenger == _winner || battle.charger == _winner,
+            "Invalid winner address"
+        );
         battle.winner = _winner;
 
         emit SetWinner(_battleId, _winner);
@@ -819,7 +866,10 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         Battle storage battle = battles[_battleId];
 
         require(battle.challenger != address(0), "battle is empty");
-        require(battle.challenger == battle.winner || battle.charger == battle.winner, "Invalid winner address");
+        require(
+            battle.challenger == battle.winner || battle.charger == battle.winner,
+            "Invalid winner address"
+        );
 
         _transferFundsToWinner(_battleId);
         _removeBattle(_battleId);
@@ -897,22 +947,36 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         IERC20(TCP).safeTransfer(battle.winner, battle.TCPAmount - kingdomFee);
 
         // emit events for daily prize tickets
-        (, uint16 challengerRarity, , , , ) = IProphet(prophetAddr).prophets(battle.challengerProphetId);
+        (, uint16 challengerRarity, , , , ) = IProphet(prophetAddr).prophets(
+            battle.challengerProphetId
+        );
         (, uint16 chargerRarity, , , , ) = IProphet(prophetAddr).prophets(battle.chargerProphetId);
 
         if (battle.winner == battle.challenger) {
-            emit DailyPrizeTicketAdded(battle.challenger, battle.TCPAmount * multipliers[challengerRarity][0]);
+            emit DailyPrizeTicketAdded(
+                battle.challenger,
+                battle.TCPAmount * multipliers[challengerRarity][0]
+            );
 
             if (battle.TCPAmount * multipliers[chargerRarity][1] != 0) {
-                emit DailyPrizeTicketAdded(battle.charger, battle.TCPAmount * multipliers[chargerRarity][1]);
+                emit DailyPrizeTicketAdded(
+                    battle.charger,
+                    battle.TCPAmount * multipliers[chargerRarity][1]
+                );
             }
         }
 
         if (battle.winner == battle.charger) {
-            emit DailyPrizeTicketAdded(battle.charger, battle.TCPAmount * multipliers[chargerRarity][0]);
+            emit DailyPrizeTicketAdded(
+                battle.charger,
+                battle.TCPAmount * multipliers[chargerRarity][0]
+            );
 
             if (battle.TCPAmount * multipliers[challengerRarity][1] != 0) {
-                emit DailyPrizeTicketAdded(battle.challenger, battle.TCPAmount * multipliers[challengerRarity][1]);
+                emit DailyPrizeTicketAdded(
+                    battle.challenger,
+                    battle.TCPAmount * multipliers[challengerRarity][1]
+                );
             }
         }
 
