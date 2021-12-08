@@ -29,6 +29,7 @@ import { ERC165Contract } from "./ERC165";
 import { IERC165Contract } from "./IERC165";
 import { BonusContract } from "./Bonus";
 import { DailyPrizeContract } from "./DailyPrize";
+import { LeaderboardPrizeContract } from "./LeaderboardPrize";
 import { CryptoPropheciesGameContract } from "./CryptoPropheciesGame";
 import { IMPOTContract } from "./IMPOT";
 import { ExchangeContract } from "./Exchange";
@@ -95,6 +96,7 @@ declare global {
       require(name: "IERC165"): IERC165Contract;
       require(name: "Bonus"): BonusContract;
       require(name: "DailyPrize"): DailyPrizeContract;
+      require(name: "LeaderboardPrize"): LeaderboardPrizeContract;
       require(name: "CryptoPropheciesGame"): CryptoPropheciesGameContract;
       require(name: "IMPOT"): IMPOTContract;
       require(name: "Exchange"): ExchangeContract;
@@ -205,6 +207,10 @@ export { ERC165Contract, ERC165Instance } from "./ERC165";
 export { IERC165Contract, IERC165Instance } from "./IERC165";
 export { BonusContract, BonusInstance } from "./Bonus";
 export { DailyPrizeContract, DailyPrizeInstance } from "./DailyPrize";
+export {
+  LeaderboardPrizeContract,
+  LeaderboardPrizeInstance,
+} from "./LeaderboardPrize";
 export {
   CryptoPropheciesGameContract,
   CryptoPropheciesGameInstance

@@ -39,9 +39,8 @@ const config = {
     },
     matic: {
       chainId: 137,
-      url: "https://matic-mainnet.chainstacklabs.com",
+      url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.MAINNET_PRIVKEY],
-      gasPrice: 8000000000,
     },
     mumbai: {
       chainId: 80001,

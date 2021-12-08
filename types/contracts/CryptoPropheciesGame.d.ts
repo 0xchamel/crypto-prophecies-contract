@@ -32,7 +32,6 @@ export interface BattleCreated {
     player2ProphetId: BN;
     player1ProphetTier: BN;
     player2ProphetTier: BN;
-    expireTime: BN;
     0: BN;
     1: string;
     2: string;
@@ -42,7 +41,6 @@ export interface BattleCreated {
     6: BN;
     7: BN;
     8: BN;
-    9: BN;
   };
 }
 
@@ -151,14 +149,12 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
 
   bTCP(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-  battleDuration(txDetails?: Truffle.TransactionDetails): Promise<BN>;
-
   battleId(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
   battles(
     arg0: number | BN | string,
     txDetails?: Truffle.TransactionDetails
-  ): Promise<{ 0: string; 1: string; 2: string; 3: BN; 4: BN; 5: BN; 6: BN }>;
+  ): Promise<{ 0: string; 1: string; 2: string; 3: BN; 4: BN; 5: BN }>;
 
   createBattle: {
     (
@@ -167,6 +163,7 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
       _player2: string,
       _player2ProphetId: number | BN | string,
       _wagerAmount: number | BN | string,
+      _expireTime: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
@@ -175,6 +172,7 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
       _player2: string,
       _player2ProphetId: number | BN | string,
       _wagerAmount: number | BN | string,
+      _expireTime: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
@@ -183,6 +181,7 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
       _player2: string,
       _player2ProphetId: number | BN | string,
       _wagerAmount: number | BN | string,
+      _expireTime: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
@@ -191,6 +190,7 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
       _player2: string,
       _player2ProphetId: number | BN | string,
       _wagerAmount: number | BN | string,
+      _expireTime: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -284,25 +284,6 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
     ): Promise<string>;
     estimateGas(
       newOwner: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
-  updateBattleDuration: {
-    (
-      _duration: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      _duration: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-    sendTransaction(
-      _duration: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      _duration: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -468,14 +449,12 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
 
     bTCP(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-    battleDuration(txDetails?: Truffle.TransactionDetails): Promise<BN>;
-
     battleId(txDetails?: Truffle.TransactionDetails): Promise<BN>;
 
     battles(
       arg0: number | BN | string,
       txDetails?: Truffle.TransactionDetails
-    ): Promise<{ 0: string; 1: string; 2: string; 3: BN; 4: BN; 5: BN; 6: BN }>;
+    ): Promise<{ 0: string; 1: string; 2: string; 3: BN; 4: BN; 5: BN }>;
 
     createBattle: {
       (
@@ -484,6 +463,7 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
         _player2: string,
         _player2ProphetId: number | BN | string,
         _wagerAmount: number | BN | string,
+        _expireTime: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
@@ -492,6 +472,7 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
         _player2: string,
         _player2ProphetId: number | BN | string,
         _wagerAmount: number | BN | string,
+        _expireTime: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
@@ -500,6 +481,7 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
         _player2: string,
         _player2ProphetId: number | BN | string,
         _wagerAmount: number | BN | string,
+        _expireTime: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
@@ -508,6 +490,7 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
         _player2: string,
         _player2ProphetId: number | BN | string,
         _wagerAmount: number | BN | string,
+        _expireTime: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -601,25 +584,6 @@ export interface CryptoPropheciesGameInstance extends Truffle.ContractInstance {
       ): Promise<string>;
       estimateGas(
         newOwner: string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    updateBattleDuration: {
-      (
-        _duration: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        _duration: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<void>;
-      sendTransaction(
-        _duration: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        _duration: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

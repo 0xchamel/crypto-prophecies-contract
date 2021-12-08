@@ -3,17 +3,22 @@ import { Contract, ContractFactory } from "ethers";
 // but useful for running the script in a standalone fashion through `node <script>`.
 // When running the script with `hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-import { ethers } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 
 async function deploy() {
-  // Deploy pool factory
-  const Bonus: ContractFactory = await ethers.getContractFactory("Bonus");
-  const contract: Contract = await Bonus.deploy(
-    "0x3Bdb1FCC31718CB91b741d36f09102055A59776f", // btcp
-    "0x9d070Ff13103D24455355391ce55DEc3bF3EC01f", // treasury
-    "0x8741BDbf34Ad35Fb6E0b00F9245643A51A912a84", // admin(signer)
-  );
-  console.log("Bonus was deployed to: ", contract.address);
+  const LeaderboardPrize: ContractFactory = await ethers.getContractFactory("LeaderboardPrize");
+
+  // testnet
+  const treasury = "0x2163724034e0185B42d5C746da87587c8D5e3595";
+  const tcp = "0x2f90E1DBEB014b353b19fa4864F6FFd3437AC51c";
+
+  // mainnet
+  // const treasury = "";
+  // const tcp = "0x032F85b8FbF8540a92B986d953e4C3A61C76d39E";
+
+  const contract: Contract = await LeaderboardPrize.deploy(treasury, tcp);
+  await contract.deployed();
+  console.log("LeaderboardPrize deployed to: ", contract.address);
 }
 
 async function main(): Promise<void> {
