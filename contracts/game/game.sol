@@ -32,6 +32,7 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         uint256 startTimestamp;
         uint256 player1ProphetId;
         uint256 player2ProphetId;
+        bool isChallenge;
     }
 
     mapping(uint256 => Battle) public battles;
@@ -93,7 +94,8 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         uint256 player1ProphetId,
         uint256 player2ProphetId,
         uint256 player1ProphetTier,
-        uint256 player2ProphetTier
+        uint256 player2ProphetTier,
+        bool isChallenge
     );
 
     event DailyPrizeTicketAdded(address indexed account, uint256 amount, uint256 timestamp);
@@ -136,7 +138,8 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         address _player2,
         uint256 _player2ProphetId,
         uint256 _wagerAmount,
-        uint256 _expireTime
+        uint256 _expireTime,
+        bool _isChallenge
     ) external nonReentrant onlyGC {
         require(_player1 != address(0), "Invalid player1 address");
         require(_player2 != address(0), "Invalid player2 address");
@@ -151,19 +154,16 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
             "Player2 not owning nft item"
         );
 
-        (uint256 player1TCP, uint256 player1bTCP) = _sendWager(_player1, _wagerAmount);
-        (uint256 player2TCP, uint256 player2bTCP) = _sendWager(_player2, _wagerAmount);
+        // (uint256 player1TCP, uint256 player1bTCP) = _sendWager(_player1, _wagerAmount);
+        // (uint256 player2TCP, uint256 player2bTCP) = _sendWager(_player2, _wagerAmount);
 
         _createBattle(
             _player1,
             _player2,
-            player1TCP,
-            player2TCP,
-            player1bTCP,
-            player2bTCP,
             _player1ProphetId,
             _player2ProphetId,
-            _wagerAmount
+            _wagerAmount,
+            _isChallenge
         );
     }
 
@@ -275,8 +275,10 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
             // deduct kingdom fee from both TCP & bTCP
             _deductKingdomFee(TCP, kingdomFeeTCP + kingdomFeebTCP);
 
-            // call dailyPrize contract method
-            IDailyPrize(ctDailyPrize).addPrize(((kingdomFeeTCP + kingdomFeebTCP) / 10) * 4);
+            if (!battle.isChallenge) {
+                // call dailyPrize contract method
+                IDailyPrize(ctDailyPrize).addPrize(((kingdomFeeTCP + kingdomFeebTCP) / 10) * 4);
+            }
 
             // refund weager amount to both players which deducted kingdom fee
             if (battle.TCPAmount[0] + battle.TCPAmount[1] != 0) {
@@ -328,10 +330,15 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
 
         // deduct only TCP kingdom fee
         _deductKingdomFee(TCP, kingdomFee);
-        // call dailyPrize contract method
-        IDailyPrize(ctDailyPrize).addPrize((kingdomFee / 10) * 4);
 
         IERC20(TCP).safeTransfer(battle.winner, totalTokenAmount - kingdomFee);
+
+        emit WinBattleFunds(battle.winner, totalTokenAmount - kingdomFee);
+
+        if (battle.isChallenge) return;
+
+        // call dailyPrize contract method
+        IDailyPrize(ctDailyPrize).addPrize((kingdomFee / 10) * 4);
 
         // emit events for daily prize tickets
         (, uint16 player1Rarity, , , , ) = IProphet(prophetAddr).prophets(battle.player1ProphetId);
@@ -390,8 +397,6 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
                 );
             }
         }
-
-        emit WinBattleFunds(battle.winner, totalTokenAmount - kingdomFee);
     }
 
     function _deductKingdomFee(address token, uint256 kingdomFee) internal {
@@ -411,14 +416,14 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
     function _createBattle(
         address _player1,
         address _player2,
-        uint256 player1TCP,
-        uint256 player2TCP,
-        uint256 player1bTCP,
-        uint256 player2bTCP,
         uint256 _player1ProphetId,
         uint256 _player2ProphetId,
-        uint256 _wagerAmount
+        uint256 _wagerAmount,
+        bool _isChallenge
     ) internal {
+        (uint256 player1TCP, uint256 player1bTCP) = _sendWager(_player1, _wagerAmount);
+        (uint256 player2TCP, uint256 player2bTCP) = _sendWager(_player2, _wagerAmount);
+
         battles[battleId] = Battle(
             _player1,
             _player2,
@@ -427,23 +432,37 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
             [player1bTCP, player2bTCP],
             block.timestamp,
             _player1ProphetId,
-            _player2ProphetId
+            _player2ProphetId,
+            _isChallenge
         );
 
         (, uint16 player1Rarity, , , , ) = IProphet(prophetAddr).prophets(_player1ProphetId);
         (, uint16 player2Rarity, , , , ) = IProphet(prophetAddr).prophets(_player2ProphetId);
 
+        _emitBattleCreatedEvent(battleId, _wagerAmount, player1Rarity, player2Rarity);
+
+        battleId++;
+    }
+
+    function _emitBattleCreatedEvent(
+        uint256 _battleId,
+        uint256 _wagerAmount,
+        uint256 _player1Rarity,
+        uint256 _player2Rarity
+    ) internal {
+        Battle memory battle = battles[_battleId];
+
         emit BattleCreated(
-            battleId,
-            _player1,
-            _player2,
+            _battleId,
+            battle.player1,
+            battle.player2,
             _wagerAmount,
             block.timestamp,
-            _player1ProphetId,
-            _player2ProphetId,
-            player1Rarity,
-            player2Rarity
+            battle.player1ProphetId,
+            battle.player2ProphetId,
+            _player1Rarity,
+            _player2Rarity,
+            battle.isChallenge
         );
-        battleId++;
     }
 }
