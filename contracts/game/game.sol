@@ -154,9 +154,6 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
             "Player2 not owning nft item"
         );
 
-        // (uint256 player1TCP, uint256 player1bTCP) = _sendWager(_player1, _wagerAmount);
-        // (uint256 player2TCP, uint256 player2bTCP) = _sendWager(_player2, _wagerAmount);
-
         _createBattle(
             _player1,
             _player2,
@@ -241,21 +238,33 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         MPOT = IMPOT(_MPOT);
     }
 
-    function _sendWager(address _sender, uint256 _amount) internal returns (uint256, uint256) {
+    function _sendWager(
+        address _sender,
+        uint256 _amount,
+        bool _isChallenge
+    ) internal returns (uint256, uint256) {
         uint256 TCPBal = IERC20(TCP).balanceOf(_sender);
         uint256 bTCPBal = IERC20(bTCP).balanceOf(_sender);
-        require(TCPBal + bTCPBal >= _amount, "Not enough token amount in user wallet");
 
-        if (bTCPBal >= _amount) {
-            IERC20(bTCP).safeTransferFrom(_sender, address(this), _amount);
+        if (!_isChallenge) {
+            require(TCPBal + bTCPBal >= _amount, "Not enough token amount in user wallet");
 
-            return (0, _amount);
-        } else if (bTCPBal < _amount && bTCPBal != 0) {
-            IERC20(bTCP).safeTransferFrom(_sender, address(this), bTCPBal);
-            IERC20(TCP).safeTransferFrom(_sender, address(this), _amount - bTCPBal);
+            if (bTCPBal >= _amount) {
+                IERC20(bTCP).safeTransferFrom(_sender, address(this), _amount);
 
-            return (_amount - bTCPBal, bTCPBal);
+                return (0, _amount);
+            } else if (bTCPBal < _amount && bTCPBal != 0) {
+                IERC20(bTCP).safeTransferFrom(_sender, address(this), bTCPBal);
+                IERC20(TCP).safeTransferFrom(_sender, address(this), _amount - bTCPBal);
+
+                return (_amount - bTCPBal, bTCPBal);
+            }
+
+            IERC20(TCP).safeTransferFrom(_sender, address(this), _amount);
+            return (_amount, 0);
         }
+
+        require(TCPBal >= _amount, "Not enough token amount in user wallet");
 
         IERC20(TCP).safeTransferFrom(_sender, address(this), _amount);
         return (_amount, 0);
@@ -421,8 +430,16 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         uint256 _wagerAmount,
         bool _isChallenge
     ) internal {
-        (uint256 player1TCP, uint256 player1bTCP) = _sendWager(_player1, _wagerAmount);
-        (uint256 player2TCP, uint256 player2bTCP) = _sendWager(_player2, _wagerAmount);
+        (uint256 player1TCP, uint256 player1bTCP) = _sendWager(
+            _player1,
+            _wagerAmount,
+            _isChallenge
+        );
+        (uint256 player2TCP, uint256 player2bTCP) = _sendWager(
+            _player2,
+            _wagerAmount,
+            _isChallenge
+        );
 
         battles[battleId] = Battle(
             _player1,
