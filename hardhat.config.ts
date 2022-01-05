@@ -71,7 +71,12 @@ const config = {
       },
       {
         version: "0.8.0",
-        settings: {},
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
       },
     ],
     settings: {

@@ -71,6 +71,8 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
 
     uint256 public MAX_BATTLE_DURATION = 1 days;
 
+    uint8 public constant KINGDOM_FEE_MULTIPLIER = 10;
+
     event BattleEnded(uint256 indexed battleId, address indexed winner);
 
     event KFBurnAddressUpdated(address account);
@@ -274,8 +276,10 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
         Battle memory battle = battles[_battleId];
 
         if (battle.winner == address(0)) {
-            uint256 kingdomFeeTCP = ((battle.TCPAmount[0] + battle.TCPAmount[1]) * 3) / 100;
-            uint256 kingdomFeebTCP = (((battle.bTCPAmount[0] + battle.bTCPAmount[1])) * 3) / 100;
+            uint256 kingdomFeeTCP = ((battle.TCPAmount[0] + battle.TCPAmount[1]) *
+                KINGDOM_FEE_MULTIPLIER) / 100;
+            uint256 kingdomFeebTCP = (((battle.bTCPAmount[0] + battle.bTCPAmount[1])) *
+                KINGDOM_FEE_MULTIPLIER) / 100;
 
             if (kingdomFeebTCP != 0) {
                 ctExchange.swap(kingdomFeebTCP);
@@ -335,7 +339,7 @@ contract CryptoPropheciesGame is ReentrancyGuard, Ownable {
             battle.TCPAmount[1] +
             battle.bTCPAmount[0] +
             battle.bTCPAmount[1];
-        uint256 kingdomFee = (totalTokenAmount * 3) / 100;
+        uint256 kingdomFee = (totalTokenAmount * KINGDOM_FEE_MULTIPLIER) / 100;
 
         // deduct only TCP kingdom fee
         _deductKingdomFee(TCP, kingdomFee);
